@@ -1,3 +1,3 @@
-# cs414-f18-001-soggyzebras
+# The Soggy Zebras
 
 # THIS IS A PRETTY COOL READ ME
