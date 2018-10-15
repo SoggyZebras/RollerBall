@@ -22,7 +22,7 @@ public class RollerballPanel extends JPanel {
     public RollerballPanel(GUI gui) {
         super();
         setSize(gui.WIDTH, gui.HEIGHT);
-        addMouseListener(new RollerballMouseListener(gui));
+        addMouseListener(new RollerballMouseListener(this));
 
         squareWidth = getWidth() / 7;
         squareHeight = getHeight() / 7;
@@ -71,9 +71,20 @@ public class RollerballPanel extends JPanel {
      * @param row
      * @param col
      */
-    public void selectSquare(int row, int col) {
+    private void selectSquare(int row, int col) {
         selectedSquareRow = row;
         selectedSquareCol = col;
+    }
+
+
+    /**
+     * this method is called when the user clicks a square on the board
+     * @param x the x pixel coordinate of the click
+     * @param y the y pixel coordinate of the click
+     */
+    public void onClick(int x, int y) {
+        selectSquare(y / squareHeight, x / squareWidth);
+        repaint();
     }
 
 

@@ -5,18 +5,16 @@ import java.awt.event.MouseListener;
 
 public class RollerballMouseListener implements MouseListener{
 
-    private GUI gui;
+    private RollerballPanel panel;
 
-    public RollerballMouseListener(GUI gui) {
+    public RollerballMouseListener(RollerballPanel panel) {
         super();
-        this.gui = gui;
+        this.panel = panel;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-       int x = e.getX();
-       int y = e.getY();
-       gui.onClick(y / gui.SQUARE_HEIGHT, x / gui.SQUARE_WIDTH);
+       panel.onClick(e.getX(), e.getY());
     }
 
     @Override
