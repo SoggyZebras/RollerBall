@@ -2,9 +2,12 @@ package gui;
 
 import javax.swing.*;
 
+/**
+ * handles the window the game is shown in
+ */
 public class GUI {
-    public final int WIDTH = 400;
-    public final int HEIGHT = 400;
+    public final int WIDTH = 500;
+    public final int HEIGHT = 500;
     public final int SQUARE_WIDTH = WIDTH / 7;
     public final int SQUARE_HEIGHT = HEIGHT / 7;
 
@@ -25,6 +28,9 @@ public class GUI {
         jframe.add(panel);
     }
 
+    /**
+     * display the window
+     */
     public void show() {
         jframe.setVisible(true);
     }
@@ -35,7 +41,8 @@ public class GUI {
      * @param col the column index of the click (0 based, starting from top left corner)
      */
     public void onClick(int row, int col) {
-        System.err.println(row + " " + col);
+        panel.selectSquare(row, col);
+        panel.repaint();
     }
 
 }
