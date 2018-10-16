@@ -19,9 +19,9 @@ public class RollerballPanel extends JPanel {
     private int squareWidth;
     private int squareHeight;
 
-    public RollerballPanel(GUI gui) {
+    public RollerballPanel(int width, int height) {
         super();
-        setSize(gui.WIDTH, gui.HEIGHT);
+        setSize(width, height);
         addMouseListener(new RollerballMouseListener(this));
 
         squareWidth = getWidth() / 7;
