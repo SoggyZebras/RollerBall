@@ -2,7 +2,7 @@
  * Created by Jonathan on 10/15/2018.
  */
 
-public class Rook extends Piece_Abstract{
+public class Rook extends Piece {
 
     private String location;
     private String color;

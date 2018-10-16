@@ -1,7 +1,7 @@
 /**
  * Created by Jonathan on 10/15/2018.
  */
-public class Pawn extends Piece_Abstract{
+public class Pawn extends Piece {
 
     private String location;
     private String color;
@@ -15,7 +15,12 @@ public class Pawn extends Piece_Abstract{
 
 
 
-    public boolean checkValidMove(){return false;}
+    public boolean checkValidMove(){
+
+        //Switch statement for available options?
+
+
+        return false;}
     public boolean checkExternalRing(){return false;}
 
 

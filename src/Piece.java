@@ -2,7 +2,7 @@
  * Created by Jonathan on 10/15/2018.
  */
 
-abstract class Piece_Abstract{
+abstract class Piece {
 
 //all piece classes extend the base abstract class
     private String location;
@@ -11,7 +11,7 @@ abstract class Piece_Abstract{
     public abstract boolean checkValidMove();
     public abstract boolean checkExternalRing();
 
-    public Piece_Abstract(String loc, String color){
+    public Piece(String loc, String color){
         this.location = loc;
         this.color = color;
     }
@@ -21,6 +21,10 @@ abstract class Piece_Abstract{
     public static void main(String[] args) {
 
         //test piece classes
+        //All pieces must:
+            //-check for which ring they currently are in
+            //-check for where the rest of their players pieces are located
+            //-check and update valid moves after reaching rebounding conditions
     }
 
 

@@ -1,7 +1,7 @@
 /**
  * Created by Jonathan on 10/15/2018.
  */
-public class Bishop extends Piece_Abstract{
+public class Bishop extends Piece {
 
     private String location;
     private String color;
