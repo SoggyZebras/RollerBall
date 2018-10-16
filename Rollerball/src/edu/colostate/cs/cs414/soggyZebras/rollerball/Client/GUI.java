@@ -1,4 +1,4 @@
-package gui;
+package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
 
 import javax.swing.*;
 
