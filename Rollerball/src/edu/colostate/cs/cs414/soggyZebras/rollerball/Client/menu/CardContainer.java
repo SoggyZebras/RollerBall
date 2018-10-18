@@ -11,7 +11,7 @@ public class CardContainer extends JPanel {
     public CardContainer(MenuGUI menuGUI) {
         super(new CardLayout());
 
-        // menus
+        // create menus
         MenuPanel regLogin = new RegLoginPanel(menuGUI);
         add("register_login", regLogin);
         MenuPanel reg = new RegPanel(menuGUI);

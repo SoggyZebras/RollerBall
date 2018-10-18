@@ -1,8 +1,6 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * a jframe that holds different states of the game's menu
@@ -19,6 +17,8 @@ public class MenuGUI extends JFrame {
         add(cardContainer);
 
         setSize(320, 480);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setVisible(true);
     }
 
     /**

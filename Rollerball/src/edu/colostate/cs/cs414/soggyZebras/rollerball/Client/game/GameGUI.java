@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
+package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game;
 
 import javax.swing.*;
 
@@ -24,14 +24,7 @@ public class GameGUI extends JFrame {
         // setup panel (what gets drawn on)
         panel = new RollerballPanel(WIDTH, HEIGHT);
         add(panel);
-    }
-
-    /**
-     * display the window
-     */
-    public void showWindow() {
         setVisible(true);
     }
-
 
 }

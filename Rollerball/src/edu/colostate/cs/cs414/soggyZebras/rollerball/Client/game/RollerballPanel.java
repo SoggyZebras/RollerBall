@@ -1,7 +1,4 @@
-package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
-
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.RollerballMouseListener;
-import javafx.util.Pair;
+package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game;
 
 import javax.swing.*;
 import java.awt.*;
