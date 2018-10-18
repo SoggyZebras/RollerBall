@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
+package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
