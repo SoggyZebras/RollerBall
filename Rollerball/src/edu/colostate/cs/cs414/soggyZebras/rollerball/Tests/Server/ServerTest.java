@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.soggyZebras.rollerball.Tests;
+package edu.colostate.cs.cs414.soggyZebras.rollerball.Tests.Server;
 
 import static org.junit.jupiter.api.Assertions.*;
 
