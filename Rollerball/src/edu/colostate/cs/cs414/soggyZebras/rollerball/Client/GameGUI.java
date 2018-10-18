@@ -5,32 +5,32 @@ import javax.swing.*;
 /**
  * handles the window the game is shown in
  */
-public class GUI {
+public class GameGUI extends JFrame {
     public final int WIDTH = 350;
     public final int HEIGHT = 350;
 
     private JFrame jframe;
     private RollerballPanel panel;
 
-    public GUI() {
+    public GameGUI() {
         // setup enclosing frame
-        jframe = new JFrame("Rollerball");
-        jframe.setSize(WIDTH, HEIGHT + 22);
-        jframe.setResizable(false);
-        jframe.setFocusable(true);
-        jframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        jframe.setLocationRelativeTo(null);
+        super("Rollerball");
+        setSize(WIDTH, HEIGHT + 22);
+        setResizable(false);
+        setFocusable(true);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
         // setup panel (what gets drawn on)
         panel = new RollerballPanel(WIDTH, HEIGHT);
-        jframe.add(panel);
+        add(panel);
     }
 
     /**
      * display the window
      */
-    public void show() {
-        jframe.setVisible(true);
+    public void showWindow() {
+        setVisible(true);
     }
 
 
