@@ -1,5 +1,8 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,6 +10,8 @@ import java.awt.*;
  * creates and draws the graphics of the game
  */
 public class RollerballPanel extends JPanel {
+
+    private Game game;
 
     // the index of the selected square
     // can be set to -1,-1 to unselect a square
@@ -17,16 +22,22 @@ public class RollerballPanel extends JPanel {
     private int squareWidth;
     private int squareHeight;
 
-    public RollerballPanel(int width, int height) {
+    private PieceDrawer pieceDrawer;
+
+    public RollerballPanel(Game game, int width, int height) {
         super();
         setSize(width, height);
         addMouseListener(new RollerballMouseListener(this));
+
+        this.game = game;
 
         squareWidth = getWidth() / 7;
         squareHeight = getHeight() / 7;
 
         selectedSquareRow = -1;
         selectedSquareCol = -1;
+
+        pieceDrawer = new PieceDrawer("Rollerball/res/pieces.png", squareWidth);
     }
 
     @Override
@@ -34,7 +45,14 @@ public class RollerballPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         drawBackground(g2);
+        drawPieces(g2);
         drawSelectedSquare(g2);
+    }
+
+    private void drawPieces(Graphics2D g2) {
+        for (Piece p : game.getBoard().values()) {
+            pieceDrawer.draw(g2, p);
+        }
     }
 
     /**
@@ -42,7 +60,6 @@ public class RollerballPanel extends JPanel {
      * @param g2 a Graphics2D object that will be used to draw
      */
     private void drawBackground(Graphics2D g2) {
-
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
                 if ((i == 2 || i == 3 || i == 4) && (j == 2 || j == 3 || j == 4)) {
