@@ -1,6 +1,8 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.Client;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
 
 import javax.swing.*;
@@ -12,32 +14,33 @@ import java.awt.*;
 public class RollerballPanel extends JPanel {
 
     private Game game;
+    private Client client;
+    private PieceDrawer pieceDrawer;
 
     // the index of the selected square
     // can be set to -1,-1 to unselect a square
     private int selectedSquareRow;
     private int selectedSquareCol;
 
-    // the pixel width and height of the squares on the board
-    private int squareWidth;
-    private int squareHeight;
+    // the pixel size the squares on the board
+    private int squareSide;
 
-    private PieceDrawer pieceDrawer;
+    // if the user hasn't selected a piece, this is null
+    private Piece selectedPiece;
 
-    public RollerballPanel(Game game, int width, int height) {
+    public RollerballPanel(Game game, Client client, int gameSide) {
         super();
-        setSize(width, height);
+        setSize(gameSide, gameSide);
         addMouseListener(new RollerballMouseListener(this));
 
         this.game = game;
+        this.client = client;
+        selectedPiece = null;
+        unselectSquares();
 
-        squareWidth = getWidth() / 7;
-        squareHeight = getHeight() / 7;
+        this.squareSide = getWidth() / 7;
 
-        selectedSquareRow = -1;
-        selectedSquareCol = -1;
-
-        pieceDrawer = new PieceDrawer("Rollerball/res/pieces.png", squareWidth);
+        pieceDrawer = new PieceDrawer("Rollerball/res/pieces.png", squareSide);
     }
 
     @Override
@@ -71,14 +74,14 @@ public class RollerballPanel extends JPanel {
                 else {
                     g2.setColor(Color.orange);
                 }
-                g2.fillRect(i * squareWidth, j * squareHeight, squareWidth, squareHeight);
+                g2.fillRect(i * squareSide, j * squareSide, squareSide, squareSide);
             }
         }
     }
 
     private void drawSelectedSquare(Graphics2D g2) {
         g2.setColor(Color.black);
-        g2.drawRect(selectedSquareCol * squareWidth, selectedSquareRow * squareHeight, squareWidth, squareHeight);
+        g2.drawRect(selectedSquareCol * squareSide, selectedSquareRow * squareSide, squareSide, squareSide);
     }
 
     /**
@@ -87,10 +90,20 @@ public class RollerballPanel extends JPanel {
      * @param col
      */
     private void selectSquare(int row, int col) {
-        selectedSquareRow = row;
-        selectedSquareCol = col;
+        if (isValidSquare(row, col)) {
+            selectedSquareRow = row;
+            selectedSquareCol = col;
+        }
     }
 
+    private boolean isValidSquare(int row, int col) {
+        return !(row > 1 && row < 5 && col > 1 && col < 5);
+    }
+
+    private void unselectSquares() {
+        selectedSquareRow = -1;
+        selectedSquareCol = -1;
+    }
 
     /**
      * this method is called when the user clicks a square on the board
@@ -98,7 +111,21 @@ public class RollerballPanel extends JPanel {
      * @param y the y pixel coordinate of the click
      */
     public void onClick(int x, int y) {
-        selectSquare(y / squareHeight, x / squareWidth);
+        Location clickLoc = new Location(y / squareSide, x / squareSide);
+
+        // if a piece has already been selected, try to make a move and update the board
+        if (selectedPiece != null) {
+            client.makeMove(selectedPiece.getLoc(), clickLoc);
+            game = client.getGameState();
+            selectedPiece = null;
+            unselectSquares();
+        }
+        // select a piece if its clicked on
+        else if (game.getBoard().containsKey(clickLoc)) {
+            selectSquare(clickLoc.row, clickLoc.col);
+            selectedPiece = game.getBoard().get(clickLoc);
+        }
+
         repaint();
     }
 

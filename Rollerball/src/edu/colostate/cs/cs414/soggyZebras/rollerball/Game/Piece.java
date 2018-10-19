@@ -12,6 +12,10 @@ public class Piece {
         this.type = type;
     }
 
+    public Location getLoc() {
+        return loc;
+    }
+
     public int getRow() { return loc.getRow(); }
 
     public int getCol() { return loc.getCol(); }

@@ -17,4 +17,23 @@ public class Location {
     public int getCol() {
         return col;
     }
+
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Location) {
+            Location other = (Location)obj;
+            return this.hashCode() == other.hashCode();
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return row + " " + col;
+    }
 }
