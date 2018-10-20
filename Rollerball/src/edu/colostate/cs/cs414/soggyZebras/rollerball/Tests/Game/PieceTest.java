@@ -8,27 +8,33 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
 
 class PieceTest {
 
-    Location eLocation = new Location(1,1);
-    Location iLocation = new Location(2, 2);
-    Piece externalPiece = new Piece(eLocation, 'b');
-    Piece internalPiece = new Piece(iLocation, 'b');
+    Location eLocation = new Location(0,0);
+    Location iLocation = new Location(1, 1);
+    Piece externalPiece = new Piece(eLocation, 'b', "pawn");
+    Piece internalPiece = new Piece(iLocation, 'b', "pawn");
 
     @Test
     void testConstructorRow() {
-        Piece p = new Piece(eLocation, 'b');
+        Piece p = new Piece(eLocation, 'b', "pawn");
         assertEquals(p.getRow(), eLocation.getRow());
     }
 
     @Test
     void testConstructorCol() {
-        Piece p = new Piece(eLocation, 'b');
+        Piece p = new Piece(eLocation, 'b', "king");
         assertEquals(p.getCol(), eLocation.getCol());
     }
 
     @Test
     void testConstructorColor() {
-        Piece p = new Piece(eLocation, 'b');
+        Piece p = new Piece(eLocation, 'b', "king");
         assertEquals(p.getColor(), 'b');
+    }
+
+    @Test
+    void testConstructorType() {
+        Piece p = new Piece(eLocation, 'b', "king");
+        assertEquals(p.getType(), "king");
     }
 
     @Test
