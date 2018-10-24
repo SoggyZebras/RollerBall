@@ -10,18 +10,18 @@ import java.net.Socket;
 
 public class TCPServerThread implements Runnable{
 
-    private ServerSocket svSocket = null;
-    private TCPServerCache cache = null;
-    private Socket regSocket = null;
+    private ServerSocket serverSocket = null;
+    private TCPServerCache serverCache = null;
+    private Socket socket = null;
     private TCPConnection connection = null;
     private Node node = null;
 
     public TCPServerThread(Node node, TCPServerCache c) {
         try {
             this.node = node;
-            svSocket = new ServerSocket(0);
-            System.out.println("Listening on port " + svSocket.getLocalPort());
-            this.cache = c;
+            serverSocket = new ServerSocket(5000);
+            System.out.println("Listening on port " + serverSocket.getLocalPort());
+            this.serverCache = c;
         } catch (IOException e) {
             // TODO Auto-generated catch block
         }
@@ -30,9 +30,9 @@ public class TCPServerThread implements Runnable{
     public TCPServerThread(Node node, TCPServerCache c, int port) {
         try {
             this.node = node;
-            svSocket = new ServerSocket(port);
+            serverSocket = new ServerSocket(port);
             System.out.println("Listening on port " + port);
-            this.cache = c;
+            this.serverCache = c;
         } catch (IOException e) {
             // TODO Auto-generated catch block
         }
@@ -46,16 +46,15 @@ public class TCPServerThread implements Runnable{
         while(true) {
             try {
                 //Accept incoming connection
-                this.regSocket = svSocket.accept();
-                connection = new TCPConnection(node,regSocket);
+                this.socket = serverSocket.accept();
+                connection = new TCPConnection(node,socket);
                 connection.initiate();
-                this.cache.addConnection(connection);
-
+                this.serverCache.addConnection(connection);
 
             }
             catch(IOException ioe) {
                 try {
-                    this.regSocket.close();
+                    this.socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -66,10 +65,10 @@ public class TCPServerThread implements Runnable{
 
 
     public synchronized int getPort() {
-        return this.svSocket.getLocalPort();
+        return this.serverSocket.getLocalPort();
     }
 
     public synchronized Socket getSocket() {
-        return this.regSocket;
+        return this.socket;
     }
 }

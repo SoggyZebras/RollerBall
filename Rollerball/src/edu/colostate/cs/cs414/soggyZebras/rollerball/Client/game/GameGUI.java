@@ -4,6 +4,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.Client;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 
 import javax.swing.*;
+import java.io.IOException;
 
 /**
  * handles the window the game is shown in
@@ -14,7 +15,7 @@ public class GameGUI extends JFrame {
 
     private RollerballPanel panel;
 
-    public GameGUI(Client client, Game game) {
+    public GameGUI(Client client, Game game) throws IOException {
         // setup enclosing frame
         super("Rollerball");
         setSize(WIDTH, HEIGHT + 22);

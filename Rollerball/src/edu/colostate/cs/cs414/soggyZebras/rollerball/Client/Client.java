@@ -44,7 +44,7 @@ public class Client implements Node {
         }
     }
 
-    private void initialize() throws IOException {
+    public void initialize() throws IOException {
 
         // print debuggin info
         if(debug){
@@ -104,5 +104,6 @@ public class Client implements Node {
     public void setDebug(){
         this.debug = true;
     }
+
 
 }
