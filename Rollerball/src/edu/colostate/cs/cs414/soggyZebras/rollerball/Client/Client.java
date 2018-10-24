@@ -1,5 +1,6 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.RollerballPanel;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
@@ -11,6 +12,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 public class Client implements Node {
+
+    RollerballPanel gui;
 
     // TODO: does Client need a game object?
     private boolean debug = false;
@@ -60,7 +63,6 @@ public class Client implements Node {
     public void onEvent(Event e, Socket socket) {
 
         switch(e.getType()){
-            case Server_Responds_Make_Move: handleMakeMove(e);break;
             case Server_Responds_Game_State: handleGameState(e);break;
             case Server_Responds_Game_Invite:
             case Server_Responds_Get_History:
@@ -93,17 +95,16 @@ public class Client implements Node {
 
     }
 
-    private void handleMakeMove(Event e){
-
-    }
-
     private void handleGameState(Event e){
-
+       
     }
 
     public void setDebug(){
         this.debug = true;
     }
 
+    public void setGui(RollerballPanel p){
+        this.gui = p;
+    }
 
 }
