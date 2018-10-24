@@ -7,6 +7,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * creates and draws the graphics of the game
@@ -28,13 +29,14 @@ public class RollerballPanel extends JPanel {
     // if the user hasn't selected a piece, this is null
     private Piece selectedPiece;
 
-    public RollerballPanel(Game game, Client client, int gameSide) {
+    public RollerballPanel(Game game, Client client, int gameSide) throws IOException {
         super();
         setSize(gameSide, gameSide);
         addMouseListener(new RollerballMouseListener(this));
 
         this.game = game;
         this.client = client;
+        this.client.initialize();
         selectedPiece = null;
         unselectSquares();
 
