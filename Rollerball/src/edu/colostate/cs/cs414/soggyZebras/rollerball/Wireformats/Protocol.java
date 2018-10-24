@@ -4,22 +4,22 @@ public interface Protocol {
 
     //These values are unique identifiers for a message type
 
-    final byte ClientMakeMove = 0;
-    final byte ServerRespondsMakeMove = 1;
+    final byte Client_Make_Move = 0;
+    final byte Server_Responds_Make_Move = 1;
 
-    final byte ClientRequestGameState = 2;
-    final byte ServerRespondsGameState = 3;
+    final byte Client_Request_Game_State = 2;
+    final byte Server_Responds_Game_State = 3;
 
-    final byte ClientSendsRegister = 4;
-    final byte ServerRespondsRegister = 5;
+    final byte Client_Sends_Register = 4;
+    final byte Server_Responds_Register = 5;
 
-    final byte ClientSendsLogin = 6;
-    final byte ServerRespondsLogin = 7;
+    final byte Client_Sends_Login = 6;
+    final byte Server_Responds_Login = 7;
 
-    final byte ClientSendsGetHistory = 8;
-    final byte ServerRespondsGetHistory = 9;
+    final byte Client_Sends_Get_History = 8;
+    final byte Server_Responds_Get_History = 9;
 
-    final byte ClientSendsGameInvite = 10;
-    final byte ServerRespondsGameInvite = 11;
+    final byte Client_Sends_Game_Invite = 10;
+    final byte Server_Responds_Game_Invite = 11;
 
 }

@@ -2,25 +2,27 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerThread;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.SocketChannel;
-import java.util.Iterator;
+import java.net.InetAddress;
+import java.net.Socket;
 
-public class Client {
+public class Client implements Node {
 
     // TODO: does Client need a game object?
-    boolean debug = false;
+    private boolean debug = false;
 
     //========== NETWORK SETUP ==========//
 
     //Local Networking Variables
-    String serverHost;
-    int serverPort;
-    Selector selector;
+    private String serverHost;
+    private int serverPort;
+    private Socket serverSocket;
+    private TCPConnection serverConnection;
+
 
     public Client(String serverAddress, int serverPort) throws IOException {
 
@@ -33,61 +35,74 @@ public class Client {
         try{
             this.serverHost = serverAddress;
             this.serverPort = serverPort;
-            this.selector = Selector.open();
+            initialize();
 
         } catch(IOException e){
-            e.printStackTrace();
+            if(debug) {
+                e.printStackTrace();
+            }
         }
     }
 
-    protected void initialize() throws IOException, InterruptedException {
+    private void initialize() throws IOException {
 
         // print debuggin info
         if(debug){
             System.out.println("Starting Client thread");
         }
-
-        this.startClient();
+        //Setup a connection to the server
+        serverSocket = new Socket(InetAddress.getByName(this.serverHost),this.serverPort);
+        serverConnection = new TCPConnection(this, serverSocket);
+        serverConnection.initiate();
     }
 
-    private void startClient() throws IOException, InterruptedException {
+    @Override
+    public void onEvent(Event e, Socket socket) {
 
-        // Create a socket for the client           [1]
-        // configure the socket for non-blocking    [2]
-        // register socket with the selector        [3]
-        // connect channel to server                [4]
-        // connect selector key to server           [5]
-
-        SocketChannel channel = SocketChannel.open();                           //[1]
-        channel.configureBlocking(false);                                       //[2]
-        channel.register(selector, SelectionKey.OP_CONNECT);                    //[3]
-        channel.connect(new InetSocketAddress(this.serverHost,this.serverPort));//[4]
-
-        selector.select();
-
-        Iterator<SelectionKey> keys = this.selector.selectedKeys().iterator();  //[5]
-        SelectionKey key = keys.next();
-        if(key.isConnectable()){
-            this.connect(key);
+        switch(e.getType()){
+            case Server_Responds_Make_Move: handleMakeMove(e);break;
+            case Server_Responds_Game_State: handleGameState(e);break;
+            case Server_Responds_Game_Invite:
+            case Server_Responds_Get_History:
+            case Server_Responds_Register:
+            case Server_Responds_Login:
+            default:
         }
 
-    }
-
-    private void connect(SelectionKey key) throws IOException {
-        // finish setting up the connection to the server
-        SocketChannel channel = (SocketChannel) key.channel();
-        channel.finishConnect();
-        key.interestOps(SelectionKey.OP_WRITE);
     }
 
     //========= END NETWORK SETUP =========//
 
     public boolean makeMove(Location from, Location to) {
-        return false;
+        // Create wireformat with given variables and send to server
+        try {
+            ClientMakeMove moveMessage = new ClientMakeMove(from, to);
+            serverConnection.sendData(moveMessage.getBytes());
+            return true;
+        } catch (Exception e){
+            if(debug){
+                System.out.println(e.getMessage());
+            }
+            return false;
+        }
     }
 
     public Game getGameState() {
-        return new Game();
+        // TODO: This one is going to be tricky
+            return new Game();
+
+    }
+
+    private void handleMakeMove(Event e){
+
+    }
+
+    private void handleGameState(Event e){
+
+    }
+
+    public void setDebug(){
+        this.debug = true;
     }
 
 }
