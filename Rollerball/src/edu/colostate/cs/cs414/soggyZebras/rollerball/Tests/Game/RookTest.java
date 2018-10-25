@@ -10,15 +10,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 class RookTest {
-	Rook topOuter, topInner, leftOuter, leftInner,
+	private Rook topOuter, topInner, leftOuter, leftInner,
 			bottomOuter, bottomInner, rightOuter, rightInner;
 
-	Location up, down, left, right;
+	private Location up, down, left, right;
 
-	Game newGame;
+	private Game newGame;
+
+	private HashMap<Location,Piece> board1;
 
 	@BeforeEach
 	public void init() {
@@ -37,7 +40,34 @@ class RookTest {
 		right = new Location(0, 1);
 
 		newGame = new Game();
+
+		board1 = new HashMap<>();
 	}
+
+	@Test
+	void testValidMovesLHSOuter() {
+		board1.put(leftOuter.getLoc(), leftOuter);
+		ArrayList<Location> validMoves = leftOuter.validMoves(board1);
+		assertEquals(13, validMoves.size());
+		assertTrue(validMoves.contains(new Location(0, 0)));
+		assertTrue(validMoves.contains(new Location(5, 0)));
+		assertTrue(validMoves.contains(new Location(0, 6)));
+		assertTrue(validMoves.contains(new Location(6, 1)));
+	}
+
+	@Test
+	void testValidMovesLHSInner() {
+		board1.put(leftInner.getLoc(), leftInner);
+		ArrayList<Location> validMoves = leftInner.validMoves(board1);
+		System.err.println(validMoves);
+		assertEquals(8, validMoves.size());
+		assertTrue(validMoves.contains(new Location(0, 1)));
+		assertTrue(validMoves.contains(new Location(5, 0)));
+		assertTrue(validMoves.contains(new Location(5, 2)));
+		assertTrue(validMoves.contains(new Location(6, 1)));
+	}
+
+	// TODO: add more tests for other quadrants of board
 
 	@Test
 	void testNewGameValidMoves() {

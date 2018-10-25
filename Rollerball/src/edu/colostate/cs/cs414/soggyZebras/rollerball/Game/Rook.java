@@ -14,6 +14,7 @@ public class Rook extends Piece {
     }
 
     public ArrayList<Location> validMoves(Map<Location,Piece> gameState) {
+        // TODO: add checks for enemy pieces being in the way
         ArrayList<Location> validMoves = new ArrayList<>();
 
         // forward only, left, right, and back moves can be made on both rings
@@ -23,25 +24,28 @@ public class Rook extends Piece {
 
         // add all possible forward only moves (until this piece hits a wall)
         Location fwd = getForward();
+        boolean pieceInTheWay = false;
         for (int i = 1; i < 8; i++) {
             Location move = new Location(fwd.row * i, fwd.col * i);
-            boolean added = addIfValid(move, validMoves, gameState);
-            // if we couldn't move to the checked Location, stop looping
-            if (!added) break;
+            boolean[] result = addIfValid(move, validMoves, gameState);
+            // if we couldn't move to the checked Location, stop looping, make sure that bounces dont happen
+            if (!result[1]) pieceInTheWay = true;
+            if (!result[0] || !result[1]) {
+                break;
+            }
         }
 
-        // add bounces if on the external ring
-        if (externalRing()) {
+        // add bounces if on the external ring and we were able to go all the way to the wall
+        if (externalRing() && !pieceInTheWay) {
             // get wall hit location
             Location wallHit = getWallHit(fwd);
             // add right moves from that location
             for (int i = 1; i < 8; i++) {
-                // calculate the move by starting at the wall hit then adding all the moves to the right
                 Location right = getRight();
-                Location move = new Location(wallHit.row + (right.row * i), wallHit.col + (right.col * i));
-                boolean added = addIfValid(move, validMoves, gameState);
+                Location move = new Location(wallHit.row - loc.row + (right.row * i), wallHit.col - loc.col + (right.col * i));
+                boolean[] result = addIfValid(move, validMoves, gameState);
                 // if we couldn't move to the checked Location, stop looping
-                if (!added) break;
+                if (!result[0] || !result[1]) break;
             }
         }
 
@@ -56,7 +60,7 @@ public class Rook extends Piece {
         Location wallHit = loc;
         // loop, setting the wall hit location to the spot we're checking until the spot we check is on the board
         for (int i = 1; i < 8; i++) {
-            Location checkingLoc = new Location(fwdDir.row * i, fwdDir.col * i);
+            Location checkingLoc = new Location(loc.row + fwdDir.row * i, loc.col + fwdDir.col * i);
             if (isOnBoard(checkingLoc)) {
                 wallHit = checkingLoc;
             }
@@ -70,15 +74,15 @@ public class Rook extends Piece {
      * @param direction the direction of the move
      * @param validMoves the list of valid moves to add to if the given move is valid
      * @param gameState a HashMap of Location -> Piece that represents the board
-     * @return true if the move was added
+     * @return a boolean array holding {was the spot on the board, was there no friendly piece in the way}
      */
-    private boolean addIfValid(Location direction, ArrayList<Location> validMoves, Map<Location,Piece> gameState) {
+    private boolean[] addIfValid(Location direction, ArrayList<Location> validMoves, Map<Location,Piece> gameState) {
         Location potentialLoc = new Location(loc.row + direction.row, loc.col + direction.col);
         if (isOnBoard(potentialLoc) && !spotTakenByTeammate(potentialLoc, gameState)) {
             validMoves.add(potentialLoc);
-            return true;
+            return new boolean[]{true, true};
         }
-        return false;
+        return new boolean[]{isOnBoard(potentialLoc), !spotTakenByTeammate(potentialLoc, gameState)};
     }
 
     /**
