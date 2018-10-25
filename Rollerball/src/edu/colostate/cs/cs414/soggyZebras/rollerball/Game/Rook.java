@@ -1,7 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 public class Rook extends Piece {
     private final Location up = new Location(-1, 0);
@@ -13,12 +13,103 @@ public class Rook extends Piece {
         super(l, color, type);
     }
 
-    public ArrayList<Location> validMoves(HashMap state) {
-        return new ArrayList<>();
+    public ArrayList<Location> validMoves(Map<Location,Piece> gameState) {
+        ArrayList<Location> validMoves = new ArrayList<>();
+
+        // forward only, left, right, and back moves can be made on both rings
+        addIfValid(getLeft(), validMoves, gameState);
+        addIfValid(getRight(), validMoves, gameState);
+        addIfValid(getBackward(), validMoves, gameState);
+
+        // add all possible forward only moves (until this piece hits a wall)
+        Location fwd = getForward();
+        for (int i = 1; i < 8; i++) {
+            Location move = new Location(fwd.row * i, fwd.col * i);
+            boolean added = addIfValid(move, validMoves, gameState);
+            // if we couldn't move to the checked Location, stop looping
+            if (!added) break;
+        }
+
+        // add bounces if on the external ring
+        if (externalRing()) {
+            // get wall hit location
+            Location wallHit = getWallHit(fwd);
+            // add right moves from that location
+            for (int i = 1; i < 8; i++) {
+                // calculate the move by starting at the wall hit then adding all the moves to the right
+                Location right = getRight();
+                Location move = new Location(wallHit.row + (right.row * i), wallHit.col + (right.col * i));
+                boolean added = addIfValid(move, validMoves, gameState);
+                // if we couldn't move to the checked Location, stop looping
+                if (!added) break;
+            }
+        }
+
+        return validMoves;
     }
 
-    public boolean externalRing() {
+    /**
+     * @param fwdDir the forward direction for this piece
+     * @return the Location of where this piece would hit a wall
+     */
+    private Location getWallHit(Location fwdDir) {
+        Location wallHit = loc;
+        // loop, setting the wall hit location to the spot we're checking until the spot we check is on the board
+        for (int i = 1; i < 8; i++) {
+            Location checkingLoc = new Location(fwdDir.row * i, fwdDir.col * i);
+            if (isOnBoard(checkingLoc)) {
+                wallHit = checkingLoc;
+            }
+        }
+        return wallHit;
+    }
+
+    /**
+     * add a new Location of position + direction to the given list of valid moves
+     * if the location is on the board and not occupied by a friendly piece
+     * @param direction the direction of the move
+     * @param validMoves the list of valid moves to add to if the given move is valid
+     * @param gameState a HashMap of Location -> Piece that represents the board
+     * @return true if the move was added
+     */
+    private boolean addIfValid(Location direction, ArrayList<Location> validMoves, Map<Location,Piece> gameState) {
+        Location potentialLoc = new Location(loc.row + direction.row, loc.col + direction.col);
+        if (isOnBoard(potentialLoc) && !spotTakenByTeammate(potentialLoc, gameState)) {
+            validMoves.add(potentialLoc);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param potentialLoc the Location to check
+     * @param gameState a HashMap of Location -> Piece that represents the board
+     * @return true if the given Location is taken by a teammate
+     */
+    private boolean spotTakenByTeammate(Location potentialLoc, Map<Location,Piece> gameState) {
+        Piece p = gameState.get(potentialLoc);
+        if (p != null) {
+            if (p.color == this.color) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return true if this piece is on the outer ring of the board
+     */
+    private boolean externalRing() {
         return loc.getRow() == 0 || loc.getCol() == 0 || loc.getRow() == 6 || loc.getCol() == 6;
+    }
+
+    /**
+     * @param l a Location to check
+     * @return true if the given location is on the board
+     */
+    private boolean isOnBoard(Location l) {
+        return (l.row >= 0 && l.row <= 6 && l.col >= 0 && l.col <= 6)
+                && !((l.row == 2 || l.row == 3 || l.row == 4) && (l.col == 2 || l.col == 3 || l.col == 4));
     }
 
     /**

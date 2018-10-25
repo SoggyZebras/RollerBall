@@ -2,16 +2,23 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Tests.Game;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Rook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 class RookTest {
 	Rook topOuter, topInner, leftOuter, leftInner,
 			bottomOuter, bottomInner, rightOuter, rightInner;
 
 	Location up, down, left, right;
+
+	Game newGame;
 
 	@BeforeEach
 	public void init() {
@@ -28,6 +35,35 @@ class RookTest {
 		down = new Location(1, 0);
 		left = new Location(0, -1);
 		right = new Location(0, 1);
+
+		newGame = new Game();
+	}
+
+	@Test
+	void testNewGameValidMoves() {
+		Map<Location, Piece> board = newGame.getBoard();
+
+		// test rooks at top
+		Rook rook1 = (Rook) board.get(new Location(0, 2));
+		Rook rook2 = (Rook) board.get(new Location(0, 2));
+		ArrayList<Location> valids = rook1.validMoves(board);
+		assertTrue(valids.contains(new Location(rook1.getRow() + left.row, rook1.getCol() + left.col)));
+		assertEquals(1, valids.size());
+		valids = rook2.validMoves(board);
+		assertTrue(valids.contains(new Location(rook2.getRow() + left.row, rook2.getCol() + left.col)));
+		assertEquals(1, valids.size());
+
+		// test rooks at bottom
+		Rook rook3 = (Rook) board.get(new Location(5, 4));
+		Rook rook4 = (Rook) board.get(new Location(6, 4));
+		valids = rook3.validMoves(board);
+		assertTrue(valids.contains(new Location(rook3.getRow() + right.row, rook3.getCol() + right.col)));
+		assertEquals(1, valids.size());
+		valids = rook4.validMoves(board);
+		assertTrue(valids.contains(new Location(rook4.getRow() + right.row, rook4.getCol() + right.col)));
+		assertEquals(1, valids.size());
+
+
 	}
 
 	@Test
