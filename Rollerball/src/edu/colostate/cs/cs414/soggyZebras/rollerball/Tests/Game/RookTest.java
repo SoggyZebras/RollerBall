@@ -53,4 +53,76 @@ class RookTest {
 		assertEquals(left, bottomOuter.getForward());
 		assertEquals(left, bottomInner.getForward());
 	}
+
+	@Test
+	void testGetLeftTop() {
+		assertEquals(up, topOuter.getLeft());
+		assertEquals(up, topInner.getLeft());
+	}
+
+	@Test
+	void testGetLeftLeft() {
+		assertEquals(left, leftInner.getLeft());
+		assertEquals(left, leftOuter.getLeft());
+	}
+
+	@Test
+	void testGetLeftRight() {
+		assertEquals(right, rightOuter.getLeft());
+		assertEquals(right, rightInner.getLeft());
+	}
+
+	@Test
+	void testGetLeftBottom() {
+		assertEquals(down, bottomOuter.getLeft());
+		assertEquals(down, bottomInner.getLeft());
+	}
+
+	@Test
+	void testGetRightTop() {
+		assertEquals(down, topOuter.getRight());
+		assertEquals(down, topInner.getRight());
+	}
+
+	@Test
+	void testGetRightLeft() {
+		assertEquals(right, leftInner.getRight());
+		assertEquals(right, leftOuter.getRight());
+	}
+
+	@Test
+	void testGetRightRight() {
+		assertEquals(left, rightOuter.getRight());
+		assertEquals(left, rightInner.getRight());
+	}
+
+	@Test
+	void testGetRightBottom() {
+		assertEquals(up, bottomOuter.getRight());
+		assertEquals(up, bottomInner.getRight());
+	}
+
+	@Test
+	void testGetBackwardTop() {
+		assertEquals(left, topOuter.getBackward());
+		assertEquals(left, topInner.getBackward());
+	}
+
+	@Test
+	void testGetBackwardLeft() {
+		assertEquals(down, leftInner.getBackward());
+		assertEquals(down, leftOuter.getBackward());
+	}
+
+	@Test
+	void testGetBackwardRight() {
+		assertEquals(up, rightOuter.getBackward());
+		assertEquals(up, rightInner.getBackward());
+	}
+
+	@Test
+	void testGetBackwardBottom() {
+		assertEquals(right, bottomOuter.getBackward());
+		assertEquals(right, bottomInner.getBackward());
+	}
 }
