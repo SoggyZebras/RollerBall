@@ -7,10 +7,7 @@ public class ClientRequestGameState implements Event{
     //Information to be marshalled or unmarshalled
     private byte message_type;
 
-
-    public ClientRequestGameState() {
-        this.message_type = Client_Request_Game_State;
-    }
+    public ClientRequestGameState() { this.message_type = Client_Request_Game_State; }
 
     protected ClientRequestGameState(byte[] marshalledBytes) throws IOException{
 

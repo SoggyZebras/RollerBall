@@ -16,7 +16,7 @@ public class Client implements Node {
     RollerballPanel gui;
 
     // TODO: does Client need a game object?
-    private boolean debug = false;
+    private boolean debug = true;
 
     //========== NETWORK SETUP ==========//
 
@@ -60,14 +60,19 @@ public class Client implements Node {
     }
 
     @Override
-    public void onEvent(Event e, Socket socket) {
+    public void onEvent(Event e, Socket socket) throws IOException, ClassNotFoundException {
 
         switch(e.getType()){
-            case Server_Responds_Game_State: handleGameState(e);break;
+            case Server_Responds_Game_State:handleGameState(e);break;
+
             case Server_Responds_Game_Invite:
+
             case Server_Responds_Get_History:
+
             case Server_Responds_Register:
+
             case Server_Responds_Login:
+
             default:
         }
 
@@ -80,23 +85,31 @@ public class Client implements Node {
         try {
             ClientMakeMove moveMessage = new ClientMakeMove(from, to);
             serverConnection.sendData(moveMessage.getBytes());
-            return true;
+            System.out.println(serverConnection.getSocket().getPort());
         } catch (Exception e){
             if(debug){
                 System.out.println(e.getMessage());
             }
             return false;
         }
+        return true;
     }
 
-    public Game getGameState() {
-        // TODO: This one is going to be tricky
-            return new Game();
-
+    public boolean getGameState(Event e, Socket socket) throws IOException {
+        try {
+            ClientRequestGameState updateMessage = new ClientRequestGameState();
+            serverConnection.sendData(updateMessage.getBytes());
+        } catch (IOException eio){
+            eio.getCause();
+            return false;
+        }
+        return true;
     }
 
-    private void handleGameState(Event e){
-       
+    private void handleGameState(Event e) throws IOException, ClassNotFoundException {
+        ServerRespondsGameState message = new ServerRespondsGameState(e.getBytes());
+        Game g = new Game(message.getMap());
+        this.gui.updateState(g);
     }
 
     public void setDebug(){

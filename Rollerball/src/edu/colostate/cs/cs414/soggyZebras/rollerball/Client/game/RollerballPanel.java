@@ -127,10 +127,11 @@ public class RollerballPanel extends JPanel {
             selectSquare(clickLoc.row, clickLoc.col);
             selectedPiece = game.getBoard().get(clickLoc);
         }
-
+        repaint();
     }
 
     public void updateState(Game g) {
+        System.out.println("got it");
         game = g;
         repaint();
     }

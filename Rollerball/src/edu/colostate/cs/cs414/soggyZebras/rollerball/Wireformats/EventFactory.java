@@ -10,15 +10,17 @@ public class EventFactory implements Protocol {
 
     private EventFactory(){}
 
-    public synchronized static void work(byte[] message, Node node, Socket socket){
+    public synchronized static void work(byte[] message, Node node, Socket socket) throws ClassNotFoundException {
         // Depending on what type of message has arrived, perfom an action
 
         try {
             switch (message[0]) {
 
-                case Client_Make_Move: node.onEvent(new ClientMakeMove(message), socket);break
+                case Client_Make_Move: System.out.println("client make move");node.onEvent(new ClientMakeMove(message), socket);break
                     ;
                 case Client_Request_Game_State: node.onEvent(new ClientRequestGameState(message), socket);break
+                    ;
+                case Server_Responds_Game_State: System.out.println("server send move");node.onEvent(new ServerRespondsGameState(message), socket);break
                     ;
                 case Client_Sends_Register:
 

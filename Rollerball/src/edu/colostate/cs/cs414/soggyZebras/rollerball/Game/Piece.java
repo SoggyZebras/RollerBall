@@ -1,6 +1,8 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
-public class Piece {
+import java.io.Serializable;
+
+public class Piece implements Serializable{
 
     Location loc;
     char color;

@@ -1,5 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Transport;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.Client;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Server;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.EventFactory;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
 
@@ -37,6 +39,8 @@ public class TCPReceiverThread implements Runnable{
             }
             catch(IOException ioe) {
                 break;
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
         }
     }
