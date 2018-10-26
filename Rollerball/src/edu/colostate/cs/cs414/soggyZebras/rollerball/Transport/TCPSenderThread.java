@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class TCPSenderThread implements Runnable{
-    final private Socket socket;
+    private Socket socket;
     private ObjectOutputStream oout;
     private MessageQueue queue;
 
