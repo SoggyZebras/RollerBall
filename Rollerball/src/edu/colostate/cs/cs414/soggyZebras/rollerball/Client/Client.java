@@ -90,7 +90,7 @@ public class Client implements Node {
         return true;
     }
 
-    public boolean getGameState(Event e, Socket socket) {
+    public boolean getGameState() {
         // Create get game state wireformat and send it to the server
         try {
             ClientRequestGameState updateMessage = new ClientRequestGameState();
@@ -100,6 +100,18 @@ public class Client implements Node {
             return false;
         }
         return true;
+    }
+
+    public boolean checkValidMove(Location from, Location to){
+        //Ask the server for the valid moves of a board tile
+        try {
+            ClientRequestsCheckMove checkMessage = new ClientRequestsCheckMove(from, to);
+            serverConnection.sendData(checkMessage.getFile());
+            return true;
+        } catch(IOException e){
+            e.getCause();
+            return false;
+        }
     }
 
     private void handleGameState(Event e) {
