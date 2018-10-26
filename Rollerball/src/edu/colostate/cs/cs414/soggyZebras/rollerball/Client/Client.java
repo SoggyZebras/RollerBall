@@ -58,6 +58,8 @@ public class Client implements Node {
         switch(e.getType()){
             case Server_Responds_Game_State:handleGameState(e);break;
 
+            case Server_Responds_Check_Move: handleServerCheckMove(e);break;
+
             case Server_Responds_Game_Invite:
 
             case Server_Responds_Get_History:
@@ -105,6 +107,11 @@ public class Client implements Node {
         ServerRespondsGameState message = (ServerRespondsGameState)e;
         Game g = new Game(message.getMap());
         this.gui.updateState(g);
+    }
+
+    private void handleServerCheckMove(Event e){
+        ServerRespondsCheckMove message = (ServerRespondsCheckMove) e;
+        //TODO: call gui update for check move
     }
 
     public void setDebug(){

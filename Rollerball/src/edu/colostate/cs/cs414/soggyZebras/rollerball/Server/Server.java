@@ -4,9 +4,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerCache;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerThread;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Event;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ServerRespondsGameState;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -45,6 +43,8 @@ public class Server implements Node {
 
             case Client_Request_Game_State:
 
+            case Client_Request_Check_Move: handleCheckMove(e,socket);break;
+
             case Client_Sends_Game_Invite:
 
             case Client_Sends_Get_History:
@@ -68,6 +68,16 @@ public class Server implements Node {
         //When client asks for a new game state, create a wireformat and send it to the client
         ServerRespondsGameState message = new ServerRespondsGameState(game.getBoard());
         this.serverCache.getConnection(socket).sendData(message.getFile());
+    }
+
+    private void handleCheckMove(Event e, Socket socket) throws IOException {
+        //When client asks for available spaces, get possible moves from game
+        ClientRequestsCheckMove inMessage = (ClientRequestsCheckMove) e;
+
+        //Here get the list of moves for a given location
+
+        ServerRespondsCheckMove outMessage = new ServerRespondsCheckMove(/*list that game returns*/);
+        this.serverCache.getConnection(socket).sendData(outMessage.getFile());
     }
 
     //Start  Server

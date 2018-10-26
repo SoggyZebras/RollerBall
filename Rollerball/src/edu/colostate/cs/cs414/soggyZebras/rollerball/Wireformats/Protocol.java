@@ -6,6 +6,9 @@ public interface Protocol {
 
      String Client_Make_Move = "clientMakeMove.msg";
 
+     String Client_Request_Check_Move = "clientRequestCheckMove.msg";
+     String Server_Responds_Check_Move = "serverRespondsCheckMove.msg";
+
      String Client_Request_Game_State = "clientRequestGameState.msg";
      String Server_Responds_Game_State = "serverRespondsGameState.msg";
 
