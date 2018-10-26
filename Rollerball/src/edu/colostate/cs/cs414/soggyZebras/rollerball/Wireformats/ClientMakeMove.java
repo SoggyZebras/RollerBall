@@ -6,77 +6,70 @@ import java.io.*;
 
 public class ClientMakeMove implements Event {
 
-    //Information to be marshalled and unmarshalled
-    private byte message_type;
-    private int rowTo;
-    private int rowFrom;
-    private int colTo;
-    private int colFrom;
+    //Information to be serialized or deserialized
+    private String message_type;
+    private Location to;
+    private Location from;
 
     //Sending message constructor
     public ClientMakeMove(Location from, Location to){
 
         this.message_type = Client_Make_Move;
-        rowTo = to.getRow();
-        colTo = to.getCol();
-        rowFrom = from.getRow();
-        colFrom = from.getCol();
+        this.to = to;
+        this.from =from;
     }
 
     //Recieving message constructor
-    public ClientMakeMove(byte[] marshalledBytes) throws IOException {
+    public ClientMakeMove(String filename) throws IOException, ClassNotFoundException {
 
-        // Create a byte input stream and a data input stream to read the incomming message
-        ByteArrayInputStream baInputStream = new ByteArrayInputStream(marshalledBytes);
-        DataInputStream din = new DataInputStream(new BufferedInputStream(baInputStream));
+        // Create a file input stream and a object input stream to read the incomming message
+        FileInputStream fileStream = new FileInputStream(filename);
+        ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(fileStream));
 
-        // Unmarshall the bytes into their proper local variables
-        this.message_type = din.readByte();
-        this.rowTo = din.readInt();
-        this.colTo = din.readInt();
-        this.rowFrom = din.readInt();
-        this.colFrom = din.readInt();
+        // deserialize the objects into their proper local variables
+
+        this.message_type = (String) oin.readObject();
+        this.to = (Location) oin.readObject();
+        this.from = (Location) oin.readObject();
+
+
 
         // Close streams
-        baInputStream.close();
-        din.close();
+        oin.close();
+        fileStream.close();
     }
 
 
     @Override
-    public byte[] getBytes() throws IOException {
+    public String getFile() throws IOException {
 
-        // Create a new byte[], byte output stream, data output stream
-        byte[] marshalledBytes = null;
-        ByteArrayOutputStream baOutputStream = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream(new BufferedOutputStream(baOutputStream));
+        // Create a new String, file output stream, object output stream
+        String filename = this.message_type;
+        FileOutputStream fileStream = new FileOutputStream(filename);
+        ObjectOutputStream oout = new ObjectOutputStream(new BufferedOutputStream(fileStream));
 
-        // Take the local variables and Marsall them into bytes
-        dout.writeByte(this.message_type);
-        dout.writeInt(this.rowTo);
-        dout.writeInt(this.colTo);
-        dout.writeInt(this.rowFrom);
-        dout.writeInt(this.colFrom);
+        // Take the local variables and serialize them into a file
+        oout.writeObject(filename);
+        oout.writeObject(this.to);
+        oout.writeObject(this.from);
 
-        //flush the bits to the stream and close the streams
-        dout.flush();
-        marshalledBytes = baOutputStream.toByteArray();
-
-        baOutputStream.close();
-        dout.close();
-        return marshalledBytes;
+        //flush the objects to the stream and close the streams
+        oout.flush();
+        oout.close();
+        fileStream.close();
+        return filename;
     }
 
     @Override
-    public byte getType() {
+    public String getType() {
         return this.message_type;
     }
 
     public Location getTo(){
-        return new Location(this.rowTo,this.colTo);
+        return to;
     }
 
     public Location getFrom(){
-        return new Location(this.rowFrom, this.colFrom);
+        return from;
     }
 }

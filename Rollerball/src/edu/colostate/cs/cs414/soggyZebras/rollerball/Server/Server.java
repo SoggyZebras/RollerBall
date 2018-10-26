@@ -1,18 +1,14 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Server;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPSenderThread;
+
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerCache;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerThread;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ClientMakeMove;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Event;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ServerRespondsGameState;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.Socket;
 
 public class Server implements Node {
@@ -36,6 +32,7 @@ public class Server implements Node {
     }
 
     private void initiate(){
+        //Start server thread(send/receive threads)
         this.serverThread.run();
     }
 
@@ -61,13 +58,20 @@ public class Server implements Node {
     }
 
     private void handleMakeMove(Event e ,Socket socket) throws IOException {
-        ServerRespondsGameState message = new ServerRespondsGameState(game.getBoard());
-        this.serverCache.getConnection(socket).sendData(message.getBytes());
+        //When client requests to make a move, TODO: alter the game state
+        //Return new game state
+        handleClientRequestGameState(e,socket);
         
     }
 
+    private void handleClientRequestGameState(Event e, Socket socket) throws IOException {
+        //When client asks for a new game state, create a wireformat and send it to the client
+        ServerRespondsGameState message = new ServerRespondsGameState(game.getBoard());
+        this.serverCache.getConnection(socket).sendData(message.getFile());
+    }
+
     //Start  Server
-    public static void main(String args[]) throws NumberFormatException, IOException {
+    public static void main(String args[]) throws NumberFormatException {
         Server s = new Server(5003,128);
         s.initiate();
 

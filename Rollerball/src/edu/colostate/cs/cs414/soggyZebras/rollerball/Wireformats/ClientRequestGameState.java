@@ -4,46 +4,44 @@ import java.io.*;
 
 public class ClientRequestGameState implements Event{
 
-    //Information to be marshalled or unmarshalled
-    private byte message_type;
+    //Information to be serialized or deserialized
+    private String message_type;
 
     public ClientRequestGameState() { this.message_type = Client_Request_Game_State; }
 
-    protected ClientRequestGameState(byte[] marshalledBytes) throws IOException{
+    protected ClientRequestGameState(String filename) throws IOException, ClassNotFoundException {
 
-        // Create a byte input stream and a data input stream to read the incomming message
-        ByteArrayInputStream baInputStream = new ByteArrayInputStream(marshalledBytes);
-        DataInputStream din = new DataInputStream(new BufferedInputStream(baInputStream));
+        // Create a file input stream and a object input stream to read the incomming message
+        FileInputStream fileStream = new FileInputStream(filename);
+        ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(fileStream));
 
-        this.message_type = din.readByte();
+        this.message_type = (String) oin.readObject();
 
         // Close streams
-        baInputStream.close();
-        din.close();
+        oin.close();
+        fileStream.close();
     }
 
     @Override
-    public byte[] getBytes() throws IOException {
+    public String getFile() throws IOException {
 
-        // Create a new byte[], byte output stream, data output stream
-        byte[] marshalledBytes = null;
-        ByteArrayOutputStream baOutputStream = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream(new BufferedOutputStream(baOutputStream));
+        // Create a new String, file output stream, object output stream
+        String filename = this.message_type;
+        FileOutputStream fileStream = new FileOutputStream(filename);
+        ObjectOutputStream oout = new ObjectOutputStream(new BufferedOutputStream(fileStream));
 
-        dout.writeByte(this.message_type);
+        oout.writeObject(filename);
 
-        //flush the bits to the stream and close the streams
-        dout.flush();
-        marshalledBytes = baOutputStream.toByteArray();
-
-        baOutputStream.close();
-        dout.close();
-        return marshalledBytes;
+        //flush the objects to the stream and close the streams
+        oout.flush();
+        oout.close();
+        fileStream.close();
+        return filename;
 
     }
 
     @Override
-    public byte getType() {
+    public String getType() {
         return this.message_type;
     }
 

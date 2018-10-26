@@ -4,22 +4,21 @@ public interface Protocol {
 
     //These values are unique identifiers for a message type
 
-    final byte Client_Make_Move = 0;
-    final byte Server_Responds_Make_Move = 1;
+     String Client_Make_Move = "clientMakeMove.msg";
 
-    final byte Client_Request_Game_State = 2;
-    final byte Server_Responds_Game_State = 3;
+     String Client_Request_Game_State = "clientRequestGameState.msg";
+     String Server_Responds_Game_State = "serverRespondsGameState.msg";
 
-    final byte Client_Sends_Register = 4;
-    final byte Server_Responds_Register = 5;
+     String Client_Sends_Register = "clientSendsRegister.msg";
+     String Server_Responds_Register = "serverRespondsRegister.msg";
 
-    final byte Client_Sends_Login = 6;
-    final byte Server_Responds_Login = 7;
+     String Client_Sends_Login = "clientSendsLogin.msg";
+     String Server_Responds_Login = "serverRespondsLogin.msg";
 
-    final byte Client_Sends_Get_History = 8;
-    final byte Server_Responds_Get_History = 9;
+     String Client_Sends_Get_History = "clientSendsGetHistory.msg";
+     String Server_Responds_Get_History = "serverRespondsGetHistory.msg";
 
-    final byte Client_Sends_Game_Invite = 10;
-    final byte Server_Responds_Game_Invite = 11;
+     String Client_Sends_Game_Invite = "clientSendsGameInvite.msg";
+     String Server_Responds_Game_Invite = "clientSendsGameInvite.msg";
 
 }

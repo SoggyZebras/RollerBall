@@ -4,24 +4,30 @@ import java.util.ArrayList;
 
 public class MessageQueue {
 
-    private ArrayList<byte[]> queue;
+    private ArrayList<String> queue;
 
     protected MessageQueue() {
-        this.queue = new ArrayList<byte[]>();
+        this.queue = new ArrayList<String>();
     }
 
-    public synchronized void add(byte[] b) {
+    public synchronized void add(String s) {
+        // Add a string to the message queue
+
+        //If the queue was empty, notify()
         if (this.isEmpty()) {
-            this.queue.add(b);
+            this.queue.add(s);
             notifyAll();
         } else {
-            this.queue.add(b);
+            this.queue.add(s);
 
         }
     }
 
-    protected synchronized byte[] take() {
+    protected synchronized String take() {
+        //Take a string from the message queue
         try {
+
+            //If the queue is empty, wait untill there is something in it
             if (this.isEmpty()) {
                 wait();
                 return this.queue.remove(0);

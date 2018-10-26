@@ -34,17 +34,10 @@ public class Client implements Node {
             throw new IOException("Invalid serverAddress");
         }
 
-        // Try to assign given variables and create the selector
-        try{
-            this.serverHost = serverAddress;
-            this.serverPort = serverPort;
-            initialize();
+        //Set server address and port
+        this.serverHost = serverAddress;
+        this.serverPort = serverPort;
 
-        } catch(IOException e){
-            if(debug) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void initialize() throws IOException {
@@ -60,7 +53,7 @@ public class Client implements Node {
     }
 
     @Override
-    public void onEvent(Event e, Socket socket) throws IOException, ClassNotFoundException {
+    public void onEvent(Event e, Socket socket) {
 
         switch(e.getType()){
             case Server_Responds_Game_State:handleGameState(e);break;
@@ -81,11 +74,11 @@ public class Client implements Node {
     //========= END NETWORK SETUP =========//
 
     public boolean makeMove(Location from, Location to) {
-        // Create wireformat with given variables and send to server
+        // Create make move wireformat with given variables and send to server
         try {
             ClientMakeMove moveMessage = new ClientMakeMove(from, to);
-            serverConnection.sendData(moveMessage.getBytes());
-            System.out.println(serverConnection.getSocket().getPort());
+            serverConnection.sendData(moveMessage.getFile());
+
         } catch (Exception e){
             if(debug){
                 System.out.println(e.getMessage());
@@ -95,10 +88,11 @@ public class Client implements Node {
         return true;
     }
 
-    public boolean getGameState(Event e, Socket socket) throws IOException {
+    public boolean getGameState(Event e, Socket socket) {
+        // Create get game state wireformat and send it to the server
         try {
             ClientRequestGameState updateMessage = new ClientRequestGameState();
-            serverConnection.sendData(updateMessage.getBytes());
+            serverConnection.sendData(updateMessage.getFile());
         } catch (IOException eio){
             eio.getCause();
             return false;
@@ -106,8 +100,9 @@ public class Client implements Node {
         return true;
     }
 
-    private void handleGameState(Event e) throws IOException, ClassNotFoundException {
-        ServerRespondsGameState message = new ServerRespondsGameState(e.getBytes());
+    private void handleGameState(Event e) {
+        // When server sends an updated game state, recompile the game and give it to the ui
+        ServerRespondsGameState message = (ServerRespondsGameState)e;
         Game g = new Game(message.getMap());
         this.gui.updateState(g);
     }
