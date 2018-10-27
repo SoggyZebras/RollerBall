@@ -28,7 +28,7 @@ public class TCPConnection {
 
     }
 
-    public void sendData(byte[] data){
+    public void sendData(String data){
         // send data to queue
         this.senSocket.sendData(data);
 

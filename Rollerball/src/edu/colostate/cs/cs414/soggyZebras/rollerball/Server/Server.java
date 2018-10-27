@@ -1,15 +1,17 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Server;
 
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPSenderThread;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
+
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerCache;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerThread;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Event;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 
 import java.io.IOException;
 import java.net.Socket;
 
 public class Server implements Node {
+
+    Game game = new Game();
 
     //=======NETWORK SETUP=======//
 
@@ -28,17 +30,20 @@ public class Server implements Node {
     }
 
     private void initiate(){
+        //Start server thread(send/receive threads)
         this.serverThread.run();
     }
 
     @Override
-    public void onEvent(Event e, Socket socket) {
+    public void onEvent(Event e, Socket socket) throws IOException {
         //React to messages sent to the server
         switch(e.getType()){
 
-            case Client_Make_Move: System.out.print("revieved make move");
+            case Client_Make_Move: handleMakeMove(e,socket);break;
 
             case Client_Request_Game_State:
+
+            case Client_Request_Check_Move: handleCheckMove(e,socket);break;
 
             case Client_Sends_Game_Invite:
 
@@ -52,9 +57,32 @@ public class Server implements Node {
         }
     }
 
+    private void handleMakeMove(Event e ,Socket socket) throws IOException {
+        //When client requests to make a move, TODO: alter the game state
+        //Return new game state
+        handleClientRequestGameState(e,socket);
+        
+    }
+
+    private void handleClientRequestGameState(Event e, Socket socket) throws IOException {
+        //When client asks for a new game state, create a wireformat and send it to the client
+        ServerRespondsGameState message = new ServerRespondsGameState(game.getBoard());
+        this.serverCache.getConnection(socket).sendData(message.getFile());
+    }
+
+    private void handleCheckMove(Event e, Socket socket) throws IOException {
+        //When client asks for available spaces, get possible moves from game
+        ClientRequestsCheckMove inMessage = (ClientRequestsCheckMove) e;
+
+        //Here get the list of moves for a given location
+
+        ServerRespondsCheckMove outMessage = new ServerRespondsCheckMove(/*list that game returns*/);
+        this.serverCache.getConnection(socket).sendData(outMessage.getFile());
+    }
+
     //Start  Server
-    public static void main(String args[]) throws NumberFormatException, IOException {
-        Server s = new Server(5000,5);
+    public static void main(String args[]) throws NumberFormatException {
+        Server s = new Server(5003,128);
         s.initiate();
 
     }
