@@ -8,6 +8,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * creates and draws the graphics of the game
@@ -29,6 +30,9 @@ public class RollerballPanel extends JPanel {
     // if the user hasn't selected a piece, this is null
     private Piece selectedPiece;
 
+    // when a piece is clicked, this will be populated with the potential moves for that piece
+    private ArrayList<Location> potentialMoves;
+
     public RollerballPanel(Game game, Client client, int gameSide) throws IOException {
         super();
         setSize(gameSide, gameSide);
@@ -40,6 +44,8 @@ public class RollerballPanel extends JPanel {
         this.client.initialize();
         selectedPiece = null;
         unselectSquares();
+
+        potentialMoves = new ArrayList<>();
 
         this.squareSide = getWidth() / 7;
 
@@ -53,6 +59,7 @@ public class RollerballPanel extends JPanel {
         drawBackground(g2);
         drawPieces(g2);
         drawSelectedSquare(g2);
+        drawHighlightedSquares(g2);
     }
 
     private void drawPieces(Graphics2D g2) {
@@ -85,6 +92,13 @@ public class RollerballPanel extends JPanel {
     private void drawSelectedSquare(Graphics2D g2) {
         g2.setColor(Color.black);
         g2.drawRect(selectedSquareCol * squareSide, selectedSquareRow * squareSide, squareSide, squareSide);
+    }
+
+    private void drawHighlightedSquares(Graphics2D g2) {
+        g2.setColor(Color.green);
+        for (Location l : potentialMoves) {
+            g2.drawRect(l.getCol() * squareSide, l.getRow() * squareSide, squareSide, squareSide);
+        }
     }
 
     /**
