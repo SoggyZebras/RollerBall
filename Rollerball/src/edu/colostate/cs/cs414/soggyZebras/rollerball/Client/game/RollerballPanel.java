@@ -118,7 +118,8 @@ public class RollerballPanel extends JPanel {
 
         // if a piece has already been selected, try to make a move and update the board
         if (selectedPiece != null) {
-            client.makeMove(selectedPiece.getLoc(), clickLoc);
+            client.checkValidMove(selectedPiece.getLoc());
+            //client.makeMove(selectedPiece.getLoc(), clickLoc);
             selectedPiece = null;
             unselectSquares();
         }

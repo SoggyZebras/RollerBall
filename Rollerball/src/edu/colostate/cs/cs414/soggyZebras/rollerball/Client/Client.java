@@ -102,10 +102,10 @@ public class Client implements Node {
         return true;
     }
 
-    public boolean checkValidMove(Location from, Location to){
+    public boolean checkValidMove(Location place){
         //Ask the server for the valid moves of a board tile
         try {
-            ClientRequestsCheckMove checkMessage = new ClientRequestsCheckMove(from, to);
+            ClientRequestsCheckMove checkMessage = new ClientRequestsCheckMove(place);
             serverConnection.sendData(checkMessage.getFile());
             return true;
         } catch(IOException e){
@@ -123,7 +123,6 @@ public class Client implements Node {
 
     private void handleServerCheckMove(Event e){
         ServerRespondsCheckMove message = (ServerRespondsCheckMove) e;
-        //TODO: call gui update for check move
     }
 
     public void setDebug(){

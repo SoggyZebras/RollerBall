@@ -2,6 +2,7 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Server;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerCache;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerThread;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
@@ -35,7 +36,7 @@ public class Server implements Node {
     }
 
     @Override
-    public void onEvent(Event e, Socket socket) throws IOException {
+    public void onEvent(Event e, Socket socket) throws IOException, ClassNotFoundException {
         //React to messages sent to the server
         switch(e.getType()){
 
@@ -60,7 +61,7 @@ public class Server implements Node {
     private void handleMakeMove(Event e ,Socket socket) throws IOException {
         //When client requests to make a move, TODO: alter the game state
         //Return new game state
-        handleClientRequestGameState(e,socket);
+        //handleClientRequestGameState(e,socket);
         
     }
 
@@ -70,14 +71,13 @@ public class Server implements Node {
         this.serverCache.getConnection(socket).sendData(message.getFile());
     }
 
-    private void handleCheckMove(Event e, Socket socket) throws IOException {
+    private void handleCheckMove(Event e, Socket socket) throws IOException, ClassNotFoundException {
         //When client asks for available spaces, get possible moves from game
         ClientRequestsCheckMove inMessage = (ClientRequestsCheckMove) e;
 
-        //Here get the list of moves for a given location
-
-//        ServerRespondsCheckMove outMessage = new ServerRespondsCheckMove(/*list that game returns*/);
-//        this.serverCache.getConnection(socket).sendData(outMessage.getFile());
+        ServerRespondsCheckMove outMessage = new ServerRespondsCheckMove(game.validMoves(inMessage.getPlace()));
+        TCPConnection s = this.serverCache.getConnection(socket);
+        this.serverCache.getConnection(socket).sendData(outMessage.getFile());
     }
 
     //Start  Server

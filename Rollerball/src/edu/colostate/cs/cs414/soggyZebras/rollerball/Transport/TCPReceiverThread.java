@@ -25,9 +25,7 @@ public class TCPReceiverThread implements Runnable{
     public void run() {
         while(socket != null){
             try {
-
                 this.oin = new ObjectInputStream(socket.getInputStream());
-
                 //Read data from input stream
                 String data = (String)oin.readObject();
 

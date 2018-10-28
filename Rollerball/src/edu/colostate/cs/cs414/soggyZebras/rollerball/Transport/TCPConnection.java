@@ -31,6 +31,7 @@ public class TCPConnection {
     public void sendData(String data){
         // send data to queue
         this.senSocket.sendData(data);
+        System.out.println("sent: connection");
 
     }
 

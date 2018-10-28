@@ -10,15 +10,13 @@ public class ClientRequestsCheckMove implements Event{
 
     //Information to be serialized or deserialized
     private String message_type;
-    private Location to;
-    private Location from;
+    private Location place;
 
 
-    public ClientRequestsCheckMove(Location from, Location to) {
+    public ClientRequestsCheckMove(Location p) {
 
         this.message_type = Client_Request_Check_Move;
-        this.to = to;
-        this.from =from;
+        this.place = p;
     }
 
     protected ClientRequestsCheckMove(String filename) throws IOException, ClassNotFoundException {
@@ -30,8 +28,7 @@ public class ClientRequestsCheckMove implements Event{
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
-        this.to = (Location) oin.readObject();
-        this.from = (Location) oin.readObject();
+        this.place = (Location) oin.readObject();
 
 
 
@@ -50,8 +47,7 @@ public class ClientRequestsCheckMove implements Event{
 
         // Take the local variables and serialize them into a file
         oout.writeObject(filename);
-        oout.writeObject(this.to);
-        oout.writeObject(this.from);
+        oout.writeObject(this.place);
 
         //flush the objects to the stream and close the streams
         oout.flush();
@@ -65,13 +61,10 @@ public class ClientRequestsCheckMove implements Event{
         return this.message_type;
     }
 
-    public Location getTo(){
-        return to;
+    public Location getPlace(){
+        return this.place;
     }
 
-    public Location getFrom(){
-        return from;
-    }
 
 }
 

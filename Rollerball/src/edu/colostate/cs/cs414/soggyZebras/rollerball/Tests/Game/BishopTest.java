@@ -3,13 +3,15 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Tests.Game;
 import static org.junit.jupiter.api.Assertions.*;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Bishop;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 class BishopTest {
-	HashMap board = new HashMap <>();
+	HashMap board = new HashMap<>();
 
 	@BeforeEach
 	void init() {
