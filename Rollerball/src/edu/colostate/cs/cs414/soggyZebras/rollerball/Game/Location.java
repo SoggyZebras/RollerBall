@@ -1,6 +1,8 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable{
 
     public int row;
     public int col;
@@ -16,5 +18,24 @@ public class Location {
 
     public int getCol() {
         return col;
+    }
+
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Location) {
+            Location other = (Location)obj;
+            return this.hashCode() == other.hashCode();
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return row + " " + col;
     }
 }

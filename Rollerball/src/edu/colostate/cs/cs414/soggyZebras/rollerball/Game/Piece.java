@@ -1,25 +1,33 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
-public class Piece {
+import java.io.Serializable;
 
-    int row;
-    int col;
+public class Piece implements Serializable{
+
+    Location loc;
     char color;
+    String type;
 
-    public Piece (Location l, char color) {
-        this.row = l.getRow();
-        this.col = l.getCol();
+    public Piece (Location l, char color, String type) {
+        this.loc = l;
         this.color = color;
+        this.type = type;
     }
 
-    public int getRow() { return row; }
+    public Location getLoc() {
+        return loc;
+    }
 
-    public int getCol() { return col; }
+    public int getRow() { return loc.getRow(); }
+
+    public int getCol() { return loc.getCol(); }
 
     public char getColor() { return color; }
 
+    public String getType() { return type; }
+
     public boolean ExternalRing() {
-        if (row == 1 || col == 1 || row == 7 || col ==7) { return true; }
+        if (loc.getRow() == 0 || loc.getCol() == 0 || loc.getRow() == 6 || loc.getCol() ==6) { return true; }
         else { return false; }
     }
 
