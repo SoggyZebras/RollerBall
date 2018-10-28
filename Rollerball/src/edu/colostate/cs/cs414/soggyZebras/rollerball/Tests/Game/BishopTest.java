@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.soggyZebras.rollerball.Tests;
+package edu.colostate.cs.cs414.soggyZebras.rollerball.Tests.Game;
 
 import static org.junit.jupiter.api.Assertions.*;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Bishop;
@@ -57,7 +57,7 @@ class BishopTest {
 
 	@Test
 	void testQuadOne_1() {
-		Bishop b = new Bishop(new Location(6,3), 'w');
+		Bishop b = new Bishop(new Location(6,3), 'w', "");
 		System.out.println(b.validMoves(board));
 		ArrayList temp = new ArrayList<Location>();
 		temp.add(new Location(5,2));
@@ -72,7 +72,7 @@ class BishopTest {
 
 	@Test
 	void testQuadOne_2() {
-		Bishop b = new Bishop(new Location(5,2), 'w');
+		Bishop b = new Bishop(new Location(5,2), 'w', "");
 		System.out.println(b.validMoves(board));
 		ArrayList temp = new ArrayList<Location>();
 		temp.add(new Location(4,1));
@@ -88,7 +88,7 @@ class BishopTest {
 
 	@Test
 	void testQuadOne_3() {
-		Bishop b = new Bishop(new Location(6,1), 'w');
+		Bishop b = new Bishop(new Location(6,1), 'w', "");
 		System.out.println(b.validMoves(board));
 		ArrayList temp = new ArrayList<Location>();
 		temp.add(new Location(5,0));
@@ -99,7 +99,7 @@ class BishopTest {
 
 	@Test
 	void testQuadOne_4() {
-		Bishop b = new Bishop(new Location(5,0), 'w');
+		Bishop b = new Bishop(new Location(5,0), 'w', "");
 		System.out.println(b.validMoves(board));
 		ArrayList temp = new ArrayList<Location>();
 		temp.add(new Location(6,1));
@@ -110,7 +110,7 @@ class BishopTest {
 
 	@Test
 	void testQuadOne_5() {
-		Bishop b = new Bishop(new Location(5,0), 'w');
+		Bishop b = new Bishop(new Location(5,0), 'w', "");
 		System.out.println(b.validMoves(board));
 		ArrayList temp = new ArrayList<Location>();
 		temp.add(new Location(6,1));

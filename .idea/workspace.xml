@@ -1,60 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="697b6020-f321-4daa-a3f2-236ee1647fea" name="Default Changelist" comment="" />
-    <ignored path="$USER_HOME$/Documents/CS414/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="697b6020-f321-4daa-a3f2-236ee1647fea" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Bishop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Piece.java" beforeDir="false" afterPath="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Piece.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ErrorTreeViewConfiguration">
+    <option name="hideWarnings" value="true" />
+    <option name="HIDE_WARNINGS" value="true" />
+  </component>
   <component name="FUSProjectUsageTrigger">
     <session id="1162402018">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="3" />
-          <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.10" value="1" />
-          <entry key="project.open.time.12" value="2" />
-          <entry key="project.open.time.2" value="1" />
-          <entry key="project.opened" value="5" />
-        </counts>
-      </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="28" />
+          <entry key="java" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="28" />
+          <entry key="JAVA" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="3051" />
-          <entry key="txt" value="8" />
+          <entry key="java" value="134" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="3051" />
-          <entry key="PLAIN_TEXT" value="8" />
+          <entry key="JAVA" value="134" />
         </counts>
       </usages-collector>
-      <usages-collector id="statistics.spring.boot.mvc.usages" />
-      <usages-collector id="statistics.spring.boot.run.usages" />
-      <usages-collector id="statistics.vcs.git.usages">
-        <counts>
-          <entry key="git.branch.checkout.remote" value="1" />
-          <entry key="git.branch.compare" value="1" />
-          <entry key="git.branch.create.new" value="1" />
-          <entry key="git.branch.delete.remote" value="1" />
-          <entry key="git.branch.rebase" value="9" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.js.language.service.starts" />
     </session>
   </component>
   <component name="FileEditorManager">
@@ -62,35 +45,61 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Piece.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Bishop.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+            <state relative-caret-position="318">
+              <caret line="35" selection-start-line="35" selection-end-line="35" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#519#529#0" expanded="true" />
-                <element signature="method#quadOne#0;class#Bishop#0" />
-                <element signature="method#checkBounds#0;class#Bishop#0" />
-                <element signature="method#quadTwo#0;class#Bishop#0" />
-                <element signature="method#quadThree#0;class#Bishop#0" />
-                <element signature="method#quadFour#0;class#Bishop#0" />
+                <element signature="e#357#358#0" expanded="true" />
+                <element signature="e#383#384#0" expanded="true" />
+                <element signature="e#872#873#0" expanded="true" />
+                <element signature="e#915#916#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/BishopTest.java">
+        <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Bishop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1221">
-              <caret line="109" lean-forward="true" selection-start-line="109" selection-end-line="109" />
+            <state relative-caret-position="52">
+              <caret line="179" column="4" selection-start-line="179" selection-start-column="4" selection-end-line="179" selection-end-column="4" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#209#210#0" expanded="true" />
+                <element signature="e#246#247#0" expanded="true" />
+                <element signature="e#521#531#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Game.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="284">
+              <caret line="45" column="46" lean-forward="true" selection-start-line="45" selection-start-column="46" selection-end-line="45" selection-end-column="46" />
+              <folding>
+                <element signature="e#1326#1327#0" expanded="true" />
+                <element signature="e#1361#1362#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/King.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/Game/BishopTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="113" selection-start-line="113" selection-end-line="113" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -99,20 +108,15 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/PieceTest.java">
+        <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Server/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
+            <state relative-caret-position="157">
+              <caret line="78" column="9" selection-start-line="78" selection-start-column="9" selection-end-line="79" selection-end-column="80" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
-  </component>
-  <component name="FindInProjectRecents">
-    <replaceStrings>
-      <replace />
-    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="ROOT_SYNC" value="DONT_SYNC" />
@@ -139,14 +143,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Server/Server.java" />
+        <option value="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Game.java" />
         <option value="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Piece.java" />
-        <option value="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Rook.java" />
-        <option value="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/King.java" />
-        <option value="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Pawn.java" />
-        <option value="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/PieceTest.java" />
-        <option value="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Location.java" />
         <option value="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Bishop.java" />
-        <option value="$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/BishopTest.java" />
       </list>
     </option>
   </component>
@@ -156,52 +156,93 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1280" />
-    <option name="height" value="800" />
-  </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
+      <pane id="PackagesPane" />
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
             <path>
-              <item name="cs414-f18-001-theSoggyZebras" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cs414-f18-001-theSoggyZebras" type="462c0819:PsiDirectoryNode" />
+              <item name="cs414-f18-001-theSoggyZebras" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
             </path>
             <path>
-              <item name="cs414-f18-001-theSoggyZebras" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cs414-f18-001-theSoggyZebras" type="462c0819:PsiDirectoryNode" />
-              <item name="Game" type="462c0819:PsiDirectoryNode" />
+              <item name="cs414-f18-001-theSoggyZebras" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name=".idea" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
-              <item name="cs414-f18-001-theSoggyZebras" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cs414-f18-001-theSoggyZebras" type="462c0819:PsiDirectoryNode" />
-              <item name="Tests" type="462c0819:PsiDirectoryNode" />
+              <item name="cs414-f18-001-theSoggyZebras" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name=".idea" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="libraries" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="cs414-f18-001-theSoggyZebras" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Documents" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="cs414-f18-001-theSoggyZebras" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Rollerball" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="cs414-f18-001-theSoggyZebras" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Rollerball" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="cs414-f18-001-theSoggyZebras" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="Rollerball" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+            </path>
+            <path>
+              <item name="cs414-f18-001-theSoggyZebras" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="Rollerball" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="cs414-f18-001-theSoggyZebras" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="Rollerball" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="cs414-f18-001-theSoggyZebras" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="Rollerball" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="edu.colostate.cs.cs414.soggyZebras.rollerball.Game" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="cs414-f18-001-theSoggyZebras" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540759103317" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540762395250" />
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -215,75 +256,70 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.BishopTest.testQuadOne_4">
-    <configuration name="Unnamed" type="Application" factoryName="Application">
-      <module name="cs414-f18-001-theSoggyZebras" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager">
     <configuration name="BishopTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cs414-f18-001-theSoggyZebras" />
-      <option name="PACKAGE_NAME" value="edu.colostate.cs.cs414.soggyZebras.rollerball.Tests" />
-      <option name="MAIN_CLASS_NAME" value="BishopTest" />
+      <module name="Rollerball" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.colostate.cs.cs414.soggyZebras.rollerball.Tests.Game.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="edu.colostate.cs.cs414.soggyZebras.rollerball.Tests.Game" />
+      <option name="MAIN_CLASS_NAME" value="edu.colostate.cs.cs414.soggyZebras.rollerball.Tests.Game.BishopTest" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BishopTest.testQuadOne" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cs414-f18-001-theSoggyZebras" />
-      <option name="PACKAGE_NAME" value="edu.colostate.cs.cs414.soggyZebras.rollerball.Tests" />
-      <option name="MAIN_CLASS_NAME" value="BishopTest" />
-      <option name="METHOD_NAME" value="testQuadOne" />
-      <option name="TEST_OBJECT" value="method" />
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <module name="" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BishopTest.testQuadOne_2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cs414-f18-001-theSoggyZebras" />
-      <option name="PACKAGE_NAME" value="edu.colostate.cs.cs414.soggyZebras.rollerball.Tests" />
-      <option name="MAIN_CLASS_NAME" value="BishopTest" />
-      <option name="METHOD_NAME" value="testQuadOne_2" />
-      <option name="TEST_OBJECT" value="method" />
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <module name="" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BishopTest.testQuadOne_3" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cs414-f18-001-theSoggyZebras" />
-      <option name="PACKAGE_NAME" value="edu.colostate.cs.cs414.soggyZebras.rollerball.Tests" />
-      <option name="MAIN_CLASS_NAME" value="BishopTest" />
-      <option name="METHOD_NAME" value="testQuadOne_3" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="BishopTest.testQuadOne_4" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cs414-f18-001-theSoggyZebras" />
-      <option name="PACKAGE_NAME" value="edu.colostate.cs.cs414.soggyZebras.rollerball.Tests" />
-      <option name="MAIN_CLASS_NAME" value="BishopTest" />
-      <option name="METHOD_NAME" value="testQuadOne_4" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <list>
-      <item itemvalue="Application.Unnamed" />
-      <item itemvalue="JUnit.BishopTest" />
-      <item itemvalue="JUnit.BishopTest.testQuadOne" />
-      <item itemvalue="JUnit.BishopTest.testQuadOne_2" />
-      <item itemvalue="JUnit.BishopTest.testQuadOne_3" />
-      <item itemvalue="JUnit.BishopTest.testQuadOne_4" />
-    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.BishopTest.testQuadOne_4" />
-        <item itemvalue="JUnit.BishopTest.testQuadOne_3" />
-        <item itemvalue="JUnit.BishopTest.testQuadOne_2" />
-        <item itemvalue="JUnit.BishopTest.testQuadOne" />
         <item itemvalue="JUnit.BishopTest" />
       </list>
     </recent_temporary>
@@ -302,14 +338,15 @@
       <workItem from="1540252759811" duration="325000" />
       <workItem from="1540276493430" duration="2093000" />
       <workItem from="1540315870479" duration="581000" />
-      <workItem from="1540316989712" duration="24693000" />
+      <workItem from="1540316989712" duration="26200000" />
+      <workItem from="1540760655191" duration="1701000" />
     </task>
-    <task id="LOCAL-00001" summary="Bishop">
-      <created>1540757508375</created>
+    <task id="LOCAL-00001" summary="Merge branch 'master' of https://github.com/SoggyZebras/cs414-f18-001-theSoggyZebras into CourtneysBranch&#10;&#10;# Conflicts:&#10;#&#9;.idea/cs414-f18-001-theSoggyZebras.iml&#10;#&#9;.idea/misc.xml&#10;#&#9;Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Bishop.java&#10;#&#9;Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/Game/BishopTest.java">
+      <created>1540761259701</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1540757508375</updated>
+      <updated>1540761259701</updated>
     </task>
     <task id="LOCAL-00002" summary="Bishop">
       <created>1540759025416</created>
@@ -318,48 +355,38 @@
       <option name="project" value="LOCAL" />
       <updated>1540759025416</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Merge branch 'master' of https://github.com/SoggyZebras/cs414-f18-001-theSoggyZebras into CourtneysBranch&#10;&#10;# Conflicts:&#10;#&#9;.idea/cs414-f18-001-theSoggyZebras.iml&#10;#&#9;.idea/misc.xml&#10;#&#9;Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Bishop.java&#10;#&#9;Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/Game/BishopTest.java">
+      <created>1540759410214</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1540759410214</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="BishopTest_testQuadOne_2 - 2018.10.27 at 11h 25m 48s.xml">
-      <configuration name="BishopTest.testQuadOne_2" configurationId="JUnit" />
+    <history-entry file="BishopTest - 2018.10.28 at 15h 09m 42s.xml">
+      <configuration name="BishopTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BishopTest_testQuadOne_2 - 2018.10.27 at 11h 25m 53s.xml">
-      <configuration name="BishopTest.testQuadOne_2" configurationId="JUnit" />
+    <history-entry file="BishopTest - 2018.10.28 at 15h 11m 10s.xml">
+      <configuration name="BishopTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BishopTest_testQuadOne_2 - 2018.10.27 at 11h 26m 19s.xml">
-      <configuration name="BishopTest.testQuadOne_2" configurationId="JUnit" />
+    <history-entry file="BishopTest - 2018.10.28 at 15h 12m 37s.xml">
+      <configuration name="BishopTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BishopTest_testQuadOne_2 - 2018.10.27 at 11h 28m 48s.xml">
-      <configuration name="BishopTest.testQuadOne_2" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BishopTest_testQuadOne_2 - 2018.10.27 at 11h 46m 18s.xml">
-      <configuration name="BishopTest.testQuadOne_2" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BishopTest_testQuadOne_2 - 2018.10.27 at 11h 46m 35s.xml">
-      <configuration name="BishopTest.testQuadOne_2" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BishopTest_testQuadOne_3 - 2018.10.27 at 11h 46m 42s.xml">
-      <configuration name="BishopTest.testQuadOne_3" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BishopTest_testQuadOne_3 - 2018.10.27 at 11h 47m 12s.xml">
-      <configuration name="BishopTest.testQuadOne_3" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BishopTest_testQuadOne_4 - 2018.10.27 at 11h 49m 05s.xml">
-      <configuration name="BishopTest.testQuadOne_4" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BishopTest_testQuadOne_4 - 2018.10.27 at 11h 49m 26s.xml">
-      <configuration name="BishopTest.testQuadOne_4" configurationId="JUnit" />
+    <history-entry file="BishopTest - 2018.10.28 at 15h 13m 02s.xml">
+      <configuration name="BishopTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34236000" />
+    <option name="totallyTimeSpent" value="1616000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23909532" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24313408" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -368,16 +395,16 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4983845" weight="0.32956153" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49757674" visible="true" weight="0.21499293" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49919224" visible="true" weight="0.32956153" />
+      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" sideWeight="0.4983845" weight="0.32956153" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="10" sideWeight="0.50080776" side_tool="true" visible="true" weight="0.32956153" />
-      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.49919224" weight="0.32956153" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.4983845" weight="0.32956153" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5024233" side_tool="true" visible="true" weight="0.21499293" />
+      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.4878837" weight="0.32956153" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -389,160 +416,63 @@
       <window_info anchor="right" id="Maven Projects" order="8" />
     </layout>
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Bishop" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bishop" />
+    <MESSAGE value="Merge branch 'master' of https://github.com/SoggyZebras/cs414-f18-001-theSoggyZebras into CourtneysBranch&#10;&#10;# Conflicts:&#10;#&#9;.idea/cs414-f18-001-theSoggyZebras.iml&#10;#&#9;.idea/misc.xml&#10;#&#9;Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Bishop.java&#10;#&#9;Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/Game/BishopTest.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'master' of https://github.com/SoggyZebras/cs414-f18-001-theSoggyZebras into CourtneysBranch&#10;&#10;# Conflicts:&#10;#&#9;.idea/cs414-f18-001-theSoggyZebras.iml&#10;#&#9;.idea/misc.xml&#10;#&#9;Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Bishop.java&#10;#&#9;Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/Game/BishopTest.java" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Player.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Client/game/RollerballPanel.java">
+    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Server/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-324" />
+        <state relative-caret-position="157">
+          <caret line="78" column="9" selection-start-line="78" selection-start-column="9" selection-end-line="79" selection-end-column="80" />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Client/game/GameGUI.java">
+    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/Game/BishopTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-58" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Client/game/PieceDrawer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-236" />
+        <state relative-caret-position="216">
+          <caret line="113" selection-start-line="113" selection-end-line="113" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="36" column="8" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="28" />
+        <state relative-caret-position="284">
+          <caret line="45" column="46" lean-forward="true" selection-start-line="45" selection-start-column="46" selection-end-line="45" selection-end-column="46" />
           <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Server/Server.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Client/game/RollerballMouseListener.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/Game/GameTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/Game/LocationTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/King.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="40" lean-forward="true" selection-start-line="4" selection-start-column="40" selection-end-line="4" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Rook.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="47" selection-start-line="4" selection-start-column="47" selection-end-line="4" selection-end-column="47" />
-          <folding>
-            <element signature="e#136#137#0" expanded="true" />
-            <element signature="e#167#168#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Pawn.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="28" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
-          <folding>
-            <element signature="e#137#138#0" expanded="true" />
-            <element signature="e#168#169#0" expanded="true" />
+            <element signature="e#1326#1327#0" expanded="true" />
+            <element signature="e#1361#1362#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Piece.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/KingTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/PawnTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Location.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="38" column="1" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
+        <state relative-caret-position="318">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
           <folding>
-            <element signature="e#369#370#0" expanded="true" />
-            <element signature="e#413#414#0" expanded="true" />
-            <element signature="e#691#692#0" expanded="true" />
-            <element signature="e#729#730#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#357#358#0" expanded="true" />
+            <element signature="e#383#384#0" expanded="true" />
+            <element signature="e#872#873#0" expanded="true" />
+            <element signature="e#915#916#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/PieceTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Game/Bishop.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+        <state relative-caret-position="52">
+          <caret line="179" column="4" selection-start-line="179" selection-start-column="4" selection-end-line="179" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#519#529#0" expanded="true" />
-            <element signature="method#quadOne#0;class#Bishop#0" />
-            <element signature="method#checkBounds#0;class#Bishop#0" />
-            <element signature="method#quadTwo#0;class#Bishop#0" />
-            <element signature="method#quadThree#0;class#Bishop#0" />
-            <element signature="method#quadFour#0;class#Bishop#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Tests/BishopTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1221">
-          <caret line="109" lean-forward="true" selection-start-line="109" selection-end-line="109" />
-          <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#209#210#0" expanded="true" />
+            <element signature="e#246#247#0" expanded="true" />
+            <element signature="e#521#531#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -599,11 +529,12 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>cs414-f18-001-theSoggyZebras</last-edited>
+          <last-edited>Rollerball</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
@@ -611,6 +542,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
+          <last-edited>au.com.dius:pact-jvm-consumer-junit5_2.11:3.5.21</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

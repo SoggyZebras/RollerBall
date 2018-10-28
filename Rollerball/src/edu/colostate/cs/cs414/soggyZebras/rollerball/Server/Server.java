@@ -76,8 +76,8 @@ public class Server implements Node {
 
         //Here get the list of moves for a given location
 
-        ServerRespondsCheckMove outMessage = new ServerRespondsCheckMove(/*list that game returns*/);
-        this.serverCache.getConnection(socket).sendData(outMessage.getFile());
+//        ServerRespondsCheckMove outMessage = new ServerRespondsCheckMove(/*list that game returns*/);
+//        this.serverCache.getConnection(socket).sendData(outMessage.getFile());
     }
 
     //Start  Server
