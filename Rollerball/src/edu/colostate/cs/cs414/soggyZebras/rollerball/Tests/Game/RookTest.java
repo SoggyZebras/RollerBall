@@ -59,7 +59,6 @@ class RookTest {
 		board1.put(rightOuterB.getLoc(), rightOuterB);
 		ArrayList<Location> validMoves = topOuter.validMoves(board1);
 		assertTrue(validMoves.contains(rightOuterB.getLoc()));
-		System.err.println(validMoves);
 		assertFalse(validMoves.contains(new Location(1, 6)));
 	}
 
