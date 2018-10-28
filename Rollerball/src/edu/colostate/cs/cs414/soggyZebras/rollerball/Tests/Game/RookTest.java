@@ -15,7 +15,7 @@ import java.util.Map;
 
 class RookTest {
 	private Rook topOuter, topInner, leftOuter, leftInner,
-			bottomOuter, bottomInner, rightOuter, rightInner;
+			bottomOuter, bottomInner, rightOuter, rightOuterB, rightInner;
 
 	private Location up, down, left, right;
 
@@ -32,6 +32,7 @@ class RookTest {
 		bottomOuter = new Rook(new Location(6, 6), 'w', "rook");
 		bottomInner = new Rook(new Location(5, 5), 'w', "rook");
 		rightOuter = new Rook(new Location(0, 6), 'w', "rook");
+		rightOuterB = new Rook(new Location(0, 6), 'b', "rook");
 		rightInner = new Rook(new Location(1, 5), 'w', "rook");
 
 		up = new Location(-1, 0);
@@ -42,6 +43,24 @@ class RookTest {
 		newGame = new Game();
 
 		board1 = new HashMap<>();
+	}
+
+	@Test
+	void testFriendlyPieceInTheWay() {
+		board1.put(topOuter.getLoc(), topOuter);
+		board1.put(rightOuter.getLoc(), rightOuter);
+		ArrayList<Location> validMoves = topOuter.validMoves(board1);
+		assertFalse(validMoves.contains(rightOuter.getLoc()));
+	}
+
+	@Test
+	void testEnemyPieceStopsMovement() {
+		board1.put(topOuter.getLoc(), topOuter);
+		board1.put(rightOuterB.getLoc(), rightOuterB);
+		ArrayList<Location> validMoves = topOuter.validMoves(board1);
+		assertTrue(validMoves.contains(rightOuterB.getLoc()));
+		System.err.println(validMoves);
+		assertFalse(validMoves.contains(new Location(1, 6)));
 	}
 
 	@Test
@@ -59,7 +78,6 @@ class RookTest {
 	void testValidMovesLHSInner() {
 		board1.put(leftInner.getLoc(), leftInner);
 		ArrayList<Location> validMoves = leftInner.validMoves(board1);
-		System.err.println(validMoves);
 		assertEquals(8, validMoves.size());
 		assertTrue(validMoves.contains(new Location(0, 1)));
 		assertTrue(validMoves.contains(new Location(5, 0)));
