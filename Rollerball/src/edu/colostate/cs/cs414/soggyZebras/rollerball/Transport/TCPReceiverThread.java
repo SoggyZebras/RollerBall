@@ -16,18 +16,21 @@ public class TCPReceiverThread implements Runnable{
     private ObjectInputStream oin;
     private Node node;
 
-    protected TCPReceiverThread(Node node,Socket socket)  {
+    protected TCPReceiverThread(Node node,Socket socket) {
         this.socket = socket;
         this.node = node;
 
     }
 
     public void run() {
+        try {
+            this.oin = new ObjectInputStream(socket.getInputStream());
+        } catch (IOException e) {
+            System.out.println("bad input stream");
+            e.printStackTrace();
+        }
         while(socket != null){
             try {
-
-                this.oin = new ObjectInputStream(socket.getInputStream());
-
                 //Read data from input stream
                 String data = (String)oin.readObject();
 

@@ -140,15 +140,18 @@ public class RollerballPanel extends JPanel {
         else if (game.getBoard().containsKey(clickLoc)) {
             selectSquare(clickLoc.row, clickLoc.col);
             selectedPiece = game.getBoard().get(clickLoc);
+            client.checkValidMove(selectedPiece.getLoc());
         }
         repaint();
     }
 
     public void updateState(Game g) {
-        System.out.println("got it");
         game = g;
         repaint();
     }
 
+    public void updateValidMoves(ArrayList<Location> l){
+        System.out.print(l);
+    }
 
 }

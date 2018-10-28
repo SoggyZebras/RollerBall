@@ -1,8 +1,10 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import static edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Protocol.Server_Responds_Check_Move;
 
@@ -10,16 +12,13 @@ public class ServerRespondsCheckMove implements Event {
 
     //Information to be serialized or deserialized
     private String message_type;
-    private Location to;
-    private Location from;
+    private ArrayList<Location> list;
 
 
-    public ServerRespondsCheckMove(Location from, Location to) {
+    public ServerRespondsCheckMove(ArrayList<Location> l) {
 
         this.message_type = Server_Responds_Check_Move;
-        this.to = to;
-        this.from =from;
-        //TODO: add in list that game returns
+        this.list = l;
     }
 
     protected ServerRespondsCheckMove(String filename) throws IOException, ClassNotFoundException {
@@ -31,8 +30,7 @@ public class ServerRespondsCheckMove implements Event {
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
-        this.to = (Location) oin.readObject();
-        this.from = (Location) oin.readObject();
+        this.list = (ArrayList<Location>) oin.readObject();
 
 
 
@@ -51,8 +49,7 @@ public class ServerRespondsCheckMove implements Event {
 
         // Take the local variables and serialize them into a file
         oout.writeObject(filename);
-        oout.writeObject(this.to);
-        oout.writeObject(this.from);
+        oout.writeObject(this.list);
 
         //flush the objects to the stream and close the streams
         oout.flush();
@@ -66,12 +63,9 @@ public class ServerRespondsCheckMove implements Event {
         return this.message_type;
     }
 
-    public Location getTo(){
-        return to;
+    public ArrayList<Location> getList(){
+        return this.list;
     }
 
-    public Location getFrom(){
-        return from;
-    }
 
 }

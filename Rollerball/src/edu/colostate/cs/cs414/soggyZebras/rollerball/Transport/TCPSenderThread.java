@@ -13,7 +13,7 @@ public class TCPSenderThread implements Runnable{
     protected TCPSenderThread(Socket socket) throws IOException {
         this.socket = socket;
         this.queue = new MessageQueue();
-        oout = new ObjectOutputStream(socket.getOutputStream());
+        this.oout = new ObjectOutputStream(socket.getOutputStream());
     }
 
     public void run() {
@@ -41,7 +41,6 @@ public class TCPSenderThread implements Runnable{
 
             } catch (IOException e) {
                 System.out.println("IO Exception in TCP Sender Thread");
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
