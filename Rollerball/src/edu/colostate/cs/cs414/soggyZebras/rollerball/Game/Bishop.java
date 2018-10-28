@@ -7,14 +7,12 @@ public class Bishop extends Piece {
 
     Location l;
     char color;
-    String type;
 
 
-    public Bishop(Location l, char color, String type) {
-        super(l, color, type);
+    public Bishop(Location l, char color) {
+        super(l, color);
         this.l = l;
         this.color = color;
-        this.type = type;
     }
 
 
