@@ -1,27 +1,19 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Bishop extends Piece {
-
-    Location l;
-    char color;
-
-
-    public Bishop(Location l, char color) {
-        super(l, color);
-        this.l = l;
-        this.color = color;
+    
+    public Bishop(Location l, char color, String type) {
+        super(l, color, type);
     }
 
 
 
     public ArrayList<Location> validMoves(HashMap state){
-
         ArrayList<Location> validMoves = new ArrayList<Location>();
-        int row = l.row;
-        int col = l.col;
+        int row = loc.row;
+        int col = loc.col;
          // Qual 1 Rows 4-6 and columns 0-3
         if((row > 3)  && (row < 7) && (col >= 0) && (col <= 3)){
             validMoves = quadOne(state, row, col);
@@ -64,8 +56,8 @@ public class Bishop extends Piece {
             row--;
             col++;
         }
-        row = l.row;
-        col = l.col;
+        row = loc.row;
+        col = loc.col;
         if(checkBounds(row+1, col+1)
                 && (state.get(new Location(row+1, col+1)) == null)){
             moves.add(new Location(row+1, col+1) );
@@ -116,8 +108,8 @@ public class Bishop extends Piece {
             row++;
             col++;
         }
-        row = l.row;
-        col = l.col;
+        row = loc.row;
+        col = loc.col;
 
 
         if(checkBounds(row+1, col-1)&& (state.get(new Location(row+1, col-1)) == null)){
@@ -157,8 +149,8 @@ public class Bishop extends Piece {
             row++;
             col--;
         }
-        row = l.row;
-        col = l.col;
+        row = loc.row;
+        col = loc.col;
 
 
         if(checkBounds(row-1, col-1)
@@ -201,8 +193,8 @@ public class Bishop extends Piece {
             row--;
             col--;
         }
-        row = l.row;
-        col = l.col;
+        row = loc.row;
+        col = loc.col;
 
 
         if(checkBounds(row-1, col-1)
