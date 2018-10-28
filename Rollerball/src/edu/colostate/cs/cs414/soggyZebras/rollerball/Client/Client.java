@@ -123,7 +123,7 @@ public class Client implements Node {
 
     private void handleServerCheckMove(Event e){
         ServerRespondsCheckMove message = (ServerRespondsCheckMove) e;
-        System.out.println(message.getList());
+        gui.updateValidMoves(message.getList());
     }
 
     public void setDebug(){

@@ -23,7 +23,7 @@ public class EventFactory implements Protocol {
                     ;
                 case Client_Request_Game_State: node.onEvent(new ClientRequestGameState(filename), socket);break
                     ;
-                case Server_Responds_Game_State: System.out.println("here");node.onEvent(new ServerRespondsGameState(filename), socket);break
+                case Server_Responds_Game_State: node.onEvent(new ServerRespondsGameState(filename), socket);break
                     ;
                 case Client_Sends_Register:
 
