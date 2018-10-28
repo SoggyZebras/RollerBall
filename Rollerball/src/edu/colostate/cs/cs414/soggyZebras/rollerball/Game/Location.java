@@ -1,6 +1,8 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable{
 
     public int row;
     public int col;

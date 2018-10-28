@@ -1,5 +1,6 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.RollerballPanel;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
@@ -12,8 +13,10 @@ import java.net.Socket;
 
 public class Client implements Node {
 
+    RollerballPanel gui;
+
     // TODO: does Client need a game object?
-    private boolean debug = false;
+    private boolean debug = true;
 
     //========== NETWORK SETUP ==========//
 
@@ -31,17 +34,10 @@ public class Client implements Node {
             throw new IOException("Invalid serverAddress");
         }
 
-        // Try to assign given variables and create the selector
-        try{
-            this.serverHost = serverAddress;
-            this.serverPort = serverPort;
-            initialize();
+        //Set server address and port
+        this.serverHost = serverAddress;
+        this.serverPort = serverPort;
 
-        } catch(IOException e){
-            if(debug) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void initialize() throws IOException {
@@ -60,12 +56,18 @@ public class Client implements Node {
     public void onEvent(Event e, Socket socket) {
 
         switch(e.getType()){
-            case Server_Responds_Make_Move: handleMakeMove(e);break;
-            case Server_Responds_Game_State: handleGameState(e);break;
+            case Server_Responds_Game_State:handleGameState(e);break;
+
+            case Server_Responds_Check_Move: handleServerCheckMove(e);break;
+
             case Server_Responds_Game_Invite:
+
             case Server_Responds_Get_History:
+
             case Server_Responds_Register:
+
             case Server_Responds_Login:
+
             default:
         }
 
@@ -74,36 +76,62 @@ public class Client implements Node {
     //========= END NETWORK SETUP =========//
 
     public boolean makeMove(Location from, Location to) {
-        // Create wireformat with given variables and send to server
+        // Create make move wireformat with given variables and send to server
         try {
             ClientMakeMove moveMessage = new ClientMakeMove(from, to);
-            serverConnection.sendData(moveMessage.getBytes());
-            return true;
+            serverConnection.sendData(moveMessage.getFile());
+
         } catch (Exception e){
             if(debug){
                 System.out.println(e.getMessage());
             }
             return false;
         }
+        return true;
     }
 
-    public Game getGameState() {
-        // TODO: This one is going to be tricky
-            return new Game();
-
+    public boolean getGameState() {
+        // Create get game state wireformat and send it to the server
+        try {
+            ClientRequestGameState updateMessage = new ClientRequestGameState();
+            serverConnection.sendData(updateMessage.getFile());
+        } catch (IOException eio){
+            eio.getCause();
+            return false;
+        }
+        return true;
     }
 
-    private void handleMakeMove(Event e){
-
+    public boolean checkValidMove(Location from, Location to){
+        //Ask the server for the valid moves of a board tile
+        try {
+            ClientRequestsCheckMove checkMessage = new ClientRequestsCheckMove(from, to);
+            serverConnection.sendData(checkMessage.getFile());
+            return true;
+        } catch(IOException e){
+            e.getCause();
+            return false;
+        }
     }
 
-    private void handleGameState(Event e){
+    private void handleGameState(Event e) {
+        // When server sends an updated game state, recompile the game and give it to the ui
+        ServerRespondsGameState message = (ServerRespondsGameState)e;
+        Game g = new Game(message.getMap());
+        this.gui.updateState(g);
+    }
 
+    private void handleServerCheckMove(Event e){
+        ServerRespondsCheckMove message = (ServerRespondsCheckMove) e;
+        //TODO: call gui update for check move
     }
 
     public void setDebug(){
         this.debug = true;
     }
 
+    public void setGui(RollerballPanel p){
+        this.gui = p;
+    }
 
 }

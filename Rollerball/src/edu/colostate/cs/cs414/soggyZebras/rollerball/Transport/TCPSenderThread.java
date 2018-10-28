@@ -2,16 +2,18 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Transport;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class TCPSenderThread implements Runnable{
     private Socket socket;
-    private DataOutputStream dout;
+    private ObjectOutputStream oout;
     private MessageQueue queue;
 
-    protected TCPSenderThread(Socket socket) {
+    protected TCPSenderThread(Socket socket) throws IOException {
         this.socket = socket;
         this.queue = new MessageQueue();
+        oout = new ObjectOutputStream(socket.getOutputStream());
     }
 
     public void run() {
@@ -24,19 +26,21 @@ public class TCPSenderThread implements Runnable{
         }
     }
 
-    protected void sendData(byte[] dataToSend){
+    protected void sendData(String dataToSend){
         this.queue.add(dataToSend);
     }
 
-    private void forward(byte[] dataToSend) {
+    private void forward(String dataToSend) {
         synchronized(this.socket) {
             try {
-                dout = new DataOutputStream(socket.getOutputStream());
-                int dataLength = dataToSend.length;
-                dout.writeInt(dataLength);
-                dout.write(dataToSend, 0, dataLength);
-                dout.flush();
+
+                //Write data to the output stream
+                oout.writeObject(dataToSend);
+                oout.flush();
+
+
             } catch (IOException e) {
+                System.out.println("IO Exception in TCP Sender Thread");
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

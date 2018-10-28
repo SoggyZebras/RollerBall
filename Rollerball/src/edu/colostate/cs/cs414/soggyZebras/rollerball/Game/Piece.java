@@ -1,6 +1,10 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
-public class Piece {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Map;
+
+public class Piece implements Serializable{
 
     Location loc;
     char color;
@@ -27,6 +31,11 @@ public class Piece {
     public boolean ExternalRing() {
         if (loc.getRow() == 0 || loc.getCol() == 0 || loc.getRow() == 6 || loc.getCol() ==6) { return true; }
         else { return false; }
+    }
+
+
+    public ArrayList<Location> validMoves(Map<Location, Piece> state){
+            return new ArrayList<Location>();
     }
 
 }

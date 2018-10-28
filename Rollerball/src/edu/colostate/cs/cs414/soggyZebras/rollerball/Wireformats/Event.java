@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public interface Event extends Protocol {
 
-    byte[] getBytes() throws IOException;
+    String getFile() throws IOException;
 
-    byte getType();
+    String getType();
 }

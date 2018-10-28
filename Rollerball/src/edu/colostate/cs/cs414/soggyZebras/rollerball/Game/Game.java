@@ -1,9 +1,10 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Game {
+public class Game implements java.io.Serializable {
 
     private Map<Location,Piece> board;
 
@@ -14,7 +15,7 @@ public class Game {
      * create a new game
      */
     public Game() {
-        board = new HashMap<>();
+        this.board = new HashMap<>();
 
         // add white pieces
         addPiece(new Pawn(new Location(5, 2), 'w', "pawn"));
@@ -33,8 +34,17 @@ public class Game {
         addPiece(new Rook(new Location(1, 2), 'b', "rook"));
     }
 
+    public Game(Map<Location,Piece> m) {
+        this.board = m;
+    }
+
     private void addPiece(Piece p) {
         board.put(p.loc, p);
+    }
+
+    public ArrayList<Location> validMoves(Location l){
+        return board.get(l).validMoves(board);
+
     }
 
 
