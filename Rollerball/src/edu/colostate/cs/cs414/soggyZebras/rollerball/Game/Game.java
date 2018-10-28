@@ -1,6 +1,6 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +40,11 @@ public class Game implements java.io.Serializable {
 
     private void addPiece(Piece p) {
         board.put(p.loc, p);
+    }
+
+    public ArrayList<Location> validMoves(Location l){
+        return board.get(l).validMoves(board);
+
     }
 
 
