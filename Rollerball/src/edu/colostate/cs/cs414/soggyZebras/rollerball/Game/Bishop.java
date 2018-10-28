@@ -177,7 +177,7 @@ public class Bishop extends Piece {
         return moves;
     }
 
-    
+
     public ArrayList<Location> quadFour(Map state, int row, int col){
         ArrayList<Location> moves = new ArrayList<>();
         System.out.println("Quad 4");
