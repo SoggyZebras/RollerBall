@@ -102,10 +102,10 @@ public class Client implements Node {
         return true;
     }
 
-    public boolean checkValidMove(Location from, Location to){
+    public boolean checkValidMove(Location place){
         //Ask the server for the valid moves of a board tile
         try {
-            ClientRequestsCheckMove checkMessage = new ClientRequestsCheckMove(from, to);
+            ClientRequestsCheckMove checkMessage = new ClientRequestsCheckMove(place);
             serverConnection.sendData(checkMessage.getFile());
             return true;
         } catch(IOException e){
@@ -116,14 +116,14 @@ public class Client implements Node {
 
     private void handleGameState(Event e) {
         // When server sends an updated game state, recompile the game and give it to the ui
-        ServerRespondsGameState message = (ServerRespondsGameState)e;
+        ServerRespondsGameState message = (ServerRespondsGameState) e;
         Game g = new Game(message.getMap());
         this.gui.updateState(g);
     }
 
     private void handleServerCheckMove(Event e){
         ServerRespondsCheckMove message = (ServerRespondsCheckMove) e;
-        //TODO: call gui update for check move
+        gui.updateValidMoves(message.getList());
     }
 
     public void setDebug(){

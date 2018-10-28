@@ -8,6 +8,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * creates and draws the graphics of the game
@@ -126,15 +127,18 @@ public class RollerballPanel extends JPanel {
         else if (game.getBoard().containsKey(clickLoc)) {
             selectSquare(clickLoc.row, clickLoc.col);
             selectedPiece = game.getBoard().get(clickLoc);
+            client.checkValidMove(selectedPiece.getLoc());
         }
         repaint();
     }
 
     public void updateState(Game g) {
-        System.out.println("got it");
         game = g;
         repaint();
     }
 
+    public void updateValidMoves(ArrayList<Location> l){
+        System.out.print(l);
+    }
 
 }
