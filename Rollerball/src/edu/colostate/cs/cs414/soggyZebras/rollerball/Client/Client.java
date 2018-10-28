@@ -116,13 +116,14 @@ public class Client implements Node {
 
     private void handleGameState(Event e) {
         // When server sends an updated game state, recompile the game and give it to the ui
-        ServerRespondsGameState message = (ServerRespondsGameState)e;
+        ServerRespondsGameState message = (ServerRespondsGameState) e;
         Game g = new Game(message.getMap());
         this.gui.updateState(g);
     }
 
     private void handleServerCheckMove(Event e){
         ServerRespondsCheckMove message = (ServerRespondsCheckMove) e;
+        System.out.println(message.getList());
     }
 
     public void setDebug(){

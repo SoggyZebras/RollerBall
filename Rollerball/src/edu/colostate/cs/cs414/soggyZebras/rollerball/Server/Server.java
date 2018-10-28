@@ -61,7 +61,7 @@ public class Server implements Node {
     private void handleMakeMove(Event e ,Socket socket) throws IOException {
         //When client requests to make a move, TODO: alter the game state
         //Return new game state
-        //handleClientRequestGameState(e,socket);
+        handleClientRequestGameState(e,socket);
         
     }
 
@@ -76,7 +76,7 @@ public class Server implements Node {
         ClientRequestsCheckMove inMessage = (ClientRequestsCheckMove) e;
 
         ServerRespondsCheckMove outMessage = new ServerRespondsCheckMove(game.validMoves(inMessage.getPlace()));
-        TCPConnection s = this.serverCache.getConnection(socket);
+
         this.serverCache.getConnection(socket).sendData(outMessage.getFile());
     }
 

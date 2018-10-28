@@ -17,13 +17,13 @@ public class EventFactory implements Protocol {
 
                 case Client_Make_Move: node.onEvent(new ClientMakeMove(filename), socket);break
                     ;
-                case Client_Request_Check_Move: node.onEvent(new ClientRequestsCheckMove(filename),socket);System.out.println("server handle client request");;break
+                case Client_Request_Check_Move: node.onEvent(new ClientRequestsCheckMove(filename),socket);break
                     ;
-                case Server_Responds_Check_Move: node.onEvent(new ServerRespondsCheckMove(filename),socket);System.out.println("client handle server response");;break
+                case Server_Responds_Check_Move: node.onEvent(new ServerRespondsCheckMove(filename),socket);break
                     ;
                 case Client_Request_Game_State: node.onEvent(new ClientRequestGameState(filename), socket);break
                     ;
-                case Server_Responds_Game_State: node.onEvent(new ServerRespondsGameState(filename), socket);break
+                case Server_Responds_Game_State: System.out.println("here");node.onEvent(new ServerRespondsGameState(filename), socket);break
                     ;
                 case Client_Sends_Register:
 
