@@ -37,7 +37,7 @@ public class Game {
         this.board = board;
     }
 
-    private void addPiece(Piece p) {
+    protected void addPiece(Piece p) {
         board.put(p.loc, p);
     }
 
