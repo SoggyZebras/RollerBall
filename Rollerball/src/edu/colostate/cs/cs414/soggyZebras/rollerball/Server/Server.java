@@ -2,6 +2,7 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Server;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.testgames.TwoRooks;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerCache;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerThread;
@@ -12,6 +13,7 @@ import java.net.Socket;
 
 public class Server implements Node {
 
+    // NOTE: change type to TwoRooks for the demo
     Game game = new Game();
 
     //=======NETWORK SETUP=======//
@@ -74,9 +76,7 @@ public class Server implements Node {
     private void handleCheckMove(Event e, Socket socket) throws IOException, ClassNotFoundException {
         //When client asks for available spaces, get possible moves from game
         ClientRequestsCheckMove inMessage = (ClientRequestsCheckMove) e;
-
         ServerRespondsCheckMove outMessage = new ServerRespondsCheckMove(game.validMoves(inMessage.getPlace()));
-
         this.serverCache.getConnection(socket).sendData(outMessage.getFile());
     }
 
