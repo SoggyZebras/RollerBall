@@ -3,6 +3,7 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats;
 public interface Protocol {
 
     //These values are unique identifiers for a message type
+     String demo_message = "demoMessage.msg";
 
      String Client_Make_Move = "clientMakeMove.msg";
 

@@ -12,7 +12,8 @@ import java.net.Socket;
 
 public class Server implements Node {
 
-    Game game = new Game();
+
+    Game game;
 
     //=======NETWORK SETUP=======//
 
@@ -30,8 +31,14 @@ public class Server implements Node {
 
     }
 
-    private void initiate(){
+    private void initiate(boolean demo){
         //Start server thread(send/receive threads)
+        if(demo){
+            game = new TwoRooks();
+        }
+        else{
+            game = new Game();
+        }
         this.serverThread.run();
     }
 
