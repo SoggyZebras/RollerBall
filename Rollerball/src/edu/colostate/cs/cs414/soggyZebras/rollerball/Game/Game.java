@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Game implements java.io.Serializable {
 
-    private Map<Location,Piece> board;
+    protected Map<Location,Piece> board;
 
     // set to 'w' or 'b' depending on who's turn it is
     private char whosTurn;
@@ -38,13 +38,12 @@ public class Game implements java.io.Serializable {
         this.board = m;
     }
 
-    private void addPiece(Piece p) {
+    protected void addPiece(Piece p) {
         board.put(p.loc, p);
     }
 
     public ArrayList<Location> validMoves(Location l){
         return board.get(l).validMoves(board);
-
     }
 
 

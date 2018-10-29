@@ -9,13 +9,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * creates and draws the graphics of the game
  */
 public class RollerballPanel extends JPanel {
 
-    private Game game;
+    private Map<Location,Piece> board;
     private Client client;
     private PieceDrawer pieceDrawer;
 
@@ -30,17 +31,22 @@ public class RollerballPanel extends JPanel {
     // if the user hasn't selected a piece, this is null
     private Piece selectedPiece;
 
+    // when a piece is clicked, this will be populated with the potential moves for that piece
+    private ArrayList<Location> potentialMoves;
+
     public RollerballPanel(Game game, Client client, int gameSide) throws IOException {
         super();
         setSize(gameSide, gameSide);
         addMouseListener(new RollerballMouseListener(this));
 
-        this.game = game;
+        board = game.getBoard();
         this.client = client;
         client.setGui(this);
         this.client.initialize();
         selectedPiece = null;
         unselectSquares();
+
+        potentialMoves = new ArrayList<>();
 
         this.squareSide = getWidth() / 7;
 
@@ -54,10 +60,11 @@ public class RollerballPanel extends JPanel {
         drawBackground(g2);
         drawPieces(g2);
         drawSelectedSquare(g2);
+        drawHighlightedSquares(g2);
     }
 
     private void drawPieces(Graphics2D g2) {
-        for (Piece p : game.getBoard().values()) {
+        for (Piece p : board.values()) {
             pieceDrawer.draw(g2, p);
         }
     }
@@ -86,6 +93,14 @@ public class RollerballPanel extends JPanel {
     private void drawSelectedSquare(Graphics2D g2) {
         g2.setColor(Color.black);
         g2.drawRect(selectedSquareCol * squareSide, selectedSquareRow * squareSide, squareSide, squareSide);
+    }
+
+    private void drawHighlightedSquares(Graphics2D g2) {
+        g2.setColor(Color.green);
+        g2.setStroke(new BasicStroke(3));
+        for (Location l : potentialMoves) {
+            g2.drawRect(l.getCol() * squareSide, l.getRow() * squareSide, squareSide, squareSide);
+        }
     }
 
     /**
@@ -119,26 +134,29 @@ public class RollerballPanel extends JPanel {
 
         // if a piece has already been selected, try to make a move and update the board
         if (selectedPiece != null) {
-            client.makeMove(selectedPiece.getLoc(), clickLoc);
-            selectedPiece = null;
-            unselectSquares();
+            if (potentialMoves.contains(clickLoc)) {
+                client.makeMove(selectedPiece.getLoc(), clickLoc);
+                selectedPiece = null;
+                unselectSquares();
+                potentialMoves.clear();
+            }
         }
         // select a piece if its clicked on
-        else if (game.getBoard().containsKey(clickLoc)) {
+        else if (board.containsKey(clickLoc)) {
             selectSquare(clickLoc.row, clickLoc.col);
-            selectedPiece = game.getBoard().get(clickLoc);
+            selectedPiece = board.get(clickLoc);
             client.checkValidMove(selectedPiece.getLoc());
         }
         repaint();
     }
 
-    public void updateState(Game g) {
-        game = g;
+    public void updateState(Map<Location,Piece> map) {
+
         repaint();
     }
 
     public void updateValidMoves(ArrayList<Location> l){
-        System.out.print(l);
+        potentialMoves = l;
+        repaint();
     }
-
 }
