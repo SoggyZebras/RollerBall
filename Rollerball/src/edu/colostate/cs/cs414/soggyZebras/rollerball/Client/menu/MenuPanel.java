@@ -15,7 +15,7 @@ public abstract class MenuPanel extends JPanel {
     public MenuPanel(String menuName, MenuGUI menuGUI) {
         this.menuName = menuName;
         this.menuGUI = menuGUI;
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        //setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
 
     /**
@@ -32,6 +32,18 @@ public abstract class MenuPanel extends JPanel {
                 menuGUI.setMenu(menu);
             }
         });
+        return button;
+    }
+
+    /**
+     * create a button that does some action
+     * @param listener an ActionListener that defines what to do when the button is clicked
+     * @param text a String that holds the text in the button
+     * @return a button that will cause some action to be performed
+     */
+    public JButton createLinkedActionButton(String text, ActionListener listener) {
+        JButton button = new JButton(text);
+        button.addActionListener(listener);
         return button;
     }
 
