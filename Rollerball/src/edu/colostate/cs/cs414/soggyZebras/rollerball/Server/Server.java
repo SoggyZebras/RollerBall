@@ -13,8 +13,8 @@ import java.net.Socket;
 
 public class Server implements Node {
 
-    // NOTE: change type to TwoRooks for the demo
-    Game game = new Game();
+
+    Game game;
 
     //=======NETWORK SETUP=======//
 
@@ -32,8 +32,14 @@ public class Server implements Node {
 
     }
 
-    private void initiate(){
+    private void initiate(boolean demo){
         //Start server thread(send/receive threads)
+        if(demo){
+            game = new TwoRooks();
+        }
+        else{
+            game = new Game();
+        }
         this.serverThread.run();
     }
 
@@ -76,14 +82,16 @@ public class Server implements Node {
     private void handleCheckMove(Event e, Socket socket) throws IOException, ClassNotFoundException {
         //When client asks for available spaces, get possible moves from game
         ClientRequestsCheckMove inMessage = (ClientRequestsCheckMove) e;
+
         ServerRespondsCheckMove outMessage = new ServerRespondsCheckMove(game.validMoves(inMessage.getPlace()));
+
         this.serverCache.getConnection(socket).sendData(outMessage.getFile());
     }
 
     //Start  Server
     public static void main(String args[]) throws NumberFormatException {
         Server s = new Server(5003,128);
-        s.initiate();
+        s.initiate(true);
 
     }
 }
