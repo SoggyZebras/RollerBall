@@ -10,7 +10,7 @@
   </nodes>
   <notes />
   <edges />
-  <settings layout="Hierarchic Group" zoom="1.0" x="181.0" y="247.5" />
+  <settings layout="Hierarchic Group" zoom="0.8197533335001126" x="181.0" y="248.0" />
   <SelectedNodes>
     <node>edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.RollerballMouseListener</node>
   </SelectedNodes>

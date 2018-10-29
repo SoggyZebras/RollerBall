@@ -20,6 +20,9 @@ public class CardContainer extends JPanel {
         add("login", login);
         MenuPanel mainMenu = new MainMenuPanel(menuGUI);
         add("main_menu", mainMenu);
+        MenuPanel currentGames = new CurrentGamesPanel(menuGUI);
+        add("current_games", currentGames);
+
         // TODO: add more cards here
     }
 
