@@ -33,7 +33,7 @@ public class Game {
         addPiece(new Rook(new Location(1, 2), 'b', "rook"));
     }
 
-    public Game(Map<Location, Piece> m) {
+    public Game(Map<Location,Piece> m) {
         this.board = m;
     }
 
