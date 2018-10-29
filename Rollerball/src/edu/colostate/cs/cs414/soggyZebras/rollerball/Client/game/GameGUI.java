@@ -21,7 +21,7 @@ public class GameGUI extends JFrame {
         setSize(WIDTH, HEIGHT + 22);
         setResizable(false);
         setFocusable(true);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // setup panel (what gets drawn on)
