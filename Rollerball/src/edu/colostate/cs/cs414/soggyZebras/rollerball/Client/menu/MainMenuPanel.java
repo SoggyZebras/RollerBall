@@ -15,7 +15,6 @@ public class MainMenuPanel extends MenuPanel {
     public MainMenuPanel(MenuGUI menuGUI) {
         super("main_menu", menuGUI);
         add(createLinkedActionButton("New Game", new StartGameListener()));
-
         add(createLinkedButton("Current Games", "current_games"));
         add(createLinkedButton("Game History", "game_history"));
         add(createLinkedButton("Logout", "register_login"));
