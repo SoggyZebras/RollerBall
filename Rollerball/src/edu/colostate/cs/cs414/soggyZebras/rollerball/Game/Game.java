@@ -33,6 +33,10 @@ public class Game {
         addPiece(new Rook(new Location(1, 2), 'b', "rook"));
     }
 
+    public Game(Map<Location, Piece> board) {
+        this.board = board;
+    }
+
     private void addPiece(Piece p) {
         board.put(p.loc, p);
     }

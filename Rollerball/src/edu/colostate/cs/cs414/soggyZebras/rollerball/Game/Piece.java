@@ -2,9 +2,9 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
 public class Piece {
 
-    Location loc;
-    char color;
-    String type;
+    protected Location loc;
+    protected char color;
+    protected String type;
 
     public Piece (Location l, char color, String type) {
         this.loc = l;

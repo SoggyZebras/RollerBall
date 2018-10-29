@@ -58,7 +58,7 @@ public class Bishop extends Piece {
 
     }
 
-    public boolean checkBounds(int row, int column){
+    private boolean checkBounds(int row, int column){
         if ((row >= 0) && (row <=6) && (column >= 0) && (column <=6)){
             if((row==2 || row ==3 || row == 4) && (1 < column  && column < 5)){
                 return false;
