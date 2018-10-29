@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>edu.colostate.cs.cs414.soggyZebras.rollerball.Transport</OriginalElement>
+  <nodes>
+    <node x="0.0" y="276.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPSenderThread</node>
+    <node x="403.0" y="0.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection</node>
+    <node x="0.0" y="507.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerCache</node>
+    <node x="282.0" y="276.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPReceiverThread</node>
+    <node x="0.0" y="0.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerThread</node>
+    <node x="377.0" y="507.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.MessageQueue</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="1.0" x="232.0" y="443.5" />
+  <SelectedNodes>
+    <node>edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPSenderThread</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
