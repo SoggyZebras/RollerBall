@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Server</OriginalElement>
+  <nodes>
+    <node x="44.0" y="0.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Protocol</node>
+    <node x="0.0" y="468.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Server</node>
+    <node x="71.0" y="366.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Server" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node">
+      <point x="0.0" y="-137.0" />
+      <point x="0.0" y="26.0" />
+    </edge>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Protocol">
+      <point x="0.0" y="-26.0" />
+      <point x="0.0" y="158.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="51.0" y="95.0" />
+  <SelectedNodes>
+    <node>edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Server</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Inner Classes</Category>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

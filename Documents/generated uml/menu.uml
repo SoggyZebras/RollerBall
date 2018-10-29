@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu</OriginalElement>
+  <nodes>
+    <node x="0.0" y="170.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.LoginPanel</node>
+    <node x="296.5" y="0.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuPanel</node>
+    <node x="0.0" y="267.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI</node>
+    <node x="295.0" y="267.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.CardContainer</node>
+    <node x="227.99999999999997" y="170.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MainMenuPanel</node>
+    <node x="702.0" y="170.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.RegLoginPanel</node>
+    <node x="485.0" y="170.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.RegPanel</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.LoginPanel" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuPanel">
+      <point x="0.0" y="-26.0" />
+      <point x="104.0" y="145.0" />
+      <point x="338.625" y="145.0" />
+      <point x="-126.375" y="60.0" />
+    </edge>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.RegPanel" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuPanel">
+      <point x="0.0" y="-26.0" />
+      <point x="583.5" y="145.0" />
+      <point x="507.125" y="145.0" />
+      <point x="42.125" y="60.0" />
+    </edge>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MainMenuPanel" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuPanel">
+      <point x="0.0" y="-26.0" />
+      <point x="346.5" y="145.0" />
+      <point x="422.875" y="145.0" />
+      <point x="-42.125" y="60.0" />
+    </edge>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.RegLoginPanel" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuPanel">
+      <point x="0.0" y="-26.0" />
+      <point x="817.5" y="145.0" />
+      <point x="591.375" y="145.0" />
+      <point x="126.375" y="60.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.9452080478834644" x="296.49940490722656" y="98.32579803466797" />
+  <SelectedNodes>
+    <node>edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.RegPanel</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Constructors</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
