@@ -14,7 +14,7 @@ import java.net.Socket;
 public class Server implements Node {
 
     // NOTE: change type to TwoRooks for the demo
-    Game game = new Game();
+    Game game = new TwoRooks();
 
     //=======NETWORK SETUP=======//
 
