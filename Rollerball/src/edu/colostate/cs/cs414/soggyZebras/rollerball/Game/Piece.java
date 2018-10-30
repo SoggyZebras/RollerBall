@@ -38,4 +38,7 @@ public class Piece implements Serializable{
             return new ArrayList<Location>();
     }
 
+    public void setLoc(Location l) {
+        loc = l;
+    }
 }

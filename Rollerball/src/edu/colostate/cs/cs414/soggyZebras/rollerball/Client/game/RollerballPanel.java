@@ -150,8 +150,16 @@ public class RollerballPanel extends JPanel {
         repaint();
     }
 
-    public void updateState(Map<Location,Piece> map) {
+    private void updateBoard(Map<Location,Piece> map) {
+        board = map;
+        // update the pieces locations
+        for (Location l : map.keySet()) {
+            board.get(l).setLoc(l);
+        }
+    }
 
+    public void updateState(Map<Location,Piece> map) {
+        updateBoard(map);
         repaint();
     }
 
