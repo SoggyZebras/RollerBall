@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats</OriginalElement>
+  <nodes>
+    <node x="0.0" y="491.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ClientMakeMove</node>
+    <node x="849.0" y="366.5">edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Event</node>
+    <node x="975.0" y="0.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Protocol</node>
+    <node x="318.0" y="502.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ServerRespondsCheckMove</node>
+    <node x="717.0" y="502.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ServerRespondsGameState</node>
+    <node x="991.0" y="366.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.EventFactory</node>
+    <node x="1279.0" y="377.5">edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node</node>
+    <node x="1123.0" y="513.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ClientRequestGameState</node>
+    <node x="1416.0" y="502.0">edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ClientRequestsCheckMove</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ClientMakeMove" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Event">
+      <point x="0.0" y="-81.5" />
+      <point x="149.0" y="461.0" />
+      <point x="861.2" y="461.0" />
+      <point x="-48.799999999999955" y="37.0" />
+    </edge>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Event" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Protocol">
+      <point x="0.0" y="-37.0" />
+      <point x="910.0" y="341.0" />
+      <point x="1025.0" y="341.0" />
+      <point x="-100.0" y="158.0" />
+    </edge>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ClientRequestGameState" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Event">
+      <point x="0.0" y="-59.5" />
+      <point x="1259.5" y="471.0" />
+      <point x="934.4" y="471.0" />
+      <point x="24.399999999999977" y="37.0" />
+    </edge>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ClientRequestsCheckMove" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Event">
+      <point x="0.0" y="-70.5" />
+      <point x="1566.0" y="461.0" />
+      <point x="958.8" y="461.0" />
+      <point x="48.799999999999955" y="37.0" />
+    </edge>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ServerRespondsCheckMove" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Event">
+      <point x="0.0" y="-70.5" />
+      <point x="507.5" y="471.0" />
+      <point x="885.6" y="471.0" />
+      <point x="-24.399999999999977" y="37.0" />
+    </edge>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Protocol">
+      <point x="0.0" y="-26.0" />
+      <point x="1402.0" y="341.0" />
+      <point x="1225.0" y="341.0" />
+      <point x="100.0" y="158.0" />
+    </edge>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ServerRespondsGameState" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Event">
+      <point x="0.0" y="-70.5" />
+      <point x="0.0" y="37.0" />
+    </edge>
+    <edge source="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.EventFactory" target="edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Protocol">
+      <point x="0.0" y="-37.5" />
+      <point x="0.0" y="158.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8504079782411604" x="1156.5" y="409.8054371002132" />
+  <SelectedNodes>
+    <node>edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ClientRequestsCheckMove</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

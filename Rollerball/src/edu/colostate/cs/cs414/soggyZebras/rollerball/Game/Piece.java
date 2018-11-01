@@ -6,9 +6,9 @@ import java.util.Map;
 
 public class Piece implements Serializable{
 
-    Location loc;
-    char color;
-    String type;
+    protected Location loc;
+    protected char color;
+    protected String type;
 
     public Piece (Location l, char color, String type) {
         this.loc = l;

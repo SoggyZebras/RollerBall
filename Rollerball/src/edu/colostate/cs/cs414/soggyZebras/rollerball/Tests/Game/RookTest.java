@@ -47,6 +47,7 @@ class RookTest {
 
 	@Test
 	void testFriendlyPieceInTheWay() {
+		// checks the case where the pieces movement is stopped by a friendly piece being in its path
 		board1.put(topOuter.getLoc(), topOuter);
 		board1.put(rightOuter.getLoc(), rightOuter);
 		ArrayList<Location> validMoves = topOuter.validMoves(board1);
@@ -55,6 +56,7 @@ class RookTest {
 
 	@Test
 	void testEnemyPieceStopsMovement() {
+		// checks the case where the pieces movement is stopped because they captured an enemy piece
 		board1.put(topOuter.getLoc(), topOuter);
 		board1.put(rightOuterB.getLoc(), rightOuterB);
 		ArrayList<Location> validMoves = topOuter.validMoves(board1);
@@ -64,6 +66,7 @@ class RookTest {
 
 	@Test
 	void testValidMovesLHSOuter() {
+		// check the valid moves for a piece on the left side of the board in the outer ring
 		board1.put(leftOuter.getLoc(), leftOuter);
 		ArrayList<Location> validMoves = leftOuter.validMoves(board1);
 		assertEquals(13, validMoves.size());
@@ -75,6 +78,7 @@ class RookTest {
 
 	@Test
 	void testValidMovesLHSInner() {
+		// check the valid moves for a piece on the left side of the board in the inner ring
 		board1.put(leftInner.getLoc(), leftInner);
 		ArrayList<Location> validMoves = leftInner.validMoves(board1);
 		assertEquals(8, validMoves.size());

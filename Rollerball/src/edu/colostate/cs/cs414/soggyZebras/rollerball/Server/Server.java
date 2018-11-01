@@ -2,6 +2,7 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Server;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.testgames.TwoRooks;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerCache;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerThread;
@@ -12,7 +13,8 @@ import java.net.Socket;
 
 public class Server implements Node {
 
-    Game game = new Game();
+
+    Game game;
 
     //=======NETWORK SETUP=======//
 
@@ -30,8 +32,14 @@ public class Server implements Node {
 
     }
 
-    private void initiate(){
+    private void initiate(boolean demo){
         //Start server thread(send/receive threads)
+        if(demo){
+            game = new TwoRooks();
+        }
+        else{
+            game = new Game();
+        }
         this.serverThread.run();
     }
 
@@ -83,7 +91,7 @@ public class Server implements Node {
     //Start  Server
     public static void main(String args[]) throws NumberFormatException {
         Server s = new Server(5003,128);
-        s.initiate();
+        s.initiate(true);
 
     }
 }
