@@ -20,6 +20,10 @@ public class Piece implements Serializable{
         return loc;
     }
 
+    public void setLoc(Location l) {
+        this.loc = l;
+    }
+
     public int getRow() { return loc.getRow(); }
 
     public int getCol() { return loc.getCol(); }

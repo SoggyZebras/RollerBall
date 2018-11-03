@@ -44,6 +44,16 @@ public class Game implements java.io.Serializable {
 
     public ArrayList<Location> validMoves(Location l){
         return board.get(l).validMoves(board);
+
+    }
+
+    public Map<Location, Piece> makeMove(Location to, Location from){
+        if(board.get(to).validMoves(board).contains(from)){
+            board.put(from, board.get(to));
+            board.get(to).setLoc(from);
+            board.put(to, null);
+        }
+        return board;
     }
 
 
