@@ -134,6 +134,9 @@ public class Pawn extends Piece{
     }
 
     private void add(int row, int col, Map<Location, Piece> state) {
+        int curRow = this.getRow();
+        int curCol = this.getCol();
+
         if(checkFriendly(state, row, col)){
             moves.add(new Location(row, col));
         }
@@ -142,10 +145,12 @@ public class Pawn extends Piece{
     private boolean checkFriendly(Map<Location, Piece> state, int row, int col){
         Location loc = new Location(row, col);
 
+        //&&(row!=curRow&&col!=curCol)
+
         if(!state.containsKey(loc)){
             return true;
         }
-        else if(state.get(loc).getColor()==this.getColor()){ //case for if piece in that position is the same color
+        else if(state.get(loc).getColor()==this.getColor()||(this.getLoc()==loc)){ //case for if piece in that position is the same color
             return false;
         }
         return true;
