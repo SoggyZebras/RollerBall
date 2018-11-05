@@ -9,6 +9,12 @@ public class ClientRequestGameState implements Event{
 
     public ClientRequestGameState() { this.message_type = Client_Request_Game_State; }
 
+    /**
+     *
+     * @param filename
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     protected ClientRequestGameState(String filename) throws IOException, ClassNotFoundException {
 
         // Create a file input stream and a object input stream to read the incomming message

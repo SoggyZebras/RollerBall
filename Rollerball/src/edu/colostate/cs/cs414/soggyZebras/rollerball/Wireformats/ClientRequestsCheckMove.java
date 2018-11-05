@@ -12,13 +12,22 @@ public class ClientRequestsCheckMove implements Event{
     private String message_type;
     private Location place;
 
-
+    /**
+     *
+     * @param p
+     */
     public ClientRequestsCheckMove(Location p) {
 
         this.message_type = Client_Request_Check_Move;
         this.place = p;
     }
 
+    /**
+     *
+     * @param filename
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     protected ClientRequestsCheckMove(String filename) throws IOException, ClassNotFoundException {
 
         // Create a file input stream and a object input stream to read the incomming message

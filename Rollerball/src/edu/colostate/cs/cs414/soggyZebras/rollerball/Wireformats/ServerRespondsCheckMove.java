@@ -14,13 +14,22 @@ public class ServerRespondsCheckMove implements Event {
     private String message_type;
     private ArrayList<Location> list;
 
-
+    /**
+     *
+     * @param l
+     */
     public ServerRespondsCheckMove(ArrayList<Location> l) {
 
         this.message_type = Server_Responds_Check_Move;
         this.list = l;
     }
 
+    /**
+     *
+     * @param filename
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     protected ServerRespondsCheckMove(String filename) throws IOException, ClassNotFoundException {
 
         // Create a file input stream and a object input stream to read the incomming message
@@ -63,6 +72,10 @@ public class ServerRespondsCheckMove implements Event {
         return this.message_type;
     }
 
+    /**
+     *
+     * @return ArrayList<Location>
+     */
     public ArrayList<Location> getList(){
         return this.list;
     }

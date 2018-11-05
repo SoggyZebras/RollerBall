@@ -12,6 +12,12 @@ public class ClientMakeMove implements Event {
     private Location from;
 
     //Sending message constructor
+
+    /**
+     *
+     * @param from
+     * @param to
+     */
     public ClientMakeMove(Location from, Location to){
 
         this.message_type = Client_Make_Move;
@@ -20,6 +26,13 @@ public class ClientMakeMove implements Event {
     }
 
     //Recieving message constructor
+
+    /**
+     *
+     * @param filename
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public ClientMakeMove(String filename) throws IOException, ClassNotFoundException {
 
         // Create a file input stream and a object input stream to read the incomming message
@@ -65,10 +78,18 @@ public class ClientMakeMove implements Event {
         return this.message_type;
     }
 
+    /**
+     *
+     * @return Location
+     */
     public Location getTo(){
         return to;
     }
 
+    /**
+     *
+     * @return Location
+     */
     public Location getFrom(){
         return from;
     }

@@ -11,6 +11,12 @@ public class TCPConnection {
     private Socket serverSocket;
     private Node node;
 
+    /**
+     *
+     * @param node
+     * @param server
+     * @throws IOException
+     */
     public TCPConnection(Node node,Socket server) throws IOException {
         //create TCP sender with socket given
         this.serverSocket = server;
@@ -22,18 +28,27 @@ public class TCPConnection {
 
     }
 
+
     public void initiate() {
         new Thread(this.recSocket).start();
         new Thread(this.senSocket).start();
 
     }
 
+    /**
+     *
+     * @param data
+     */
     public void sendData(String data){
         // send data to queue
         this.senSocket.sendData(data);
 
     }
 
+    /**
+     *
+     * @return Socket
+     */
     protected Socket getSocket() {
         return this.serverSocket;
     }

@@ -10,6 +10,10 @@ public class MessageQueue {
         this.queue = new ArrayList<String>();
     }
 
+    /**
+     *
+     * @param s
+     */
     public synchronized void add(String s) {
         // Add a string to the message queue
 
@@ -23,6 +27,10 @@ public class MessageQueue {
         }
     }
 
+    /**
+     *
+     * @return String
+     */
     protected synchronized String take() {
         //Take a string from the message queue
         try {
@@ -41,6 +49,10 @@ public class MessageQueue {
         }
     }
 
+    /**
+     *
+     * @return boolean
+     */
     private synchronized boolean isEmpty() {
         return queue.isEmpty();
     }

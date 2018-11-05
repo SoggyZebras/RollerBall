@@ -10,6 +10,11 @@ public class TCPSenderThread implements Runnable{
     private ObjectOutputStream oout;
     private MessageQueue queue;
 
+    /**
+     *
+     * @param socket
+     * @throws IOException
+     */
     protected TCPSenderThread(Socket socket) throws IOException {
         this.socket = socket;
         this.queue = new MessageQueue();

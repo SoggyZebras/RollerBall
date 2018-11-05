@@ -10,6 +10,10 @@ public class TCPServerCache {
 
     private ArrayList<TCPConnection> cache;
 
+    /**
+     *
+     * @param i
+     */
     public TCPServerCache(int i){
         //initializes the arraylist
         this.cache = new ArrayList<TCPConnection>(i);
@@ -20,6 +24,11 @@ public class TCPServerCache {
         this.cache.add(c);
     }
 
+    /**
+     *
+     * @param s
+     * @return TCPConnection
+     */
     public TCPConnection getConnection(Socket s) {
         //access TCPConnection from the cache
         for(int i = 0; i < cache.size();i++) {
@@ -30,6 +39,12 @@ public class TCPServerCache {
         return null;
     }
 
+    /**
+     *
+     * @param ip
+     * @param p
+     * @return TCPConnection
+     */
     public TCPConnection getConnection(byte[] ip, int p) {
         for(int i = 0; i < this.cache.size();++i) {
             if(cache.get(i).getSocket().getPort() == p) {
