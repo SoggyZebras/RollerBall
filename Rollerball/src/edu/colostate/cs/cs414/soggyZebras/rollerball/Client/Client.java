@@ -158,11 +158,6 @@ public class Client implements Node {
         gui.updateValidMoves(message.getList());
     }
 
-
-    public void setDebug(){
-        this.debug = true;
-    }
-
     public void setGui(RollerballPanel p){
         this.gui = p;
     }
