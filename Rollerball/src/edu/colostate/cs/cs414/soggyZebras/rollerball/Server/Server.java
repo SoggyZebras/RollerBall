@@ -92,7 +92,7 @@ public class Server implements Node {
     //Start  Server
     public static void main(String args[]) throws NumberFormatException {
         Server s = new Server(5003,128);
-        s.initiate(true);
+        s.initiate(false);
 
     }
 }
