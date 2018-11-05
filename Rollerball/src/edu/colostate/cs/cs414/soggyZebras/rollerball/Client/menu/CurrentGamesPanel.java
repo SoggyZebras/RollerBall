@@ -14,6 +14,7 @@ public class CurrentGamesPanel extends MenuPanel {
         super("current_games", menuGUI);
         // TODO: this is temporary, this menu should be populated with games stored on database
         add(createLinkedActionButton("saved game 1", new ResumeGameListener()));
+        add(createLinkedButton("back", "main_menu"));
     }
 
     class ResumeGameListener implements ActionListener {

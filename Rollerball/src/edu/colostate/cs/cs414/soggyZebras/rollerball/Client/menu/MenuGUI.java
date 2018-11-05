@@ -28,4 +28,8 @@ public class MenuGUI extends JFrame {
     public void setMenu(String newMenu) {
         cardContainer.show(newMenu);
     }
+
+    public CardContainer getCardContainer() {
+        return cardContainer;
+    }
 }
