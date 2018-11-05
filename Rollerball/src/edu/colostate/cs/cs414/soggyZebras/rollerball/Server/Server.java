@@ -68,7 +68,8 @@ public class Server implements Node {
 
     private void handleMakeMove(Event e ,Socket socket) throws IOException {
         //When client requests to make a move, TODO: alter the game state
-        //Return new game state
+        ClientMakeMove message =(ClientMakeMove) e;
+        game.makeMove(message.getTo(),message.getFrom());
         handleClientRequestGameState(e,socket);
         
     }
