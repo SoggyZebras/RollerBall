@@ -11,7 +11,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 import java.io.IOException;
 import java.net.Socket;
 
-public class Server implements Node {
+public class Server implements Node,Runnable {
 
 
     Game game;
@@ -23,7 +23,7 @@ public class Server implements Node {
     private TCPServerCache serverCache;
     private TCPServerThread serverThread;
 
-    private Server(int port,int numConnections){
+    public Server(int port, int numConnections){
 
         //instantiate variables and create required threads
         this.serverPort = port;
@@ -32,14 +32,10 @@ public class Server implements Node {
 
     }
 
-    private void initiate(boolean demo){
-        //Start server thread(send/receive threads)
-        if(demo){
-            game = new TwoRooks();
-        }
-        else{
-            game = new Game();
-        }
+    public void run(){
+        //Start server thread(send/receive threads
+        game = new Game();
+
         this.serverThread.run();
     }
 
@@ -87,12 +83,5 @@ public class Server implements Node {
         ServerRespondsCheckMove outMessage = new ServerRespondsCheckMove(game.validMoves(inMessage.getPlace()));
 
         this.serverCache.getConnection(socket).sendData(outMessage.getFile());
-    }
-
-    //Start  Server
-    public static void main(String args[]) throws NumberFormatException {
-        Server s = new Server(5003,128);
-        s.initiate(true);
-
     }
 }
