@@ -96,7 +96,7 @@ public class RollerballPanel extends JPanel {
     }
 
     private void drawHighlightedSquares(Graphics2D g2) {
-        g2.setColor(Color.green);
+        g2.setColor(Color.magenta);
         g2.setStroke(new BasicStroke(3));
         for (Location l : potentialMoves) {
             g2.drawRect(l.getCol() * squareSide, l.getRow() * squareSide, squareSide, squareSide);

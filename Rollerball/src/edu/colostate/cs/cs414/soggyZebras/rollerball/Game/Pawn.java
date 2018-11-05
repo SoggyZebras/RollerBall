@@ -1,5 +1,6 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class Pawn extends Piece{
     public  ArrayList<Location> moves = new ArrayList<>();
 
     public ArrayList<Location> validMoves(Map<Location, Piece> state){
-        //quadrant = setQuadrant(); //needs to update every time validMoves is called or once in constructor?
+        quadrant = setQuadrant(); //needs to update every time validMoves is called or once in constructor?
 
         if(quadrant == 1){moveLeft(loc.getRow(),loc.getCol(),state);}
         else if(quadrant == 2){moveUp(loc.getRow(),loc.getCol(),state);}
