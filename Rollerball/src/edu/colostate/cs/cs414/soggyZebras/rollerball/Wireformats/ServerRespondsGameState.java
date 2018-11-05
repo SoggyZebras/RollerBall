@@ -13,12 +13,22 @@ public class ServerRespondsGameState implements Event {
   private String message_type;
   private Map<Location,Piece> board;
 
+  /**
+   *
+   * @param m
+   */
   public ServerRespondsGameState(Map<Location,Piece> m) {
 
     this.message_type = Server_Responds_Game_State;
     this.board = m ;
   }
 
+  /**
+   *
+   * @param filename
+   * @throws IOException
+   * @throws ClassNotFoundException
+   */
   public ServerRespondsGameState(String filename) throws IOException, ClassNotFoundException {
 
     // Create a file input stream and a object input stream to read the incomming message
@@ -59,6 +69,10 @@ public class ServerRespondsGameState implements Event {
     return this.message_type;
   }
 
+  /**
+   *
+   * @return Map<Location,Piece>
+   */
   public Map<Location,Piece>getMap(){
     return this.board;
   }

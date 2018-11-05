@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
+
 public class Client implements Node {
 
     RollerballPanel gui;
@@ -26,7 +27,12 @@ public class Client implements Node {
     private Socket serverSocket;
     private TCPConnection serverConnection;
 
-
+    /**
+     *
+     * @param serverAddress
+     * @param serverPort
+     * @throws IOException
+     */
     public Client(String serverAddress, int serverPort) throws IOException {
 
         // Check if the arguments have been passed correctly
@@ -40,6 +46,10 @@ public class Client implements Node {
 
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     public void initialize() throws IOException {
 
         // print debuggin info
@@ -75,6 +85,12 @@ public class Client implements Node {
 
     //========= END NETWORK SETUP =========//
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return boolean
+     */
     public boolean makeMove(Location from, Location to) {
         // Create make move wireformat with given variables and send to server
         try {
@@ -90,6 +106,10 @@ public class Client implements Node {
         return true;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public boolean getGameState() {
         // Create get game state wireformat and send it to the server
         try {
@@ -102,6 +122,11 @@ public class Client implements Node {
         return true;
     }
 
+    /**
+     *
+     * @param place
+     * @return boolean
+     */
     public boolean checkValidMove(Location place){
         //Ask the server for the valid moves of a board tile
         try {
@@ -114,16 +139,25 @@ public class Client implements Node {
         }
     }
 
+    /**
+     *
+     * @param e
+     */
     private void handleGameState(Event e) {
         // When server sends an updated game state, recompile the game and give it to the ui
         ServerRespondsGameState message = (ServerRespondsGameState) e;
         this.gui.updateState(message.getMap());
     }
 
+    /**
+     *
+     * @param e
+     */
     private void handleServerCheckMove(Event e){
         ServerRespondsCheckMove message = (ServerRespondsCheckMove) e;
         gui.updateValidMoves(message.getList());
     }
+
 
     public void setDebug(){
         this.debug = true;

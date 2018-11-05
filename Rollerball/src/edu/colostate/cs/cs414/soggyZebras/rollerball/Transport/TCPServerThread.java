@@ -16,6 +16,11 @@ public class TCPServerThread implements Runnable{
     private TCPConnection connection = null;
     private Node node = null;
 
+    /**
+     *
+     * @param node
+     * @param c
+     */
     public TCPServerThread(Node node, TCPServerCache c) {
         try {
             this.node = node;
@@ -27,6 +32,12 @@ public class TCPServerThread implements Runnable{
         }
     }
 
+    /**
+     *
+     * @param node
+     * @param c
+     * @param port
+     */
     public TCPServerThread(Node node, TCPServerCache c, int port) {
         try {
             this.node = node;
@@ -63,11 +74,18 @@ public class TCPServerThread implements Runnable{
 
     }
 
-
+    /**
+     *
+     * @return int
+     */
     public synchronized int getPort() {
         return this.serverSocket.getLocalPort();
     }
 
+    /**
+     *
+     * @return Socket
+     */
     public synchronized Socket getSocket() {
         return this.socket;
     }

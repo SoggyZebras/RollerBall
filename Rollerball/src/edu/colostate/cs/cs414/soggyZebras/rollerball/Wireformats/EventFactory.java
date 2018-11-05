@@ -9,6 +9,13 @@ public class EventFactory implements Protocol {
 
     private EventFactory(){}
 
+    /**
+     *
+     * @param filename
+     * @param node
+     * @param socket
+     * @throws ClassNotFoundException
+     */
     public synchronized static void work(String filename, Node node, Socket socket) throws ClassNotFoundException {
         // Depending on what type of message has arrived, perfom an action
 

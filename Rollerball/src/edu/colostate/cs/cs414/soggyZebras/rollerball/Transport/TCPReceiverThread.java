@@ -16,6 +16,11 @@ public class TCPReceiverThread implements Runnable{
     private ObjectInputStream oin;
     private Node node;
 
+    /**
+     *
+     * @param node
+     * @param socket
+     */
     protected TCPReceiverThread(Node node,Socket socket) {
         this.socket = socket;
         this.node = node;
@@ -50,6 +55,10 @@ public class TCPReceiverThread implements Runnable{
         }
     }
 
+    /**
+     *
+     * @return Socket
+     */
     public Socket getSocket() {
         return this.socket;
     }
