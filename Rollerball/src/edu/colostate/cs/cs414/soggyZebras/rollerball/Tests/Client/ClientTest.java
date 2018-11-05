@@ -40,7 +40,7 @@ class ClientTest {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	@Test
