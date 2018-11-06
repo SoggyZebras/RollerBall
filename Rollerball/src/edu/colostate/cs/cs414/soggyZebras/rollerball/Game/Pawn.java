@@ -1,6 +1,5 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -8,15 +7,20 @@ public class Pawn extends Piece{
 
     public Pawn(Location loc, char color, String type) {
         super(loc, color, type);
-        quadrant = setQuadrant(); //needs to update every time validMoves is called or once in constructor?
-
+        quadrant = setQuadrant();
     }
 
     public  ArrayList<Location> moves = new ArrayList<>();
 
+    @Override
     public ArrayList<Location> validMoves(Map<Location, Piece> state){
-        quadrant = setQuadrant(); //needs to update every time validMoves is called or once in constructor?
+        //System.out.println("VM LOC: " +loc.getRow()+" ,"+loc.getCol());
+        //System.out.println("QUADRANT OLD: "+ quadrant);
+        quadrant = setQuadrant();
 
+        if(!moves.isEmpty()){
+            moves.clear();
+        }
         if(quadrant == 1){moveLeft(loc.getRow(),loc.getCol(),state);}
         else if(quadrant == 2){moveUp(loc.getRow(),loc.getCol(),state);}
         else if(quadrant == 3){moveRight(loc.getRow(),loc.getCol(),state);}
@@ -26,7 +30,7 @@ public class Pawn extends Piece{
         return moves;
     }
 
-    private int quadrant;
+    private int quadrant= 0;
 
     //Only viable move will be "forward" relative to a specific quadrant:
 
@@ -48,6 +52,7 @@ public class Pawn extends Piece{
                 add(row - 1, col, state);
                 add(row - 1, col - 1, state);
         }
+
     }
 
     private void moveLeft(int row, int col,Map<Location, Piece> state){
@@ -66,6 +71,7 @@ public class Pawn extends Piece{
                 add(row, col - 1, state);
                 add(row + 1, col - 1, state);
         }
+
     }
 
     private void moveRight(int row, int col,Map<Location, Piece> state){
@@ -83,6 +89,7 @@ public class Pawn extends Piece{
                 add(row, col + 1, state);
                 add(row - 1, col + 1, state);
         }
+
     }
 
     private void moveDown(int row, int col,Map<Location, Piece> state){
@@ -101,6 +108,7 @@ public class Pawn extends Piece{
                 add(row + 1, col, state);
                 add(row + 1, col + 1, state);
         }
+
     }
 
 
@@ -108,33 +116,51 @@ public class Pawn extends Piece{
 
     private int setQuadrant(){
         //Sets piece quadrant from current position - Quads are numbered starting at 1 for bottom and rotating clockwise
+        Location locCur = super.getLoc();
 
         //top or bottom
-        if(loc.getRow()<=1){
-            if((ExternalRing()&&loc.getCol()<=5) || (!ExternalRing()&&loc.getCol()>=1&&loc.getCol()<=4))
+        if(locCur.getRow()<=1){
+            if((ExternalRing()&&locCur.getCol()<=5) || (locCur.getCol()>=1&&locCur.getCol()<=4)) {
+                //System.out.println("SET QUADRANT 3- TOP LOC: ROW: " + locCur.getRow() + " COL: " + locCur.getCol() + "\n");
                 return 3; //Quadrant is top side - black starting quad
+            }
         }
 
-        else if(loc.getRow()>=5) {
-            if((ExternalRing()&&loc.getCol()>=1) || (!ExternalRing()&&loc.getCol()>=2&&loc.getCol()<=5))
+        if(locCur.getRow()>=5) {
+            if((ExternalRing()&&locCur.getCol()>=1) || (!ExternalRing()&&locCur.getCol()>=2&&locCur.getCol()<=5)) {
+                //System.out.println("SET QUADRANT 1- BOTTOM LOC: ROW: " + locCur.getRow() + " COL: " + locCur.getCol() + "\n");
                 return 1; //Quadrant is bottom side- white starting quad
+            }
         }
 
         //left or right
-        else if(loc.getCol()<=1 ){
-            if((ExternalRing()&&loc.getRow()>=1) || (!ExternalRing()&&loc.getRow()>=2&&loc.getRow()<=5))
+        if(locCur.getCol()<=1 ){
+            if((ExternalRing()&&locCur.getRow()>=1) || (!ExternalRing()&&locCur.getRow()>=2&&locCur.getRow()<=5)) {
+                //System.out.println("SET QUADRANT 2- LEFT LOC: ROW: " + locCur.getRow() + " COL: " + locCur.getCol() + "\n");
                 return 2; //Quadrant is left side
+            }
         }
 
-        else if(loc.getCol()>=5 ){
-            if((ExternalRing()&&loc.getRow()<=5) || (!ExternalRing()&&loc.getRow()>=1&&loc.getRow()<=4))
+        if(locCur.getCol()>=5 ){
+            if((ExternalRing()&&locCur.getRow()<=5) || (!ExternalRing()&&locCur.getRow()>=1&&locCur.getRow()<=4)) {
+                //System.out.println("SET QUADRANT 4- RIGHT LOC: ROW: " + locCur.getRow() + " COL: " + locCur.getCol() + "\n");
                 return 4; //Quadrant is right side
+            }
         }
         //Quad not set with valid int
+        //System.out.println("QUADRANT NOT SET!!!");
         throw new java.lang.RuntimeException("Quadrant was not set for pawn - invalid location sent");
     }
 
-    private void add(int row, int col, Map<Location, Piece> state) {
+    @Override
+    public void setLoc(Location l) {
+        this.loc = l;
+        this.quadrant = setQuadrant();
+        //System.out.println("QUADRANT NEW: "+ quadrant);
+
+    }
+
+        private void add(int row, int col, Map<Location, Piece> state) {
         int curRow = this.getRow();
         int curCol = this.getCol();
 
@@ -145,8 +171,6 @@ public class Pawn extends Piece{
 
     private boolean checkFriendly(Map<Location, Piece> state, int row, int col){
         Location loc = new Location(row, col);
-
-        //&&(row!=curRow&&col!=curCol)
 
         if(!state.containsKey(loc)){
             return true;

@@ -49,11 +49,12 @@ public class Game implements java.io.Serializable {
 
     public Map<Location, Piece> makeMove(Location to, Location from){
         System.err.println(board);
-        if(board.get(from).validMoves(board).contains(to)){
+        //if(board.get(from).validMoves(board).contains(to)){
             board.put((to), board.get(from));
             board.get(to).setLoc(to);
             board.put(from, null);
-        }
+
+        //}
         return board;
     }
 

@@ -32,7 +32,7 @@ class PawnTest {
 	@Test
 	void testQuads() {
 
-		assertTrue(PTestTOP.getQuadrant()==3); //top quad
+		assertEquals(PTestTOP.getQuadrant(),3); //top quad
 		assertTrue(PTestBOTTOM.getQuadrant()==1); //bottom quad
 		assertTrue(PTestLEFT.getQuadrant()==2);
 		assertTrue(PTestRIGHT.getQuadrant()==4);
