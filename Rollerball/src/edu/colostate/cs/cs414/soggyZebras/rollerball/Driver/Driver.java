@@ -1,8 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Driver;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.Client;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.GUIRunner;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.GameGUI;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuDemoRunner;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Server;
 
@@ -12,7 +11,7 @@ public class Driver {
 
   public static void main(String []args) throws IOException, InterruptedException {
     Thread t1 = new Thread(new Server(5003,128));
-    Thread t2 = new Thread(new GUIRunner());
+    Thread t2 = new Thread(new MenuDemoRunner());
     t1.start();
     t2.start();
     try {
