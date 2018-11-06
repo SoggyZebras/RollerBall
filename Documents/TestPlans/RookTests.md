@@ -1,5 +1,6 @@
-#### Test ID  and Name 
-Tests functionality of the Rook class4
+
+### TP3 RookTests
+The Rook class represents a piece in the game that can move and bounce in straight lines.
 
 ### List of Tests
 1. Test friendly piece in the way (TC1)
