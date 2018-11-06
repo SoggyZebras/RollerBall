@@ -12,7 +12,7 @@ public class Driver {
 
   public static void main(String []args) throws IOException, InterruptedException {
     Thread t1 = new Thread(new Server(5003,128));
-    Thread t2 = new Thread(new GUIRunner());
+    Thread t2 = new Thread(new MenuGUI());
     t1.start();
     t2.start();
     try {
