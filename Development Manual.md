@@ -10,8 +10,8 @@ DEVELOPMENT MANUAL
 
 Run the following commands in the directory of the cloner repository to run the game driver:
 
-first run:
+### first run:
 •	javac -cp Rollerball/src Rollerball/src/edu/colostate/cs/cs414/soggyZebras/rollerball/Driver/Driver.java
 
-then run:
+### then run:
 •	java -cp ./Rollerball/src edu/colostate/cs/cs414/soggyZebras/rollerball/Driver/Driver
