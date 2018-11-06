@@ -10,8 +10,8 @@ import java.io.IOException;
  * handles the window the game is shown in
  */
 public class GameGUI extends JFrame {
-    public final int WIDTH = 350;
-    public final int HEIGHT = 350;
+    public final int WIDTH = 1200;
+    public final int HEIGHT = 1300;
 
     private RollerballPanel panel;
 
