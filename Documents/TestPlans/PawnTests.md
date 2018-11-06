@@ -8,9 +8,7 @@ The pawn class encompasses 4 initial pawn pieces on the board
 3. testFriendlyMove
 4. testEnemyMove
 
-## Test Case ID
-
-#### TC1 - testQuads
+## TC1 - testQuads
 
 #### Test Case Summary
 This test makes sure that when the pawn pieces are initialized that they are in the correct quadrants
@@ -23,9 +21,7 @@ This test makes sure that when the pawn pieces are initialized that they are in 
 The pawn pieces will be created in the correct quadrants 
 
 
-## Test Case ID
-
-#### TC2 - testMoveBlankBoard
+## TC2 - testMoveBlankBoard
 
 #### Test Case Summary
 This test ensures that each piece moves the correct way for their quadrant and do not move to an invalid position
@@ -40,9 +36,7 @@ This test ensures that each piece moves the correct way for their quadrant and d
 The returned vector of Location objects in validMove() for each piece will be correct and valid for the rollerball game board
 
 
-## Test Case ID
-
-#### TC3 - testFriendlyMove
+## TC3 - testFriendlyMove
 
 #### Test Case Summary
 This test ensures that a pawn piece will not move to, and thereby capture, a "friendly" piece of the same color by testing both validMoves() and checkFriendly() function(s) in pawn class
@@ -56,9 +50,8 @@ This test ensures that a pawn piece will not move to, and thereby capture, a "fr
 #### Expected Result
 The validMoves() vector list of allowed moves for the particular pawn piece being currently tests does not contain the Location position of the friendly piece
 
-## Test Case ID
 
-#### TC4 - testEnemyMove
+## TC4 - testEnemyMove
 
 #### Test Case Summary
 This test ensures that a pawn piece will recognize an enemy piece inhabiting a currently valid move at the pawn current position and include this move in validMoves() list
