@@ -175,7 +175,8 @@ public class Pawn extends Piece{
         if(!state.containsKey(loc)){
             return true;
         }
-        else if(state.get(loc).getColor()==this.getColor()||(this.getLoc()==loc)){ //case for if piece in that position is the same color
+
+        else if((state.get(loc)!=null)&&(state.get(loc).getColor()==this.getColor()||(this.getLoc()==loc))){ //case for if piece in that position is the same color
             return false;
         }
         return true;
