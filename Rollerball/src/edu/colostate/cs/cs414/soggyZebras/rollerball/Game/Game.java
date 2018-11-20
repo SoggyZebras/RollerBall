@@ -1,5 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +9,9 @@ import java.util.Map;
 public class Game implements java.io.Serializable {
 
     protected Map<Location,Piece> board;
+    private TCPConnection player1;
+    private TCPConnection player2;
+    private int gameID;
 
     // set to 'w' or 'b' depending on who's turn it is
     private char whosTurn;
@@ -62,4 +67,33 @@ public class Game implements java.io.Serializable {
     public Map<Location, Piece> getBoard() {
         return board;
     }
+
+
+    public TCPConnection getPlayer1(){
+        return player1;
+    }
+
+
+    public void setPlayer1(TCPConnection c1){
+        player1 = c1;
+    }
+
+
+    public TCPConnection getPlayer2(){
+        return player2;
+    }
+
+    public void setPlayer2(TCPConnection c2){
+        player2 = c2;
+    }
+
+    public int getGameID(){
+        return gameID;
+    }
+
+    public void setGameID(int gID){
+        gameID = gID;
+    }
+
+
 }

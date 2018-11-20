@@ -24,4 +24,10 @@ public interface Protocol {
      String Client_Sends_Game_Invite = "clientSendsGameInvite.msg";
      String Server_Responds_Game_Invite = "clientSendsGameInvite.msg";
 
+     String Client_Sends_Invite = "clientSendsInvite.msg";
+     String Client_Responds_Invite = "clientRespondsInvite";
+
+     String Server_Sends_Invite = "serverSendsInvite.msg";
+     String Server_Responds_Invite = "serverRespondsInvite.msg";
+
 }

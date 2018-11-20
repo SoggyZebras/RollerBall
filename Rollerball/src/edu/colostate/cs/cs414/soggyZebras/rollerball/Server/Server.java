@@ -27,7 +27,7 @@ public class Server implements Node,Runnable {
 
         //instantiate variables and create required threads
         this.serverPort = port;
-        this.serverCache = new TCPServerCache(numConnections);
+        this.serverCache = new TCPServerCache();
         this.serverThread = new TCPServerThread(this, serverCache, this.serverPort);
 
     }
@@ -73,7 +73,7 @@ public class Server implements Node,Runnable {
     private void handleClientRequestGameState(Event e, Socket socket) throws IOException {
         //When client asks for a new game state, create a wireformat and send it to the client
         ServerRespondsGameState message = new ServerRespondsGameState(game.getBoard());
-        this.serverCache.getConnection(socket).sendData(message.getFile());
+        this.serverCache.getUser(socket).sendData(message.getFile());
     }
 
     private void handleCheckMove(Event e, Socket socket) throws IOException, ClassNotFoundException {
@@ -82,6 +82,6 @@ public class Server implements Node,Runnable {
 
         ServerRespondsCheckMove outMessage = new ServerRespondsCheckMove(game.validMoves(inMessage.getPlace()));
 
-        this.serverCache.getConnection(socket).sendData(outMessage.getFile());
+        this.serverCache.getUser(socket).sendData(outMessage.getFile());
     }
 }
