@@ -49,8 +49,7 @@ public class RollerballPanel extends JPanel {
         potentialMoves = new ArrayList<>();
 
         this.squareSide = getWidth() / 7;
-
-        pieceDrawer = new PieceDrawer("Rollerball/res/pieces.png", squareSide);
+        pieceDrawer = new PieceDrawer("Rollerball/src/res/pieces.png", squareSide);
     }
 
     @Override

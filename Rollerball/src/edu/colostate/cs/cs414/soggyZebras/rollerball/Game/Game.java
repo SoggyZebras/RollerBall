@@ -67,7 +67,6 @@ public class Game implements java.io.Serializable {
         return board;
     }
 
-
     public Map<Location, Piece> getBoard() {
         return board;
     }
