@@ -10,6 +10,7 @@ public class ClientMakeMove implements Event {
     private String message_type;
     private Location to;
     private Location from;
+    private int gameID;
 
     //Sending message constructor
 
@@ -18,11 +19,12 @@ public class ClientMakeMove implements Event {
      * @param from
      * @param to
      */
-    public ClientMakeMove(Location from, Location to){
+    public ClientMakeMove(Location from, Location to, int id){
 
         this.message_type = Client_Make_Move;
         this.to = to;
         this.from =from;
+        this.gameID = id;
     }
 
     //Recieving message constructor
@@ -42,6 +44,7 @@ public class ClientMakeMove implements Event {
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
+        this.gameID = oin.readInt();
         this.to = (Location) oin.readObject();
         this.from = (Location) oin.readObject();
 
@@ -63,6 +66,7 @@ public class ClientMakeMove implements Event {
 
         // Take the local variables and serialize them into a file
         oout.writeObject(filename);
+        oout.writeInt(gameID);
         oout.writeObject(this.to);
         oout.writeObject(this.from);
 
@@ -93,4 +97,6 @@ public class ClientMakeMove implements Event {
     public Location getFrom(){
         return from;
     }
+
+    public int getGameID() { return gameID;}
 }

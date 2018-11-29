@@ -11,15 +11,17 @@ public class ServerRespondsGameState implements Event {
 
   //Information to be serialized or deserialized
   private String message_type;
+  private int gameID;
   private Map<Location,Piece> board;
 
   /**
    *
    * @param m
    */
-  public ServerRespondsGameState(Map<Location,Piece> m) {
+  public ServerRespondsGameState(Map<Location,Piece> m, int id) {
 
     this.message_type = Server_Responds_Game_State;
+    this.gameID = id;
     this.board = m ;
   }
 
@@ -37,6 +39,7 @@ public class ServerRespondsGameState implements Event {
 
 
     this.message_type = (String) oin.readObject();
+    this.gameID = oin.readInt();
     this.board = (Map<Location,Piece>) oin.readObject();
 
 
@@ -54,6 +57,7 @@ public class ServerRespondsGameState implements Event {
     ObjectOutputStream oout = new ObjectOutputStream(new BufferedOutputStream(fileStream));
 
     oout.writeObject(this.message_type);
+    oout.writeInt(this.gameID);
     oout.writeObject(this.board);
 
     //flush the objects to the stream and close the streams
@@ -76,5 +80,7 @@ public class ServerRespondsGameState implements Event {
   public Map<Location,Piece>getMap(){
     return this.board;
   }
+
+  public int getGameID(){ return this.gameID; }
 
 }

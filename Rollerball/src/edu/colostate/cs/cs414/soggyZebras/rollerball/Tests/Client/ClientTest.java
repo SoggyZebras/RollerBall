@@ -30,7 +30,7 @@ class ClientTest {
 	void testMakeMove() throws IOException {
 
 		//Thow an exception if the selector was not created correctly
-		Thread t1 = new Thread(new Server(5000,128));
+		Thread t1 = new Thread(new Server(5000));
 		t1.start();
 		Client c = new Client("127.0.0.1", 5000);
 		c.initialize();
@@ -47,7 +47,7 @@ class ClientTest {
 	void testCheckValidMove() throws IOException {
 
 		//Thow an exception if the selector was not created correctly
-		Thread t1 = new Thread(new Server(5000,128));
+		Thread t1 = new Thread(new Server(5000));
 		t1.start();
 		Client c = new Client("127.0.0.1", 5000);
 		c.initialize();
@@ -60,7 +60,7 @@ class ClientTest {
 	void testgetGameState() throws IOException {
 
 		//Thow an exception if the selector was not created correctly
-		Thread t1 = new Thread(new Server(5000,128));
+		Thread t1 = new Thread(new Server(5000));
 		t1.start();
 		Client c = new Client("127.0.0.1", 5000);
 		c.initialize();

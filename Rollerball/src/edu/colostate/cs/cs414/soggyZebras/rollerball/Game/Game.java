@@ -19,8 +19,9 @@ public class Game implements java.io.Serializable {
     /**
      * create a new game
      */
-    public Game() {
+    public Game(int id) {
         this.board = new HashMap<>();
+        this.gameID = id;
 
         // add white pieces
         addPiece(new Pawn(new Location(5, 2), 'w', "pawn"));

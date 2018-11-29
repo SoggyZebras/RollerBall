@@ -6,8 +6,9 @@ public class ClientRequestGameState implements Event{
 
     //Information to be serialized or deserialized
     private String message_type;
+    private int gameID;
 
-    public ClientRequestGameState() { this.message_type = Client_Request_Game_State; }
+    public ClientRequestGameState(int id) { this.message_type = Client_Request_Game_State; this.gameID = id; }
 
     /**
      *
@@ -22,6 +23,7 @@ public class ClientRequestGameState implements Event{
         ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(fileStream));
 
         this.message_type = (String) oin.readObject();
+        this.gameID = oin.readInt();
 
         // Close streams
         oin.close();
@@ -37,6 +39,7 @@ public class ClientRequestGameState implements Event{
         ObjectOutputStream oout = new ObjectOutputStream(new BufferedOutputStream(fileStream));
 
         oout.writeObject(filename);
+        oout.writeInt(gameID);
 
         //flush the objects to the stream and close the streams
         oout.flush();
@@ -50,5 +53,7 @@ public class ClientRequestGameState implements Event{
     public String getType() {
         return this.message_type;
     }
+
+    public int getGameID() { return this.gameID; }
 
 }

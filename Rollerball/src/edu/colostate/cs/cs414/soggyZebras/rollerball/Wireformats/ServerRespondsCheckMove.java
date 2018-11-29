@@ -12,15 +12,17 @@ public class ServerRespondsCheckMove implements Event {
 
     //Information to be serialized or deserialized
     private String message_type;
+    private int gameID;
     private ArrayList<Location> list;
 
     /**
      *
      * @param l
      */
-    public ServerRespondsCheckMove(ArrayList<Location> l) {
+    public ServerRespondsCheckMove(ArrayList<Location> l, int id) {
 
         this.message_type = Server_Responds_Check_Move;
+        this.gameID = id;
         this.list = l;
     }
 
@@ -39,6 +41,7 @@ public class ServerRespondsCheckMove implements Event {
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
+        this.gameID = oin.readInt();
         this.list = (ArrayList<Location>) oin.readObject();
 
 
@@ -58,6 +61,7 @@ public class ServerRespondsCheckMove implements Event {
 
         // Take the local variables and serialize them into a file
         oout.writeObject(filename);
+        oout.writeInt(this.gameID);
         oout.writeObject(this.list);
 
         //flush the objects to the stream and close the streams
@@ -79,6 +83,8 @@ public class ServerRespondsCheckMove implements Event {
     public ArrayList<Location> getList(){
         return this.list;
     }
+
+    public int getGameID() { return this.gameID; }
 
 
 }
