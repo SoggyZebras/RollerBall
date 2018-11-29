@@ -22,6 +22,10 @@ public class CardContainer extends JPanel {
         add("main_menu", mainMenu);
         MenuPanel currentGames = new CurrentGamesPanel(menuGUI);
         add("current_games", currentGames);
+        MenuPanel createInvitePanel = new CreateInvitePanel(menuGUI);
+        add("create_invite", createInvitePanel);
+        MenuPanel pendingInvitesPanel = new PendingInvitesPanel(menuGUI);
+        add("pending_invites", pendingInvitesPanel);
 
         // TODO: add more cards here
     }
