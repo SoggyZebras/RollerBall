@@ -10,7 +10,7 @@ public class GameCache {
 
 
     public GameCache(){
-        games = new ArrayList<Game>();
+        games = new ArrayList<>();
     }
 
 

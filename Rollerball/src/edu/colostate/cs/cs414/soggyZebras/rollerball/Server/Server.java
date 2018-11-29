@@ -26,7 +26,6 @@ public class Server implements Node,Runnable {
     private int serverPort;
     private TCPServerCache serverCache;
     private TCPServerThread serverThread;
-    ArrayList<User> userList;
 
     public Server(int port){
 
