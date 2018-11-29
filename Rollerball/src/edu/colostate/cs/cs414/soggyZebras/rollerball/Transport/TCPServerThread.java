@@ -4,6 +4,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerCache;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ServerSendsConnect;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -73,7 +74,9 @@ public class TCPServerThread implements Runnable{
                 userNumbers.add(uID);
 
                 //populate the server cache with a new user
-                this.serverCache.addUser(new User(uID,connection));
+                User tmp = new User(uID,connection);
+                this.serverCache.addUser(tmp);
+                connection.sendData(new ServerSendsConnect(tmp).getFile());
 
             }
             catch(IOException ioe) {

@@ -4,23 +4,21 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 
 import java.io.*;
 
-import static edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Protocol.Server_Sends_Invite;
+import static edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Protocol.Client_Responds_Invite;
 
-public class ServerSendsInvite implements Event {
+public class ServerSendsConnect implements Event {
 
     //Information to be serialized or deserialized
     private String message_type;
-    private User userFrom;
-    private int inviteID;
+    private User user;
 
     //Sending message constructor
 
 
-    public ServerSendsInvite(User to,int inv){
+    public ServerSendsConnect(User u){
 
-        this.message_type = Server_Sends_Invite;
-        this.userFrom = to;
-        this.inviteID = inv;
+        this.message_type = Server_Responds_Invite;
+        this.user = u;
     }
 
     //Recieving message constructor
@@ -31,7 +29,7 @@ public class ServerSendsInvite implements Event {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public ServerSendsInvite(String filename) throws IOException, ClassNotFoundException {
+    public ServerSendsConnect(String filename) throws IOException, ClassNotFoundException {
 
         // Create a file input stream and a object input stream to read the incomming message
         FileInputStream fileStream = new FileInputStream(filename);
@@ -40,8 +38,7 @@ public class ServerSendsInvite implements Event {
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
-        this.userFrom = (User) oin.readObject();
-        this.inviteID = oin.readInt();
+        this.user = (User) oin.readObject();
 
 
 
@@ -61,8 +58,7 @@ public class ServerSendsInvite implements Event {
 
         // Take the local variables and serialize them into a file
         oout.writeObject(filename);
-        oout.writeObject(this.userFrom);
-        oout.writeInt(this.inviteID);
+        oout.writeObject(this.user);
 
         //flush the objects to the stream and close the streams
         oout.flush();
@@ -77,11 +73,9 @@ public class ServerSendsInvite implements Event {
     }
 
 
-    public User getUserFrom(){
-        return userFrom;
+    public User getUser(){
+        return user;
     }
-
-    public int getInviteID() { return inviteID; }
 
 
 }

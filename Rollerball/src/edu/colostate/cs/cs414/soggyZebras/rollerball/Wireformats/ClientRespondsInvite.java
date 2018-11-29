@@ -11,15 +11,17 @@ public class ClientRespondsInvite implements Event {
     //Information to be serialized or deserialized
     private String message_type;
     private User userTo;
+    private int inviteID;
     private boolean accepted;
 
     //Sending message constructor
 
 
-    public ClientRespondsInvite(User to){
+    public ClientRespondsInvite(User to, int inv){
 
         this.message_type = Client_Responds_Invite;
         this.userTo = to;
+        this.inviteID = inv;
     }
 
     //Recieving message constructor
@@ -41,6 +43,7 @@ public class ClientRespondsInvite implements Event {
         this.message_type = (String) oin.readObject();
         this.userTo = (User) oin.readObject();
         this.accepted = (boolean) oin.readObject();
+        this.inviteID = oin.readInt();
 
 
 
@@ -62,6 +65,7 @@ public class ClientRespondsInvite implements Event {
         oout.writeObject(filename);
         oout.writeObject(this.userTo);
         oout.writeObject(this.accepted);
+        oout.writeInt(this.inviteID);
 
         //flush the objects to the stream and close the streams
         oout.flush();
@@ -82,5 +86,6 @@ public class ClientRespondsInvite implements Event {
 
     public boolean getAccpeted() { return accepted; }
 
+    public int getInviteID() { return this.inviteID;}
 
 }

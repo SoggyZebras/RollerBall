@@ -41,8 +41,6 @@ public class Server implements Node,Runnable {
 
     public void run(){
         //Start server thread(send/receive threads
-        games.addGame(new Game(0));
-
         this.serverThread.run();
     }
 
@@ -57,9 +55,11 @@ public class Server implements Node,Runnable {
 
             case Client_Request_Check_Move: handleCheckMove(e,socket);break;
 
-            case Client_Sends_Game_Invite: handleClientSendsInvite(e,socket);break;
+            case Client_Sends_Invite: handleClientSendsInvite(e,socket);break;
 
-            case Client_Sends_Get_History:
+            case Client_Responds_Invite: handleClientRespondsInvite(e,socket);break;
+
+            case Client_Sends_Get_History_Refresh:
 
             case Client_Sends_Login:
 
@@ -70,7 +70,6 @@ public class Server implements Node,Runnable {
     }
 
     private void handleMakeMove(Event e ,Socket socket) throws IOException {
-        //When client requests to make a move, TODO: alter the game state
         ClientMakeMove message =(ClientMakeMove) e;
        games.getGame(message.getGameID()).makeMove(message.getTo(),message.getFrom());
         handleClientRequestGameState(e,socket);
@@ -84,7 +83,7 @@ public class Server implements Node,Runnable {
         this.serverCache.getUser(socket).sendData(response.getFile());
     }
 
-    private void handleCheckMove(Event e, Socket socket) throws IOException, ClassNotFoundException {
+    private void handleCheckMove(Event e, Socket socket) throws IOException {
         //When client asks for available spaces, get possible moves from game
         ClientRequestsCheckMove message = (ClientRequestsCheckMove) e;
 
@@ -93,31 +92,60 @@ public class Server implements Node,Runnable {
         this.serverCache.getUser(socket).sendData(response.getFile());
     }
 
-    private void handleClientSendsInvite(Event e, Socket socket){
+    private void handleClientSendsInvite(Event e, Socket socket) throws IOException{
         ClientSendsInvite message = (ClientSendsInvite) e;
         User sentFrom = this.serverCache.getUser(socket);
         Invite inv = new Invite(sentFrom,message.getUserTo(),genInviteID());
+
         message.getUserTo().addInviteSent(inv);
         sentFrom.addInviteGot(inv);
+
+        ServerSendsInvite response = new ServerSendsInvite(sentFrom,inv.getInviteID());
+        ServerRespondsInvite response2 = new ServerRespondsInvite(sentFrom,-1);
+
+        sentFrom.sendData(response2.getFile());
+        message.getUserTo().sendData(response.getFile());
+
+    }
+
+    private void handleClientRespondsInvite(Event e, Socket s) throws IOException {
+        ClientRespondsInvite message = (ClientRespondsInvite) e;
+        User sentUser = this.serverCache.getUser(s);
+        int gID;
+        if(message.getAccpeted()){
+            message.getUserTo().removeInviteGot(message.getInviteID());
+            sentUser.removeInviteSent(message.getInviteID());
+            gID = genGameID();
+            games.addGame(new Game(gID,sentUser,message.getUserTo()));
+        }
+        else{
+            gID = -1;
+        }
+
+        ServerRespondsInvite response1 = new ServerRespondsInvite(sentUser,gID);
+        ServerRespondsInvite response2 = new ServerRespondsInvite(message.getUserTo(),gID);
+
+        sentUser.sendData(response1.getFile());
+        message.getUserTo().sendData(response2.getFile());
 
     }
 
     //Check each game and make sure the random numbe generated isn't already in use.
     private int genGameID(){
-       int id = random.nextInt();
+       int id = random.nextInt(Integer.MAX_VALUE);
 
        while(!gameIDs.contains(id)){
-           id = random.nextInt();
+           id = random.nextInt(Integer.MAX_VALUE);
        }
        gameIDs.add(id);
        return id;
     }
 
     private int genInviteID(){
-        int id = random.nextInt();
+        int id = random.nextInt(Integer.MAX_VALUE);
 
         while(!inviteIDs.contains(id)){
-            id = random.nextInt();
+            id = random.nextInt(Integer.MAX_VALUE);
         }
         inviteIDs.add(id);
         return id;
