@@ -1,8 +1,6 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Game implements java.io.Serializable {
 
@@ -45,6 +43,23 @@ public class Game implements java.io.Serializable {
     public ArrayList<Location> validMoves(Location l){
         return board.get(l).validMoves(board);
 
+    }
+
+    public boolean wonGame(){
+
+        Set<Location> allLocs = new HashSet<Location>();
+
+        //TODO: only populate locations from other piece color
+        for(Location I :board.keySet()){
+            for(Location X : validMoves(I)) {
+                allLocs.add(X);
+            }
+        }
+
+        //Game class will have player variable
+
+
+        return false;
     }
 
     public Map<Location, Piece> makeMove(Location to, Location from){
