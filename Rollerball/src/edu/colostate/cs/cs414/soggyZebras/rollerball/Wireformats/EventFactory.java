@@ -42,13 +42,15 @@ public class EventFactory implements Protocol {
 
                 case Client_Responds_Invite: node.onEvent(new ClientRespondsInvite(filename), socket);break;
 
-                case Client_Sends_Register:
+                case Server_Responds_Registration:
+
+                case Client_Sends_Registration:
 
                 case Client_Sends_Login:
 
-                case Client_Sends_Game_Invite_Refresh:
+                case Client_Sends_Invite_Refresh:
 
-                case Client_Sends_Get_History_Refresh:
+                case Server_Responds_Invite_Refresh:
 
                 default:
 

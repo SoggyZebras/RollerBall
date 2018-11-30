@@ -14,17 +14,14 @@ public interface Protocol {
      String Client_Request_Game_State = "clientRequestGameState.msg";
      String Server_Responds_Game_State = "serverRespondsGameState.msg";
 
-     String Client_Sends_Register = "clientSendsRegister.msg";
-     String Server_Responds_Register = "serverRespondsRegister.msg";
+     String Client_Sends_Registration = "clientSendsRegistration.msg";
+     String Server_Responds_Registration = "serverRespondsRegistration.msg";
 
      String Client_Sends_Login = "clientSendsLogin.msg";
      String Server_Responds_Login = "serverRespondsLogin.msg";
 
-     String Client_Sends_Get_History_Refresh = "clientSendsGetHistoryRefresh.msg";
-     String Server_Responds_Get_History_Refresh = "serverRespondsGetHistoryRefresh.msg";
-
-     String Client_Sends_Game_Invite_Refresh = "clientSendsGameInviteRefresh.msg";
-     String Server_Responds_Game_Invite_Refresh = "clientSendsGameInviteRefresh.msg";
+     String Client_Sends_Invite_Refresh = "clientSendsInviteRefresh.msg";
+     String Server_Responds_Invite_Refresh = "serverSendsInviteRefresh.msg";
 
      String Client_Sends_Invite = "clientSendsInvite.msg";
      String Client_Responds_Invite = "clientRespondsInvite";

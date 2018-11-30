@@ -78,11 +78,11 @@ public class Client implements Node {
 
             case Server_Responds_Invite: handleServerRespondsInvite(e);break;
 
-            case Server_Responds_Get_History_Refresh:
-
-            case Server_Responds_Register:
+            case Server_Responds_Registration:
 
             case Server_Responds_Login:
+
+            case Server_Responds_Invite_Refresh:
 
             default:
         }

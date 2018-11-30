@@ -50,7 +50,7 @@ public class Server implements Node,Runnable {
 
             case Client_Make_Move: handleMakeMove(e,socket);break;
 
-            case Client_Request_Game_State:
+            case Client_Request_Game_State: handleClientRequestGameState(e, socket);
 
             case Client_Request_Check_Move: handleCheckMove(e,socket);break;
 
@@ -58,11 +58,11 @@ public class Server implements Node,Runnable {
 
             case Client_Responds_Invite: handleClientRespondsInvite(e,socket);break;
 
-            case Client_Sends_Get_History_Refresh:
-
             case Client_Sends_Login:
 
-            case Client_Sends_Register:
+            case Client_Sends_Registration:
+
+            case Client_Sends_Invite_Refresh:
 
             default:
         }
