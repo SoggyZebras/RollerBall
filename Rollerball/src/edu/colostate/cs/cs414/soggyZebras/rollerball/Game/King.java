@@ -6,9 +6,13 @@ public class King extends Piece {
 
     public ArrayList<Location> moves;
     public Map<Location, Piece> gameState;
+    public ArrayList<Location> badMoves = new ArrayList<>();
+    public char myColor;
+    public boolean otherKing = false;
 
     public King(Location loc, char color, String type) {
         super(loc, color, type);
+        myColor=color;
     }
 
     /**
@@ -22,6 +26,8 @@ public class King extends Piece {
         int col = loc.getCol();
         this.gameState = gameState;
         moves = new ArrayList<>();
+        if(!otherKing)
+            unsafeMoves();
 
         moveRight(row, col);
         moveLeft(row, col);
@@ -34,8 +40,6 @@ public class King extends Piece {
 
         return moves;
     }
-
-    //still need to check for if the move is safe relative to other pieces.
 
     /**
      *
@@ -182,7 +186,7 @@ public class King extends Piece {
     private void add(int row, int col) {
         Location l = new Location(row, col);
 
-        if(!spotTakenByTeammate(l))
+        if(!spotTakenByTeammate(l) && !(badMoves.contains(l)))
         {
             moves.add(l);
         }
@@ -201,5 +205,24 @@ public class King extends Piece {
             }
         }
         return false;
+    }
+
+    /**
+     *
+     * @return if the new location won't cause a check mate it is a safe move.
+     */
+    private void unsafeMoves() {
+        ArrayList<Location> temp = new ArrayList<>();
+        for(Location k: gameState.keySet()) {
+            if(gameState.get(k).color != myColor && !(gameState.get(k).type.equals("king"))) {
+                temp = gameState.get(k).validMoves(gameState);
+                if(temp.size() != 0) {
+                    for (int j = 0; j < temp.size(); j++) {
+                        Location l = temp.get(j);
+                        badMoves.add(l);
+                    }
+                }
+            }
+        }
     }
 }
