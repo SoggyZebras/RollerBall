@@ -12,6 +12,8 @@ public class Game implements java.io.Serializable {
     protected Map<Location,Piece> board;
     private User player1;
     private User player2;
+    private boolean won;
+    private User winner;
     private int gameID;
 
     // set to 'w' or 'b' depending on who's turn it is

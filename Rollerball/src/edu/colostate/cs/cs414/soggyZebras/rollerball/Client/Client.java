@@ -78,11 +78,11 @@ public class Client implements Node {
 
             case Server_Responds_Invite: handleServerRespondsInvite(e);break;
 
-            case Server_Responds_Registration:
+            case Server_Responds_Registration: handleServerRespondsRegistration(e,socket);break;
 
-            case Server_Responds_Login:
+            case Server_Responds_Login: handleServerRespondsLogin(e,socket);break;
 
-            case Server_Responds_Invite_Refresh:
+            case Server_Responds_Invite_Refresh: handleServerRespondsRefresh(e,socket);break;
 
             default:
         }
@@ -185,15 +185,15 @@ public class Client implements Node {
         }
     }
 
-    private void handleServerSendsLogin(Event e, Socket socket){
+    private void handleServerRespondsLogin(Event e, Socket socket){
         //TODO process event to see if the login was successful
     }
 
-    private void handleServerSendsRegistration(Event e, Socket socket){
+    private void handleServerRespondsRegistration(Event e, Socket socket){
         //TODO process event to see if the registration was successful or not
     }
 
-    private void handleServerSendsInviteRefresh(Event e, Socket socket){
+    private void handleServerRespondsRefresh(Event e, Socket socket){
         //TODO pass user to GUI
     }
 
