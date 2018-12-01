@@ -17,6 +17,7 @@ import java.util.Map;
 public class RollerballPanel extends JPanel {
 
     private Map<Location,Piece> board;
+    private Game game;
     private Client client;
     private PieceDrawer pieceDrawer;
 
@@ -36,9 +37,11 @@ public class RollerballPanel extends JPanel {
 
     public RollerballPanel(Game game, Client client, int gameSide) throws IOException {
         super();
+
         setSize(gameSide, gameSide);
         addMouseListener(new RollerballMouseListener(this));
 
+        this.game = game;
         board = game.getBoard();
         this.client = client;
         client.setGui(this);
@@ -138,7 +141,7 @@ public class RollerballPanel extends JPanel {
                 unselectSquares();
             }
             if (potentialMoves.contains(clickLoc)) {
-                client.makeMove(selectedPiece.getLoc(), clickLoc);
+                client.makeMove(selectedPiece.getLoc(), clickLoc, game.getGameID());
                 selectedPiece = null;
                 unselectSquares();
                 potentialMoves.clear();
@@ -148,7 +151,7 @@ public class RollerballPanel extends JPanel {
         else if (board.containsKey(clickLoc)) {
             selectSquare(clickLoc.row, clickLoc.col);
             selectedPiece = board.get(clickLoc);
-            client.checkValidMove(selectedPiece.getLoc());
+            client.checkValidMove(selectedPiece.getLoc(), game.getGameID());
         }
         repaint();
     }

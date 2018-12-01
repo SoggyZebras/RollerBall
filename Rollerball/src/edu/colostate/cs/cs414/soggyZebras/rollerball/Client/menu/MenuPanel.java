@@ -15,7 +15,8 @@ public abstract class MenuPanel extends JPanel {
     public MenuPanel(String menuName, MenuGUI menuGUI) {
         this.menuName = menuName;
         this.menuGUI = menuGUI;
-        //setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
+        //setLayout(layout);
     }
 
     /**

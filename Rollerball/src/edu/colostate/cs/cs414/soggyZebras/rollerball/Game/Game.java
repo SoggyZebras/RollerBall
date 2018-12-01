@@ -43,6 +43,11 @@ public class Game implements java.io.Serializable {
         addPiece(new Rook(new Location(1, 2), 'b', "rook"));
     }
 
+    // TODO: just added this so it compiles, it is used in RookTest. It should probably return a starting board state
+    public Game() {
+
+    }
+
     public Game(Map<Location,Piece> m) {
         this.board = m;
     }
@@ -57,7 +62,6 @@ public class Game implements java.io.Serializable {
     }
 
     public Map<Location, Piece> makeMove(Location to, Location from){
-        System.err.println(board);
         board.put((to), board.get(from));
         board.get(to).setLoc(to);
         board.remove(from);

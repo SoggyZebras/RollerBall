@@ -35,7 +35,7 @@ class ClientTest {
 		Client c = new Client("127.0.0.1", 5000);
 		c.initialize();
 
-		assertTrue(c.makeMove(new Location(0,0),new Location(0,1)));
+		assertTrue(c.makeMove(new Location(0,0),new Location(0,1), 0));
 
 	}
 
@@ -52,7 +52,7 @@ class ClientTest {
 		Client c = new Client("127.0.0.1", 5000);
 		c.initialize();
 
-		assertTrue(c.checkValidMove(new Location(0,1)));
+		assertTrue(c.checkValidMove(new Location(0,1), 0));
 
 	}
 
@@ -65,7 +65,7 @@ class ClientTest {
 		Client c = new Client("127.0.0.1", 5000);
 		c.initialize();
 
-		assertTrue(c.getGameState());
+		assertTrue(c.getGameState(0));
 
 	}
 

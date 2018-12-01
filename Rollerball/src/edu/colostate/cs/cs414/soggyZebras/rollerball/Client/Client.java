@@ -138,7 +138,7 @@ public class Client implements Node {
      * @param place
      * @return boolean
      */
-    public boolean checkValidMove(Location place, int gID) throws ClassNotFoundException {
+    public boolean checkValidMove(Location place, int gID) {
         //Ask the server for the valid moves of a board tile
         try {
             ClientRequestsCheckMove checkMessage = new ClientRequestsCheckMove(place, gID);
