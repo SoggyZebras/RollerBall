@@ -13,7 +13,7 @@ public class GameGUI extends JFrame {
     public final int WIDTH = 600;
     public final int HEIGHT = 700;
 
-    private RollerballPanel panel;
+    public RollerballPanel panel;
 
     public GameGUI(Client client, Game game) throws IOException {
         // setup enclosing frame

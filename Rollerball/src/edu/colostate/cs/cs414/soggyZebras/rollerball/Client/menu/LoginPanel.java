@@ -24,7 +24,11 @@ public class LoginPanel extends MenuPanel {
     class LoginListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            // TODO: try to login, update user
+            // TODO: try to login, update logged in user on success
+
+            String username = ((TextField)getComponent(1)).getText().trim();
+            String password = ((TextField)getComponent(3)).getText().trim();
+            clearTextFields();
             getMenuGUI().setMenu("main_menu");
         }
     }

@@ -1,6 +1,5 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.Client;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.GameGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 
@@ -55,10 +54,10 @@ public class MainMenuPanel extends MenuPanel {
         public void actionPerformed(ActionEvent e) {
             try {
                 String selectedGame = gamesList.getSelectedValue();
-                // TODO: get game id
-                System.err.println(selectedGame);
+                // TODO: get game state from server, dont just make an empty map
                 Map m = new HashMap();
-                new GameGUI(new Client("127.0.0.1",5003), new Game(m));
+                GameGUI newGUI = new GameGUI(getMenuGUI().client, new Game(m));
+                getMenuGUI().addActiveGameGUI(newGUI.panel);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }

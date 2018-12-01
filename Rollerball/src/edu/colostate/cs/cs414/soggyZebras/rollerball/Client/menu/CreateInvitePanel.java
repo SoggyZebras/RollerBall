@@ -18,6 +18,8 @@ public class CreateInvitePanel extends MenuPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             // TODO: send invite
+            String username = ((TextField)getComponent(1)).getText().trim();
+            clearTextFields();
         }
     }
 }
