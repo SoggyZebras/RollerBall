@@ -96,6 +96,10 @@ public class Client implements Node {
 
     //========= END NETWORK SETUP =========//
 
+
+    //============ INTERFACE ==============//
+
+
     /**
      *
      * @param from
@@ -150,6 +154,14 @@ public class Client implements Node {
         }
     }
 
+
+
+
+
+
+    //========== END INTERFACE ===========//
+
+
     /**
      *
      * @param e
@@ -167,11 +179,6 @@ public class Client implements Node {
     private void handleServerCheckMove(Event e){
         ServerRespondsCheckMove message = (ServerRespondsCheckMove) e;
         gui.updateValidMoves(message.getList());
-    }
-
-    public void sendInvite(User userTo) throws IOException, ClassNotFoundException {
-        ClientSendsInvite message = new ClientSendsInvite(userTo);
-        serverConnection.sendData(message.getFile());
     }
 
     private void handleServerRespondsInvite(Event e){
@@ -194,13 +201,13 @@ public class Client implements Node {
     }
 
     private void handleServerRespondsRefresh(Event e, Socket socket){
-        //TODO pass user to GUI
+        //TODO pass user and game object to GUI
     }
 
     private void handleServerSendsInvite(Event e, Socket socket){
         //TODO handle getting an invite from another user
         ServerSendsInvite message = (ServerSendsInvite) e;
-        
+
     }
 
     public void setGui(RollerballPanel p){
