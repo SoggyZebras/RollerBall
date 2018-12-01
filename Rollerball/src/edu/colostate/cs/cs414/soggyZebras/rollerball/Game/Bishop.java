@@ -53,7 +53,6 @@ public class Bishop extends Piece {
 
     public ArrayList<Location> quadOne(Map<Location, Piece> state, int row, int col){
         ArrayList<Location> moves = new ArrayList<>();
-        System.out.println("Quad 1");
         while(checkBounds(row-1, col-1)
                 && ((state.get(new Location(row-1, col-1)) == null) || (state.get(new Location(row-1, col-1)).getColor() != color))){
             moves.add(new Location(row-1, col-1));
@@ -121,7 +120,6 @@ public class Bishop extends Piece {
 
     public ArrayList<Location> quadTwo(Map<Location, Piece> state, int row, int col){
         ArrayList<Location> moves = new ArrayList<>();
-        System.out.println("Quad 2");
         while(checkBounds(row-1, col+1) && ((state.get(new Location(row-1, col+1)) == null) || (state.get(new Location(row-1, col+1)).getColor() != color))){
             moves.add(new Location(row-1, col+1));
             row--;
@@ -168,7 +166,6 @@ public class Bishop extends Piece {
 
     public ArrayList<Location> quadThree(Map<Location, Piece> state, int row, int col){
         ArrayList<Location> moves = new ArrayList<>();
-        System.out.println("Quad 3");
         while(checkBounds(row+1, col+1)
                 && (state.get(new Location(row+1, col+1)) == null || (state.get(new Location(row+1, col+1)).getColor() != color))){
             moves.add(new Location(row+1, col+1));
@@ -220,7 +217,6 @@ public class Bishop extends Piece {
 
     public ArrayList<Location> quadFour(Map<Location, Piece> state, int row, int col){
         ArrayList<Location> moves = new ArrayList<>();
-        System.out.println("Quad 4");
         while(checkBounds(row+1, col-1)
                 && (state.get(new Location(row+1, col-1)) == null || (state.get(new Location(row+1, col-1)).getColor() != color))){
             moves.add(new Location(row+1, col-1));
