@@ -11,7 +11,7 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class TCPReceiverThread implements Runnable{
+public class TCPReceiverThread extends Thread{
     private Socket socket;
     private ObjectInputStream oin;
     private Node node;

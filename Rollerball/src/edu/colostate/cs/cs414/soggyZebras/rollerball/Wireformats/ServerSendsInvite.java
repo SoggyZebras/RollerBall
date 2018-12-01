@@ -1,30 +1,26 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats;
 
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 
 import java.io.*;
 
-public class ClientMakeMove implements Event {
+import static edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Protocol.Server_Sends_Invite;
+
+public class ServerSendsInvite implements Event {
 
     //Information to be serialized or deserialized
     private String message_type;
-    private Location to;
-    private Location from;
-    private int gameID;
+    private User userFrom;
+    private int inviteID;
 
     //Sending message constructor
 
-    /**
-     *
-     * @param from
-     * @param to
-     */
-    public ClientMakeMove(Location from, Location to, int id){
 
-        this.message_type = Client_Make_Move;
-        this.to = to;
-        this.from =from;
-        this.gameID = id;
+    public ServerSendsInvite(User to,int inv){
+
+        this.message_type = Server_Sends_Invite;
+        this.userFrom = to;
+        this.inviteID = inv;
     }
 
     //Recieving message constructor
@@ -35,7 +31,7 @@ public class ClientMakeMove implements Event {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public ClientMakeMove(String filename) throws IOException, ClassNotFoundException {
+    public ServerSendsInvite(String filename) throws IOException, ClassNotFoundException {
 
         // Create a file input stream and a object input stream to read the incomming message
         FileInputStream fileStream = new FileInputStream(filename);
@@ -44,9 +40,8 @@ public class ClientMakeMove implements Event {
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
-        this.gameID = oin.readInt();
-        this.to = (Location) oin.readObject();
-        this.from = (Location) oin.readObject();
+        this.userFrom = (User) oin.readObject();
+        this.inviteID = oin.readInt();
 
 
 
@@ -66,9 +61,8 @@ public class ClientMakeMove implements Event {
 
         // Take the local variables and serialize them into a file
         oout.writeObject(filename);
-        oout.writeInt(gameID);
-        oout.writeObject(this.to);
-        oout.writeObject(this.from);
+        oout.writeObject(this.userFrom);
+        oout.writeInt(this.inviteID);
 
         //flush the objects to the stream and close the streams
         oout.flush();
@@ -82,21 +76,12 @@ public class ClientMakeMove implements Event {
         return this.message_type;
     }
 
-    /**
-     *
-     * @return Location
-     */
-    public Location getTo(){
-        return to;
+
+    public User getUserFrom(){
+        return userFrom;
     }
 
-    /**
-     *
-     * @return Location
-     */
-    public Location getFrom(){
-        return from;
-    }
+    public int getInviteID() { return inviteID; }
 
-    public int getGameID() { return gameID;}
+
 }

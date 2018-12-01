@@ -10,16 +10,18 @@ public class ClientRequestsCheckMove implements Event{
 
     //Information to be serialized or deserialized
     private String message_type;
+    private int gameID;
     private Location place;
 
     /**
      *
      * @param p
      */
-    public ClientRequestsCheckMove(Location p) {
+    public ClientRequestsCheckMove(Location p, int id) {
 
         this.message_type = Client_Request_Check_Move;
         this.place = p;
+        this.gameID = id;
     }
 
     /**
@@ -37,6 +39,7 @@ public class ClientRequestsCheckMove implements Event{
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
+        this.gameID = oin.readInt();
         this.place = (Location) oin.readObject();
 
 
@@ -56,6 +59,7 @@ public class ClientRequestsCheckMove implements Event{
 
         // Take the local variables and serialize them into a file
         oout.writeObject(filename);
+        oout.writeInt(this.gameID);
         oout.writeObject(this.place);
 
         //flush the objects to the stream and close the streams
@@ -73,6 +77,8 @@ public class ClientRequestsCheckMove implements Event{
     public Location getPlace(){
         return this.place;
     }
+
+    public int getGameID() { return this.gameID; }
 
 
 }
