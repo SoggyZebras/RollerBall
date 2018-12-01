@@ -37,14 +37,14 @@ public class Database {
         query(sql);
     }
 
-    public void getGame(String p1, String p2){
+    public ResultSet getGame(String p1, String p2){
         String sql = "Select * FROM Game WHERE Player1=" + p1+ ", Player2="+p2;
-        query(sql);
+        return query(sql);
     }
 
-    public void getUser(String name, String email){
+    public ResultSet getUser(String name, String email){
         String sql = "Select * FROM Game WHERE user=" + name+ ", email="+email;
-        query(sql);
+        return query(sql);
     }
 
     public void insertUser(String name, String password, String email){

@@ -10,6 +10,7 @@ public class User {
     private int userID;
     private String username;
     private String password;
+    private String email;
     private TCPConnection userConnection;
     private ArrayList<Invite> sentInvites;
     private ArrayList<Invite> gotInvites;

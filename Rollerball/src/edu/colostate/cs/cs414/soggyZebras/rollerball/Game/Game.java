@@ -12,7 +12,7 @@ public class Game implements java.io.Serializable {
     protected Map<Location,Piece> board;
     private User player1;
     private User player2;
-    private boolean won;
+    private boolean inProgress;
     private User winner;
     private int gameID;
 
@@ -27,6 +27,7 @@ public class Game implements java.io.Serializable {
         this.gameID = id;
         this.player1 = p1;
         this.player2 = p2;
+        this.inProgress = true;
 
         // add white pieces
         addPiece(new Pawn(new Location(5, 2), 'w', "pawn"));

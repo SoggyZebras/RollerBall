@@ -199,6 +199,8 @@ public class Client implements Node {
 
     private void handleServerSendsInvite(Event e, Socket socket){
         //TODO handle getting an invite from another user
+        ServerSendsInvite message = (ServerSendsInvite) e;
+        
     }
 
     public void setGui(RollerballPanel p){

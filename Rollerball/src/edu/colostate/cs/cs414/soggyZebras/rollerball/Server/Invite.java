@@ -5,6 +5,7 @@ public class Invite {
     private User invitee;
     private User inviter;
     private int inviteID;
+    private boolean accepted;
 
     public Invite(User invtee, User invtr, int id){
         this.invitee = invtee;

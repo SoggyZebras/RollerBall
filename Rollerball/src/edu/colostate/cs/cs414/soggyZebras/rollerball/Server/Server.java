@@ -1,5 +1,6 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Server;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Database.Database.Database;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerCache;
@@ -9,13 +10,14 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
+import java.sql.ResultSet;
 
 public class Server implements Node,Runnable {
 
 
     GameCache games;
+    Database db;
     ArrayList<Integer> gameIDs;
     ArrayList<Integer> inviteIDs;
     Random random;
@@ -33,6 +35,7 @@ public class Server implements Node,Runnable {
         this.serverPort = port;
         this.serverCache = new TCPServerCache();
         games = new GameCache();
+        db = new Database();
         this.serverThread = new TCPServerThread(this, serverCache, this.serverPort);
 
     }
@@ -134,6 +137,10 @@ public class Server implements Node,Runnable {
         // if the user exists, send rejection
         // else fetch it, set the user fields and pass it to gui
         // remove old uid from serverthread
+        ClientSendsLogin message = (ClientSendsLogin) e;
+        ResultSet result = db.getUser(message.getUsername(),"");
+
+
     }
 
     private void handleClientSendsRegistration(Event e, Socket socket){

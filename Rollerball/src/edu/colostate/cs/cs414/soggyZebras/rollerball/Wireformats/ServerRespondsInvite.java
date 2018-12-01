@@ -87,6 +87,8 @@ public class ServerRespondsInvite implements Event {
 
     public boolean getAccepted() { return this.accpeted; }
 
+    public void setAccepted() { this.accpeted = true;}
+
     public int getGameID() { return this.gameID; }
 
 
