@@ -36,7 +36,7 @@ public class Game implements java.io.Serializable {
         this.board = m;
     }
 
-    protected void addPiece(Piece p) {
+    public void addPiece(Piece p) {
         board.put(p.loc, p);
     }
 
@@ -45,22 +45,90 @@ public class Game implements java.io.Serializable {
 
     }
 
-    public boolean wonGame(){
+    public boolean wonGameW(){
 
-        Set<Location> allLocs = new HashSet<Location>();
+        Set<Location> allWLocs = new HashSet<Location>();
+        ArrayList<Location> KingMoves = new ArrayList<Location>();
 
-        //TODO: only populate locations from other piece color
         for(Location I :board.keySet()){
-            for(Location X : validMoves(I)) {
-                allLocs.add(X);
+            if(board.get(I).getColor()=='w'){
+                for(Location X : validMoves(I)) {
+                    allWLocs.add(X);
+                }
+            }
+            if(board.get(I).getColor()=='b'&& board.get(I).getType()=="king"){
+                KingMoves = validMoves(I);
+            }
+        }
+        System.out.println("White King Moves:" + KingMoves.size());
+        //Now all valid black moves and white king moves are populated.
+
+        if(KingMoves.isEmpty()){ //case for if all pieces around them are the same color
+            return false;
+        }
+        else {
+            for (Location I : KingMoves) {
+                if (allWLocs.contains(I)) {
+                    KingMoves.remove(I);
+                }
+            }
+        }
+        return KingMoves.isEmpty();
+
+    }
+
+    public boolean wonGameB(){
+        Set<Location> allBLocs = new HashSet<Location>();
+        ArrayList<Location> KingMoves = new ArrayList<Location>();
+
+        for(Location I :board.keySet()){
+            if(board.get(I).getColor()=='b'){
+                for(Location X : validMoves(I)) {
+                    allBLocs.add(X);
+                }
+            }
+            if(board.get(I).getColor()=='w'&& board.get(I).getType()=="king"){
+                KingMoves = validMoves(I);
+            }
+        }
+        //Now all valid black moves and white king moves are populated.
+        System.out.println("Black King Moves:" + KingMoves.size());
+
+        if(KingMoves.isEmpty()){ //case for if all pieces around them are the same color
+            return false;
+        }
+        else {
+            for (Location I : KingMoves) {
+                if (allBLocs.contains(I)) {
+                    KingMoves.remove(I);
+                }
+            }
+        }
+        return KingMoves.isEmpty();
+    }
+
+    public boolean stalemate(){
+        Set<Location> allWLocs = new HashSet<Location>();
+        Set<Location> allBLocs = new HashSet<Location>();
+
+        for(Location I :board.keySet()){
+            if(board.get(I).getColor()=='b'){
+                for(Location X : validMoves(I)) {
+                    allBLocs.add(X);
+                }
+            }
+            else{
+                for(Location X : validMoves(I)) {
+                    allWLocs.add(X);
+                }
             }
         }
 
-        //Game class will have player variable
+        return(allWLocs.isEmpty()&&allBLocs.isEmpty());
 
-
-        return false;
     }
+
+
 
     public Map<Location, Piece> makeMove(Location to, Location from){
         System.err.println(board);
