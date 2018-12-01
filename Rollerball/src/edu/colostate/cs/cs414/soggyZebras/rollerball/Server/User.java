@@ -8,13 +8,17 @@ public class User {
 
     //Local variables
     private int userID;
+    private String username;
+    private String password;
     private TCPConnection userConnection;
     private ArrayList<Invite> sentInvites;
     private ArrayList<Invite> gotInvites;
 
     //Constructors
-    public User(int uID, TCPConnection con){
+    public User(int uID, String username, String password, TCPConnection con){
         this.userID = uID;
+        this.username = username;
+        this.password = password;
         this.userConnection = con;
     }
 
@@ -79,5 +83,13 @@ public class User {
                 gotInvites.remove(i);
             }
         }
+    }
+
+    public String getUsername(){
+        return username;
+    }
+
+    public String getPassword(){
+        return password;
     }
 }

@@ -10,13 +10,17 @@ public class ClientSendsLogin implements Event {
 
     //Information to be serialized or deserialized
     private String message_type;
+    String username;
+    String password;
 
 
     //Sending message constructor
 
-    public ClientSendsLogin(){
+    public ClientSendsLogin(String usr, String pass){
 
         this.message_type = Client_Sends_Login;
+        this.username = usr;
+        this.password = pass;
 
     }
 
@@ -37,6 +41,8 @@ public class ClientSendsLogin implements Event {
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
+        this.username = (String) oin.readObject();
+        this.password = (String) oin.readObject();
 
 
 
@@ -56,6 +62,8 @@ public class ClientSendsLogin implements Event {
 
         // Take the local variables and serialize them into a file
         oout.writeObject(filename);
+        oout.writeObject(this.username);
+        oout.writeObject(this.password);
 
         //flush the objects to the stream and close the streams
         oout.flush();
@@ -69,5 +77,8 @@ public class ClientSendsLogin implements Event {
         return this.message_type;
     }
 
+    public String getUsername() { return this.username; }
+
+    public String getPassword() { return this.password; }
 
 }

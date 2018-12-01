@@ -50,13 +50,16 @@ public class TCPServerThread implements Runnable{
             serverSocket = new ServerSocket(port);
             System.out.println("Listening on port " + port);
             this.serverCache = c;
-            userNumbers = new ArrayList<Integer>();
+            userNumbers = new ArrayList<>();
         } catch (IOException e) {
             // TODO Auto-generated catch block
         }
 
     }
 
+    public synchronized void removeUID(int uid){
+        userNumbers.remove(uid);
+    }
 
     @Override
     public void run() {
@@ -74,7 +77,7 @@ public class TCPServerThread implements Runnable{
                 userNumbers.add(uID);
 
                 //populate the server cache with a new user
-                User tmp = new User(uID,connection);
+                User tmp = new User(uID,"","",connection);
                 this.serverCache.addUser(tmp);
                 connection.sendData(new ServerSendsConnect(tmp).getFile());
 

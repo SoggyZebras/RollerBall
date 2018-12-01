@@ -8,13 +8,17 @@ public class ClientSendsRegistration implements Event {
 
     //Information to be serialized or deserialized
     private String message_type;
+    private String username;
+    private String password;
 
 
     //Sending message constructor
 
-    public ClientSendsRegistration(){
+    public ClientSendsRegistration(String username, String password){
 
         this.message_type = Client_Sends_Registration;
+        this.username = username;
+        this.password = password;
 
     }
 
@@ -35,7 +39,8 @@ public class ClientSendsRegistration implements Event {
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
-
+        this.username = (String) oin.readObject();
+        this.password = (String) oin.readObject();
 
 
         // Close streams
@@ -54,6 +59,8 @@ public class ClientSendsRegistration implements Event {
 
         // Take the local variables and serialize them into a file
         oout.writeObject(filename);
+        oout.writeObject(this.username);
+        oout.writeObject(this.password);
 
         //flush the objects to the stream and close the streams
         oout.flush();
@@ -67,4 +74,7 @@ public class ClientSendsRegistration implements Event {
         return this.message_type;
     }
 
+    public String getUsername() { return this.username; }
+
+    public String getPassword() { return this.password; }
 }

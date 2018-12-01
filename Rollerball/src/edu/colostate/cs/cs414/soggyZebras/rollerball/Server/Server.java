@@ -129,6 +129,22 @@ public class Server implements Node,Runnable {
 
     }
 
+    private void handleClientSendsLogin(Event e, Socket socket){
+        //TODO check the username is valid, check the database to see if that user exists
+        // if the user exists, send rejection
+        // else fetch it, set the user fields and pass it to gui
+        // remove old uid from serverthread
+    }
+
+    private void handleClientSendsRegistration(Event e, Socket socket){
+        //TODO check username and password with login database, if in database reject
+        // else create user and update database
+    }
+
+    private void handleClientSendsInviteRefresh(Event e, Socket socket){
+        //TODO send back the user object
+    }
+
     //Check each game and make sure the random numbe generated isn't already in use.
     private int genGameID(){
        int id = random.nextInt(Integer.MAX_VALUE);
@@ -140,6 +156,15 @@ public class Server implements Node,Runnable {
        return id;
     }
 
+    private boolean checkUsername(String username){
+        for(User u : this.serverCache.getAllUsers()){
+            if(u.getUsername() == username){
+                return false;
+            }
+        }
+        return true;
+    }
+
     private int genInviteID(){
         int id = random.nextInt(Integer.MAX_VALUE);
 
@@ -148,6 +173,13 @@ public class Server implements Node,Runnable {
         }
         inviteIDs.add(id);
         return id;
+    }
+
+    private boolean checkPassword(String pass){
+        if(pass.contains(";(),/}{\"\'\\") && pass.length() >= 8){
+            return false;
+        }
+        return true;
     }
 
     public static void main(String []args){

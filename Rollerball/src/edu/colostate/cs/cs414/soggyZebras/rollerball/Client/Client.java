@@ -185,6 +185,18 @@ public class Client implements Node {
         }
     }
 
+    private void handleServerSendsLogin(Event e, Socket socket){
+        //TODO process event to see if the login was successful
+    }
+
+    private void handleServerSendsRegistration(Event e, Socket socket){
+        //TODO process event to see if the registration was successful or not
+    }
+
+    private void handleServerSendsInviteRefresh(Event e, Socket socket){
+        //TODO pass user to GUI
+    }
+
     private void handleServerSendsInvite(Event e, Socket socket){
         //TODO handle getting an invite from another user
     }

@@ -52,4 +52,8 @@ public class TCPServerCache {
         }
         return null;
     }
+
+    public ArrayList<User> getAllUsers(){
+        return cache;
+    }
 }
