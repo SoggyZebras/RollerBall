@@ -1,5 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -59,6 +61,13 @@ public abstract class MenuPanel extends JPanel {
                 ((TextField) comp).setText("");
             }
         }
+    }
+
+    /**
+     * this should be overriden by classes that inherit this
+     */
+    public void refresh(User updatedUser) {
+        System.err.println("refresh");
     }
 
     public String getMenuName() {

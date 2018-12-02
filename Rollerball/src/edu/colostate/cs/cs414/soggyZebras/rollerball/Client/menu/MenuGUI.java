@@ -78,6 +78,8 @@ public class MenuGUI extends JFrame {
 
     public void refresh(User updatedUser) {
         System.err.println("updated user");
+        this.loggedInUser = updatedUser;
+        cardContainer.refreshAll(updatedUser);
         // TODO: update menu for this user, update games including open gui games
     }
 }

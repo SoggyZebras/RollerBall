@@ -1,5 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,12 +17,14 @@ public class PendingInvitesPanel extends MenuPanel {
     public PendingInvitesPanel(MenuGUI menuGUI) {
         super("pending_invites", menuGUI);
 
-
-        // TODO: get list of games player has been invited to, maybe invites they've sent too
         ArrayList<String> invites = new ArrayList<>();
-        invites.add("joe");
-        invites.add("bob");
-        invites.add("billy");
+        if (getMenuGUI().loggedInUser != null) {
+            // TODO: lookup users invites, call invites.add(invitersName) on each
+        }
+        invites.add("temp-joe");
+        invites.add("temp-bob");
+        invites.add("temp-billy");
+
 
         // add all invites to the gui and create a map entry for them
         inviteButtons = new HashMap<>();
@@ -34,6 +38,10 @@ public class PendingInvitesPanel extends MenuPanel {
         add(createLinkedButton("Back", "main_menu"));
     }
 
+    @Override
+    public void refresh(User updatedUser) {
+        // TODO: update pending invites buttons
+    }
 
     class AcceptInviteListener implements ActionListener {
         private String user;

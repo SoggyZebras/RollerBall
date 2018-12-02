@@ -2,6 +2,7 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.GameGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,6 +43,10 @@ public class MainMenuPanel extends MenuPanel {
         add(createLinkedButton("Unregister", "register_login"));
     }
 
+    @Override
+    public void refresh(User updatedUser) {
+        // TODO: update activeGamesListModel
+    }
 
     class StartGameListener implements ActionListener {
         private JList<String> gamesList;
