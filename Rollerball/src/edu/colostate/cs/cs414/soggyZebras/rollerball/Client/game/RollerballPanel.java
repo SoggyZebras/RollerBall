@@ -1,6 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.Client;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
@@ -35,7 +36,7 @@ public class RollerballPanel extends JPanel {
     // when a piece is clicked, this will be populated with the potential moves for that piece
     private ArrayList<Location> potentialMoves;
 
-    public RollerballPanel(Game game, Client client, int gameSide) throws IOException {
+    public RollerballPanel(Game game, Client client, MenuGUI menuGUI, int gameSide) throws IOException {
         super();
 
         setSize(gameSide, gameSide);
@@ -44,7 +45,7 @@ public class RollerballPanel extends JPanel {
         this.game = game;
         board = game.getBoard();
         this.client = client;
-        client.setGui(this);
+        client.setGui(menuGUI);
         this.client.initialize();
         selectedPiece = null;
         unselectSquares();

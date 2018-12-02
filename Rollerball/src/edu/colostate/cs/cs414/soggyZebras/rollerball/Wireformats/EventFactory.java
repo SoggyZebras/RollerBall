@@ -48,9 +48,9 @@ public class EventFactory implements Protocol {
 
                 case Client_Sends_Login:
 
-                case Client_Sends_Invite_Refresh:
+                //case Client_Sends_Invite_Refresh:
 
-                case Server_Responds_Invite_Refresh:
+                //case Server_Responds_Invite_Refresh:
 
                 default:
 

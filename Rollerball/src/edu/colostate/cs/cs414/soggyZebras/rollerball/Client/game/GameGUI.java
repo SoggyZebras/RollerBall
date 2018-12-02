@@ -1,6 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.Client;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 
 import javax.swing.*;
@@ -15,7 +16,7 @@ public class GameGUI extends JFrame {
 
     public RollerballPanel panel;
 
-    public GameGUI(Client client, Game game) throws IOException {
+    public GameGUI(Client client, Game game, MenuGUI menuGUI) throws IOException {
         // setup enclosing frame
         super("Rollerball");
         setSize(WIDTH, HEIGHT + 22);
@@ -25,7 +26,7 @@ public class GameGUI extends JFrame {
         setLocationRelativeTo(null);
 
         // setup panel (what gets drawn on)
-        panel = new RollerballPanel(game, client, WIDTH);
+        panel = new RollerballPanel(game, client, menuGUI, WIDTH);
         add(panel);
         setVisible(true);
     }

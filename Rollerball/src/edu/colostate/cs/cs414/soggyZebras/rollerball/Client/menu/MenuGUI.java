@@ -2,12 +2,15 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.Client;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.RollerballPanel;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * a jframe that holds different states of the game's menu
@@ -28,12 +31,12 @@ public class MenuGUI extends JFrame {
      */
     public User loggedInUser;
 
-    private ArrayList<RollerballPanel> activeGameGUIs;
+    private Map<Integer,RollerballPanel> activeGameGUIs;
 
     public MenuGUI() {
         super("Rollerball Menu");
 
-        activeGameGUIs = new ArrayList<>();
+        activeGameGUIs = new HashMap<>();
 
         try {
             // TODO: change server address
@@ -66,20 +69,30 @@ public class MenuGUI extends JFrame {
         return cardContainer;
     }
 
-    public void addActiveGameGUI(RollerballPanel gameGUI) {
-        activeGameGUIs.add(gameGUI);
+    public void addActiveGameGUI(int gameID, RollerballPanel gameGUI) {
+        activeGameGUIs.put(gameID, gameGUI);
     }
 
     // THESE 2 METHODS ARE CALLED BY THE CLIENT WHEN GAME STATE IS UPDATED
     public void updateValidMoves(int gameID, ArrayList<Location> validMoves) {
-        // TODO: look through games, find game gui (RollerballPanel) with matching id, call updateValidMoves that object
-        System.err.println("updated valid moves");
+        RollerballPanel gameWindow = activeGameGUIs.get(gameID);
+        gameWindow.updateValidMoves(validMoves);
     }
 
     public void refresh(User updatedUser) {
-        System.err.println("updated user");
         this.loggedInUser = updatedUser;
+
+        // refresh menu
+        // this assumes that each card has its refresh function filled out
         cardContainer.refreshAll(updatedUser);
-        // TODO: update menu for this user, update games including open gui games
+
+        // update game windows
+        for (Game userGame : updatedUser.getGames()) {
+            RollerballPanel activeGame = activeGameGUIs.get(userGame.getGameID());
+            if (activeGame != null) {
+                // TODO: should we just pass the entire game?
+                activeGame.updateState(userGame.getBoard());
+            }
+        }
     }
 }

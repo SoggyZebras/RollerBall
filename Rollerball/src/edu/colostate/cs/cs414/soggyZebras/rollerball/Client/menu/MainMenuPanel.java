@@ -61,8 +61,9 @@ public class MainMenuPanel extends MenuPanel {
                 String selectedGame = gamesList.getSelectedValue();
                 // TODO: get game state from server, dont just make an empty map
                 Map m = new HashMap();
-                GameGUI newGUI = new GameGUI(getMenuGUI().client, new Game(m));
-                getMenuGUI().addActiveGameGUI(newGUI.panel);
+                Game game = new Game(m);
+                GameGUI newGUI = new GameGUI(getMenuGUI().client, game, getMenuGUI());
+                getMenuGUI().addActiveGameGUI(game.getGameID(), newGUI.panel);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
