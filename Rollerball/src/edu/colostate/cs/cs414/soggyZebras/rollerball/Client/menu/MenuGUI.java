@@ -1,6 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.Client;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.GameGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.RollerballPanel;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
@@ -71,6 +72,31 @@ public class MenuGUI extends JFrame {
 
     public void addActiveGameGUI(int gameID, RollerballPanel gameGUI) {
         activeGameGUIs.put(gameID, gameGUI);
+    }
+
+    /**
+     * open a game window for the game with the given gameID
+     * @param gameID
+     */
+    public void openGameGUI(int gameID) {
+        if (!activeGameGUIs.containsKey(gameID)) {
+
+            // find game with correct id
+            Game loadedGame = null;
+            for (Game game : loggedInUser.getGames()) {
+                if (game.getGameID() == gameID) {
+                    loadedGame = game;
+                }
+            }
+
+            // open that game
+            try {
+                GameGUI gameGUI = new GameGUI(client, loadedGame, this);
+                addActiveGameGUI(gameID, gameGUI.panel);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     // THESE METHODS ARE CALLED BY THE CLIENT WHEN GAME/MENU STATE IS UPDATED
