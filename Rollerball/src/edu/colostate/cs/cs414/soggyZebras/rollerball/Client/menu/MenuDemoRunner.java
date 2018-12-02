@@ -7,4 +7,9 @@ public class MenuDemoRunner implements Runnable{
 		public void run(){
         new MenuGUI();
     }
+
+    public static void main(String []args){
+		    MenuDemoRunner r = new MenuDemoRunner();
+            r.run();
+    }
 }

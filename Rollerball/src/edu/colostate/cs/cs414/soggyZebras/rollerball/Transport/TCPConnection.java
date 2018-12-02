@@ -10,6 +10,7 @@ public class TCPConnection {
     private TCPReceiverThread recSocket;
     private Socket serverSocket;
     private Node node;
+    private int ID;
 
     /**
      *
@@ -30,8 +31,9 @@ public class TCPConnection {
 
 
     public void initiate() {
-        new Thread(this.recSocket).start();
-        new Thread(this.senSocket).start();
+
+        this.recSocket.start();
+        this.senSocket.start();
 
     }
 
@@ -56,4 +58,5 @@ public class TCPConnection {
     public Node getNode() {
         return this.node;
     }
+
 }

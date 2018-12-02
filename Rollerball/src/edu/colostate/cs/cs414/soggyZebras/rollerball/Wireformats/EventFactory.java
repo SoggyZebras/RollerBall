@@ -22,6 +22,8 @@ public class EventFactory implements Protocol {
         try {
             switch (filename) {
 
+                case Server_Sends_Connect: node.onEvent(new ServerSendsConnect(filename),socket);break;
+
                 case Client_Make_Move: node.onEvent(new ClientMakeMove(filename), socket);break
                     ;
                 case Client_Request_Check_Move: node.onEvent(new ClientRequestsCheckMove(filename),socket);break
@@ -32,13 +34,23 @@ public class EventFactory implements Protocol {
                     ;
                 case Server_Responds_Game_State: node.onEvent(new ServerRespondsGameState(filename), socket);break
                     ;
-                case Client_Sends_Register:
+                case Server_Responds_Invite: node.onEvent(new ServerRespondsInvite(filename), socket);break;
+
+                case Server_Sends_Invite: node.onEvent(new ServerSendsInvite(filename), socket);break;
+
+                case Client_Sends_Invite: node.onEvent(new ClientSendsInvite(filename), socket);break;
+
+                case Client_Responds_Invite: node.onEvent(new ClientRespondsInvite(filename), socket);break;
+
+                case Server_Responds_Registration:
+
+                case Client_Sends_Registration:
 
                 case Client_Sends_Login:
 
-                case Client_Sends_Game_Invite:
+                //case Client_Sends_Invite_Refresh:
 
-                case Client_Sends_Get_History:
+                //case Server_Responds_Invite_Refresh:
 
                 default:
 

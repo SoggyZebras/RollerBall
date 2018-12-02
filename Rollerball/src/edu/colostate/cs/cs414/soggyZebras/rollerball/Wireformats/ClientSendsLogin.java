@@ -4,27 +4,24 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 
 import java.io.*;
 
-public class ClientMakeMove implements Event {
+import static edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Protocol.Client_Sends_Login;
+
+public class ClientSendsLogin implements Event {
 
     //Information to be serialized or deserialized
     private String message_type;
-    private Location to;
-    private Location from;
-    private int gameID;
+    String username;
+    String password;
+
 
     //Sending message constructor
 
-    /**
-     *
-     * @param from
-     * @param to
-     */
-    public ClientMakeMove(Location from, Location to, int id){
+    public ClientSendsLogin(String usr, String pass){
 
-        this.message_type = Client_Make_Move;
-        this.to = to;
-        this.from =from;
-        this.gameID = id;
+        this.message_type = Client_Sends_Login;
+        this.username = usr;
+        this.password = pass;
+
     }
 
     //Recieving message constructor
@@ -35,7 +32,7 @@ public class ClientMakeMove implements Event {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public ClientMakeMove(String filename) throws IOException, ClassNotFoundException {
+    public ClientSendsLogin(String filename) throws IOException, ClassNotFoundException {
 
         // Create a file input stream and a object input stream to read the incomming message
         FileInputStream fileStream = new FileInputStream(filename);
@@ -44,9 +41,8 @@ public class ClientMakeMove implements Event {
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
-        this.gameID = oin.readInt();
-        this.to = (Location) oin.readObject();
-        this.from = (Location) oin.readObject();
+        this.username = (String) oin.readObject();
+        this.password = (String) oin.readObject();
 
 
 
@@ -66,9 +62,8 @@ public class ClientMakeMove implements Event {
 
         // Take the local variables and serialize them into a file
         oout.writeObject(filename);
-        oout.writeInt(gameID);
-        oout.writeObject(this.to);
-        oout.writeObject(this.from);
+        oout.writeObject(this.username);
+        oout.writeObject(this.password);
 
         //flush the objects to the stream and close the streams
         oout.flush();
@@ -82,21 +77,8 @@ public class ClientMakeMove implements Event {
         return this.message_type;
     }
 
-    /**
-     *
-     * @return Location
-     */
-    public Location getTo(){
-        return to;
-    }
+    public String getUsername() { return this.username; }
 
-    /**
-     *
-     * @return Location
-     */
-    public Location getFrom(){
-        return from;
-    }
+    public String getPassword() { return this.password; }
 
-    public int getGameID() { return gameID;}
 }

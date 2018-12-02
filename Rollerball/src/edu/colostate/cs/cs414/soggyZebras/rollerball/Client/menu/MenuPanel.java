@@ -1,5 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +17,10 @@ public abstract class MenuPanel extends JPanel {
     public MenuPanel(String menuName, MenuGUI menuGUI) {
         this.menuName = menuName;
         this.menuGUI = menuGUI;
-        //setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
+        revalidate();
+        repaint();
+        //setLayout(layout);
     }
 
     /**
@@ -45,6 +50,24 @@ public abstract class MenuPanel extends JPanel {
         JButton button = new JButton(text);
         button.addActionListener(listener);
         return button;
+    }
+
+    /**
+     * clear all of the text fields in this menu panel
+     */
+    public void clearTextFields() {
+        for (Component comp : getComponents()) {
+            if (comp instanceof TextField) {
+                ((TextField) comp).setText("");
+            }
+        }
+    }
+
+    /**
+     * this should be overriden by classes that inherit this
+     */
+    public void refresh(User updatedUser) {
+        System.err.println("refresh");
     }
 
     public String getMenuName() {
