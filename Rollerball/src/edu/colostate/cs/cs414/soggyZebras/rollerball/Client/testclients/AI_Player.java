@@ -147,6 +147,7 @@ public class AI_Player {
                 currClient.makeMove(loc,move);
                 break;
             }
+            else throw new RuntimeException("Something went wrong in the AI selectMove func - at least one piece should always have a valid move")
         }
     }
 
