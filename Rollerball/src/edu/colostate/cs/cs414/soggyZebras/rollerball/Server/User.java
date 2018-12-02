@@ -107,4 +107,28 @@ public class User {
     public ArrayList<Invite> getGotInvites() { return gotInvites;}
 
     public ArrayList<Game> getGames() { return games;}
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setSentInvites(ArrayList<Invite> sentInvites) {
+        this.sentInvites = sentInvites;
+    }
+
+    public void setGotInvites(ArrayList<Invite> gotInvites) {
+        this.gotInvites = gotInvites;
+    }
+
+    public void setGames(ArrayList<Game> games) {
+        this.games = games;
+    }
 }

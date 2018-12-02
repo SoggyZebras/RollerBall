@@ -1,5 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
+
 import java.io.*;
 
 
@@ -9,13 +11,17 @@ public class ServerRespondsLogin implements Event {
 
     //Information to be serialized or deserialized
     private String message_type;
+    private User user;
+    private String reject_reason;
 
 
     //Sending message constructor
 
-    public ServerRespondsLogin(){
+    public ServerRespondsLogin(User u,String reason){
 
         this.message_type = Server_Responds_Login;
+        this.user = u;
+        this.reject_reason = reason;
 
     }
 
@@ -36,6 +42,8 @@ public class ServerRespondsLogin implements Event {
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
+        this.user = (User) oin.readObject();
+        this.reject_reason = (String) oin.readObject();
 
 
 
@@ -55,6 +63,8 @@ public class ServerRespondsLogin implements Event {
 
         // Take the local variables and serialize them into a file
         oout.writeObject(filename);
+        oout.writeObject(this.user);
+        oout.writeObject(this.reject_reason);
 
         //flush the objects to the stream and close the streams
         oout.flush();
@@ -67,5 +77,9 @@ public class ServerRespondsLogin implements Event {
     public String getType() {
         return this.message_type;
     }
+
+    public User getUser() { return this.user; }
+
+    public String getReject_reason() { return this.reject_reason;}
 
 }
