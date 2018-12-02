@@ -1,9 +1,11 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.RollerballPanel;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuDemoRunner;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Server;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerThread;
@@ -89,7 +91,7 @@ public class Client implements Node {
 
     private void handleServerSendsConnect(Event e){
         ServerSendsConnect message = (ServerSendsConnect) e;
-        //gui.setUser(message.getUser());
+        gui.refresh(message.getUser());
     }
 
     //========= END NETWORK SETUP =========//

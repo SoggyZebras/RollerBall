@@ -42,6 +42,8 @@ public class MenuGUI extends JFrame {
         try {
             // TODO: change server address
             client = new Client("127.0.0.1",5003);
+            client.initialize();
+            client.setGui(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
