@@ -67,7 +67,6 @@ public abstract class MenuPanel extends JPanel {
      * this should be overriden by classes that inherit this
      */
     public void refresh(User updatedUser) {
-        System.err.println("refresh");
     }
 
     public String getMenuName() {

@@ -39,8 +39,8 @@ public class MainMenuPanel extends MenuPanel {
         add(createLinkedButton("Invite Players", "create_invite"));
         add(createLinkedButton("Pending Invites", "pending_invites"));
         add(createLinkedButton("Game History", "game_history"));
-        add(createLinkedButton("Logout", "register_login"));
-        add(createLinkedButton("Unregister", "register_login"));
+        add(createLinkedActionButton("Logout", new LogoutListener()));
+        add(createLinkedActionButton("Unregister", new UnregisterListener()));
     }
 
     @Override
@@ -57,16 +57,25 @@ public class MainMenuPanel extends MenuPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                String selectedGame = gamesList.getSelectedValue();
-                // TODO: get game state from server, dont just make an empty map
-                Map m = new HashMap();
-                Game game = new Game(m);
-                GameGUI newGUI = new GameGUI(getMenuGUI().client, game, getMenuGUI());
-                getMenuGUI().addActiveGameGUI(game.getGameID(), newGUI.panel);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            String selectedGame = gamesList.getSelectedValue();
+            int gameID = 0; // TODO: get gameid
+            getMenuGUI().openGameGUI(gameID);
+        }
+    }
+
+    class LogoutListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getMenuGUI().loggedInUser = null;
+            getMenuGUI().setMenu("register_login");
+        }
+    }
+
+    class UnregisterListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getMenuGUI().loggedInUser = null;
+            getMenuGUI().setMenu("register_login");
         }
     }
 }

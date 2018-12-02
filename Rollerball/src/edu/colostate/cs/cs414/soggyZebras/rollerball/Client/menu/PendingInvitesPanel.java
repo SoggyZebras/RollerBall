@@ -14,8 +14,13 @@ public class PendingInvitesPanel extends MenuPanel {
     // holds player who invited current user->button for that invite
     private HashMap<String,Component> inviteButtons;
 
+    private JScrollPane scrollPane;
+
     public PendingInvitesPanel(MenuGUI menuGUI) {
         super("pending_invites", menuGUI);
+
+        scrollPane = new JScrollPane();
+        scrollPane.setPreferredSize(new Dimension(250, 100));
 
         ArrayList<String> invites = new ArrayList<>();
         if (getMenuGUI().loggedInUser != null) {
@@ -30,8 +35,10 @@ public class PendingInvitesPanel extends MenuPanel {
         inviteButtons = new HashMap<>();
         for (String s : invites) {
             inviteButtons.put(s,
-                    add(createLinkedActionButton("accept invite from " + s, new AcceptInviteListener(s))));
+                    scrollPane.add(createLinkedActionButton("accept invite from " + s, new AcceptInviteListener(s))));
         }
+
+        add(scrollPane);
 
         // to make sure Back is on a new line
         add(new JLabel("                                                            "));
@@ -52,8 +59,7 @@ public class PendingInvitesPanel extends MenuPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.err.println("accepted invite");
-            remove(inviteButtons.get(user));
+            scrollPane.remove(inviteButtons.get(user));
             getMenuGUI().revalidate();
             getMenuGUI().repaint();
 

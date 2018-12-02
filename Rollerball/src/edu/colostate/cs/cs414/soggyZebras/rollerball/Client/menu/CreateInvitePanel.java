@@ -24,7 +24,6 @@ public class CreateInvitePanel extends MenuPanel {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-            clearTextFields();
         }
     }
 }
