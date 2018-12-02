@@ -10,15 +10,17 @@ public class ClientSendsRegistration implements Event {
     private String message_type;
     private String username;
     private String password;
+    private String email;
 
 
     //Sending message constructor
 
-    public ClientSendsRegistration(String username, String password){
+    public ClientSendsRegistration(String username, String password, String email){
 
         this.message_type = Client_Sends_Registration;
         this.username = username;
         this.password = password;
+        this.email = email;
 
     }
 
@@ -41,6 +43,7 @@ public class ClientSendsRegistration implements Event {
         this.message_type = (String) oin.readObject();
         this.username = (String) oin.readObject();
         this.password = (String) oin.readObject();
+        this.email = (String) oin.readObject();
 
 
         // Close streams
@@ -61,6 +64,7 @@ public class ClientSendsRegistration implements Event {
         oout.writeObject(filename);
         oout.writeObject(this.username);
         oout.writeObject(this.password);
+        oout.writeObject(this.email);
 
         //flush the objects to the stream and close the streams
         oout.flush();
@@ -77,4 +81,6 @@ public class ClientSendsRegistration implements Event {
     public String getUsername() { return this.username; }
 
     public String getPassword() { return this.password; }
+
+    public String getEmail() { return this.email; }
 }

@@ -59,9 +59,9 @@ public class Server implements Node,Runnable {
 
             case Client_Responds_Invite: handleClientRespondsInvite(e,socket);break;
 
-            case Client_Sends_Login:
+            case Client_Sends_Login: handleClientSendsLogin(e, socket);break;
 
-            case Client_Sends_Registration:
+            case Client_Sends_Registration: handleClientSendsRegistration(e, socket);break;
 
             case Client_Sends_Refresh: handleClientSendsRefresh(e, socket);break;
 
@@ -75,14 +75,6 @@ public class Server implements Node,Runnable {
         //handleClientRequestGameState(e,socket);
         
     }
-
-    /*
-    private void handleClientRequestGameState(Event e, Socket socket) throws IOException {
-        //When client asks for a new game state, create a wireformat and send it to the client
-        ClientRequestGameState message = (ClientRequestGameState) e;
-        ServerRespondsGameState response = new ServerRespondsGameState(games.getGame(message.getGameID()).getBoard(), message.getGameID());
-        this.serverCache.getUser(socket).sendData(response.getFile());
-    }*/
 
     private void handleCheckMove(Event e, Socket socket) throws IOException {
         //When client asks for available spaces, get possible moves from game
@@ -128,20 +120,52 @@ public class Server implements Node,Runnable {
 
     }
 
-    private void handleClientSendsLogin(Event e, Socket socket){
+    private void handleClientSendsLogin(Event e, Socket socket) throws IOException, ClassNotFoundException{
         //TODO check the username is valid, check the database to see if that user exists
-        // if the user exists, send rejection
+        // if the user does not exists, send rejection
         // else fetch it, set the user fields and pass it to gui
         // remove old uid from serverthread
-        // ClientSendsLogin message = (ClientSendsLogin) e;
+        ClientSendsLogin message = (ClientSendsLogin) e;
+        User user = null;
+        String reason = "";
+        if(checkUsername(message.getUsername())){
+            user = serverCache.getUser(message.getUsername());
+
+        }
+        else{
+            reason = "User does not exist";
+        }
+        ServerRespondsLogin response = new ServerRespondsLogin(user,reason);
+        serverCache.getUser(socket).sendData(response.getFile());
         //ResultSet result = db.getUser(message.getUsername(),"");
 
 
     }
 
-    private void handleClientSendsRegistration(Event e, Socket socket){
+    private void handleClientSendsRegistration(Event e, Socket socket) throws IOException{
         //TODO check username and password with login database, if in database reject
         // else create user and update database
+        ClientSendsRegistration message = (ClientSendsRegistration) e;
+        User user = null;
+        String reason = "";
+        if(checkPassword(message.getPassword())){
+                if(!checkUsername(message.getUsername())){
+                    user = serverCache.getUser(socket);
+                    user.setUsername(message.getUsername());
+                    user.setPassword(message.getPassword());
+                    user.setEmail(message.getEmail());
+
+                }
+                else{
+                    reason = "User already exists!";
+                }
+        }
+        else{
+            reason = "Bad Password: password must be at least 8 characters long and cannot contain [ ; ( ) , / } { ] \\ or '";
+        }
+
+        ServerRespondsRegistration response = new ServerRespondsRegistration(user,reason);
+        serverCache.getUser(socket).sendData(response.getFile());
     }
 
     private void handleClientSendsRefresh(Event e, Socket socket) throws IOException {

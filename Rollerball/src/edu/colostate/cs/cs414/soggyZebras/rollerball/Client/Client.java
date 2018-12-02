@@ -17,7 +17,6 @@ import java.net.Socket;
 public class Client implements Node {
 
     MenuGUI gui;
-    User myUser;
 
     // TODO: does Client need a game object?
     private boolean debug = true;
@@ -90,7 +89,7 @@ public class Client implements Node {
 
     private void handleServerSendsConnect(Event e){
         ServerSendsConnect message = (ServerSendsConnect) e;
-        this.myUser = message.getUser();
+        //gui.setUser(message.getUser());
     }
 
     //========= END NETWORK SETUP =========//
@@ -104,8 +103,19 @@ public class Client implements Node {
         serverConnection.sendData(message.getFile());
     }
 
-    public void respondInvite(String name, int id){
+    public void respondInvite(String name, int id) throws IOException{
         ClientRespondsInvite message = new ClientRespondsInvite(name,id);
+        serverConnection.sendData(message.getFile());
+    }
+
+    public void register(String username, String password, String email) throws IOException{
+        ClientSendsRegistration message = new ClientSendsRegistration(username,password,email);
+        serverConnection.sendData(message.getFile());
+    }
+
+    public void login(String username, String password) throws IOException{
+        ClientSendsLogin message = new ClientSendsLogin(username,password);
+        serverConnection.sendData(message.getFile());
     }
 
     /**
@@ -201,10 +211,24 @@ public class Client implements Node {
 
     private void handleServerRespondsLogin(Event e, Socket socket){
         //TODO process event to see if the login was successful
+        ServerRespondsLogin message = (ServerRespondsLogin) e;
+        if(message.getReject_reason() == ""){
+            //gui.refresh(message.getUser());
+        }
+        else{
+            //gui.error(message.getReject_reason());
+        }
     }
 
     private void handleServerRespondsRegistration(Event e, Socket socket){
         //TODO process event to see if the registration was successful or not
+        ServerRespondsRegistration message = (ServerRespondsRegistration) e;
+        if(message.getReason() == ""){
+            //gui.refresh(message.getUser());
+        }
+        else{
+            //gui.error(message.getReason());
+        }
     }
 
     private void handleServerRespondsRefresh(Event e, Socket socket){
