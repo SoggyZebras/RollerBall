@@ -5,6 +5,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -22,6 +23,13 @@ public class AI_Player {
     //AI will always be the black player as it is instantiated by another user
     //setGame MUST BE CALLED INITIALLY BY CLIENT? TO ADD GAME TO ALL GAMES LIST
 
+    private Game currGame;
+    private ArrayList<Game> allGames = new ArrayList<>();
+    private Client currClient;
+    private Map<Location, Piece> Board;
+    private ArrayList<Location> allWLocs = new ArrayList<>();
+    private ArrayList<Location> allBLocs = new ArrayList<>();
+
     public void setGame(Game passed){
         boolean found = false;
         for(Game g: allGames){
@@ -35,12 +43,12 @@ public class AI_Player {
         }
     }
 
-    private Game currGame;
-    private ArrayList<Game> allGames = new ArrayList<>();
-    private Client currClient;
-    private Map<Location, Piece> Board;
-    private ArrayList<Location> allWLocs = new ArrayList<>();
-    private ArrayList<Location> allBLocs = new ArrayList<>();
+    public AI_Player()throws IOException{
+
+        currClient = new Client("127.0.0.1",5003);
+    }
+
+
 
 
     public void Move(int gameID) {
