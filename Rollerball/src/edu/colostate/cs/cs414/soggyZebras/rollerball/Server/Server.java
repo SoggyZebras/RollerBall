@@ -63,7 +63,7 @@ public class Server implements Node,Runnable {
 
             case Client_Sends_Registration:
 
-            case Client_Sends_Refresh:
+            case Client_Sends_Refresh: handleClientSendsRefresh(e, socket);break;
 
             default:
         }
@@ -133,8 +133,8 @@ public class Server implements Node,Runnable {
         // if the user exists, send rejection
         // else fetch it, set the user fields and pass it to gui
         // remove old uid from serverthread
-        ClientSendsLogin message = (ClientSendsLogin) e;
-        ResultSet result = db.getUser(message.getUsername(),"");
+        // ClientSendsLogin message = (ClientSendsLogin) e;
+        //ResultSet result = db.getUser(message.getUsername(),"");
 
 
     }
@@ -144,12 +144,13 @@ public class Server implements Node,Runnable {
         // else create user and update database
     }
 
-    private void handleClientSendsRefresh(Event e, Socket socket){
-        //TODO send back the user object
+    private void handleClientSendsRefresh(Event e, Socket socket) throws IOException {
         ClientSendsRefresh message = (ClientSendsRefresh) e;
 
         User sendTo = serverCache.getUser(message.getUserID());
         ServerRespondsRefresh response = new ServerRespondsRefresh(sendTo);
+
+        sendTo.sendData(response.getFile());
 
 
     }

@@ -208,14 +208,12 @@ public class Client implements Node {
     }
 
     private void handleServerRespondsRefresh(Event e, Socket socket){
-        //TODO pass user and game object to GUI
         ServerRespondsRefresh message = (ServerRespondsRefresh) e;
         //gui.refresh(message.getUser());
 
     }
 
     private void handleServerSendsInvite(Event e, Socket socket){
-        //TODO handle getting an invite from another user
         ServerSendsInvite message = (ServerSendsInvite) e;
         //gui.refresh(message.getUserTo());
 
