@@ -39,46 +39,48 @@ public class AI_Player {
     private ArrayList<Game> allGames = new ArrayList<>();
     private Client currClient;
     private Map<Location, Piece> Board;
-    private Set<Location> allWLocs = new HashSet<>();
-    private Set<Location> allBLocs = new HashSet<>();
+    private ArrayList<Location> allWLocs = new ArrayList<>();
+    private ArrayList<Location> allBLocs = new ArrayList<>();
 
 
-    public void Move(int gameID){
+    public void Move(int gameID) {
         System.out.println("AI is making a move");
 
         boolean found = false;
         //LOCATE CORRECT CURRENT GAME:
-        for(Game g: allGames){
-            if(g.getGameID()==gameID){
+        for (Game g : allGames) {
+            if (g.getGameID() == gameID) {
                 currGame = g;
                 Board = currGame.getBoard();
                 found = true;
             }
         }
-        if(!found){
+        if (!found) {
             throw new RuntimeException("Incorrect gameID passed to AI Move function");
         }
 
         //POPULATE CURRENT PIECE LOCATIONS:
-        for(Location I :Board.keySet()){
-            if(Board.get(I).getColor()=='w'){
+        for (Location I : Board.keySet()) {
+            if (Board.get(I).getColor() == 'w') {
                 allWLocs.add(I);
             }//Now all the current white piece locations are populated
         }
 
-        for(Location I :Board.keySet()){
-            if(Board.get(I).getColor()=='b'){
+        for (Location I : Board.keySet()) {
+            if (Board.get(I).getColor() == 'b') {
                 allBLocs.add(I);
             }//Now all the current black piece locations are populated
         }
 
-        //TODO: check this logic
-        if(!capture()){
-            if(!avoid()){
+        boolean check = capture();
+        if(!check){
+            check = avoid();
+            if(!check){
                 selectMove();
             }
         }
     }
+
 
     private boolean capture(){
 
@@ -114,10 +116,12 @@ public class AI_Player {
                             System.out.println("AI can be captured by White piece: "+Board.get(X).getType() + "At location: "+X.toString());
                             //Need to move from unsafe location to safe location if we have a valid move
                             //If no valid moves are available then we cant move anywhere and we will have to be captured
-                            if(currGame.validMoves(Y).isEmpty())break;
-                            else {
-                                currClient.makeMove(Y, currGame.validMoves(Y).get(0));
+                            if(currGame.validMoves(Y).isEmpty()){
                                 canCapture = false;
+                                break;
+                            }
+                            else {//The validMoves list will have at least 1 location:
+                                currClient.makeMove(Y, currGame.validMoves(Y).get(0));
                             }
                             break;
                         }
@@ -131,9 +135,19 @@ public class AI_Player {
 
     private void selectMove(){
 
+        Random rand = new Random();
 
+        for(Location I: allBLocs){
+            int value = rand.nextInt(allBLocs.size());
+            Location loc = allBLocs.get(value);
+            ArrayList<Location> valMoves = currGame.validMoves(loc);
+            if(!valMoves.isEmpty()){//We know that the piece has a valid location it can move to.
+                value = rand.nextInt(valMoves.size());
+                Location move = valMoves.get(value);
+                currClient.makeMove(loc,move);
+                break;
+            }
+        }
     }
-
-
 
 }
