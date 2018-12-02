@@ -10,16 +10,18 @@ public class ServerSendsInvite implements Event {
 
     //Information to be serialized or deserialized
     private String message_type;
-    private User userFrom;
+    private String userFrom;
+    private User userTo;
     private int inviteID;
 
     //Sending message constructor
 
 
-    public ServerSendsInvite(User to,int inv){
+    public ServerSendsInvite(String from, User to,int inv){
 
         this.message_type = Server_Sends_Invite;
-        this.userFrom = to;
+        this.userFrom = from;
+        this.userTo = to;
         this.inviteID = inv;
     }
 
@@ -40,7 +42,8 @@ public class ServerSendsInvite implements Event {
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
-        this.userFrom = (User) oin.readObject();
+        this.userFrom = (String) oin.readObject();
+        this.userTo = (User) oin.readObject();
         this.inviteID = oin.readInt();
 
 
@@ -62,6 +65,7 @@ public class ServerSendsInvite implements Event {
         // Take the local variables and serialize them into a file
         oout.writeObject(filename);
         oout.writeObject(this.userFrom);
+        oout.writeObject(this.userTo);
         oout.writeInt(this.inviteID);
 
         //flush the objects to the stream and close the streams
@@ -77,9 +81,11 @@ public class ServerSendsInvite implements Event {
     }
 
 
-    public User getUserFrom(){
+    public String getUserFrom(){
         return userFrom;
     }
+
+    public User getUserTo(){ return userTo;}
 
     public int getInviteID() { return inviteID; }
 

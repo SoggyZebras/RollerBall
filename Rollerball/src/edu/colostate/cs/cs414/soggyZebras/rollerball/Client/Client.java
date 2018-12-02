@@ -1,6 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.RollerballPanel;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
@@ -15,7 +16,7 @@ import java.net.Socket;
 
 public class Client implements Node {
 
-    RollerballPanel gui;
+    MenuGUI gui;
     User myUser;
 
     // TODO: does Client need a game object?
@@ -70,19 +71,17 @@ public class Client implements Node {
         switch(e.getType()){
             case Server_Sends_Connect: handleServerSendsConnect(e);break;
 
-            case Server_Responds_Game_State:handleGameState(e);break;
-
             case Server_Responds_Check_Move: handleServerCheckMove(e);break;
 
             case Server_Sends_Invite: handleServerSendsInvite(e,socket);break;
 
             case Server_Responds_Invite: handleServerRespondsInvite(e);break;
 
-            case Server_Responds_Registration:
+            case Server_Responds_Registration: handleServerRespondsRegistration(e,socket);break;
 
-            case Server_Responds_Login:
+            case Server_Responds_Login: handleServerRespondsLogin(e,socket);break;
 
-            case Server_Responds_Invite_Refresh:
+            case Server_Responds_Refresh: handleServerRespondsRefresh(e,socket);break;
 
             default:
         }
@@ -95,6 +94,19 @@ public class Client implements Node {
     }
 
     //========= END NETWORK SETUP =========//
+
+
+    //============ INTERFACE ==============//
+
+
+    public void sendInvite(String name) throws IOException{
+        ClientSendsInvite message = new ClientSendsInvite(name,0);
+        serverConnection.sendData(message.getFile());
+    }
+
+    public void respondInvite(String name, int id){
+        ClientRespondsInvite message = new ClientRespondsInvite(name,id);
+    }
 
     /**
      *
@@ -150,15 +162,28 @@ public class Client implements Node {
         }
     }
 
-    /**
-     *
-     * @param e
-     */
+    public void refreshClient(int userID) throws IOException {
+        ClientSendsRefresh message = new ClientSendsRefresh(userID);
+        serverConnection.sendData(message.getFile());
+    }
+
+
+
+
+    //========== END INTERFACE ===========//
+
+
+
+    //============ HANDLES ===============//
+
+
+   /*
     private void handleGameState(Event e) {
         // When server sends an updated game state, recompile the game and give it to the ui
         ServerRespondsGameState message = (ServerRespondsGameState) e;
         this.gui.updateState(message.getMap());
     }
+    */
 
     /**
      *
@@ -166,42 +191,39 @@ public class Client implements Node {
      */
     private void handleServerCheckMove(Event e){
         ServerRespondsCheckMove message = (ServerRespondsCheckMove) e;
-        gui.updateValidMoves(message.getList());
-    }
-
-    public void sendInvite(User userTo) throws IOException, ClassNotFoundException {
-        ClientSendsInvite message = new ClientSendsInvite(userTo);
-        serverConnection.sendData(message.getFile());
+        //gui.updateValidMoves(message.getGameID(), message.getList());
     }
 
     private void handleServerRespondsInvite(Event e){
         ServerRespondsInvite message = (ServerRespondsInvite) e;
-        if(message.getGameID() == -1){
-            myUser = message.getUserFrom();
-        }
-        else{
-            //TODO pass id of new game to gui and update invites list
-            //get back User other player, int game id
-        }
+        //gui.refresh(message.getUserTo());
     }
 
-    private void handleServerSendsLogin(Event e, Socket socket){
+    private void handleServerRespondsLogin(Event e, Socket socket){
         //TODO process event to see if the login was successful
     }
 
-    private void handleServerSendsRegistration(Event e, Socket socket){
+    private void handleServerRespondsRegistration(Event e, Socket socket){
         //TODO process event to see if the registration was successful or not
     }
 
-    private void handleServerSendsInviteRefresh(Event e, Socket socket){
-        //TODO pass user to GUI
+    private void handleServerRespondsRefresh(Event e, Socket socket){
+        ServerRespondsRefresh message = (ServerRespondsRefresh) e;
+        //gui.refresh(message.getUser());
+
     }
 
     private void handleServerSendsInvite(Event e, Socket socket){
-        //TODO handle getting an invite from another user
+        ServerSendsInvite message = (ServerSendsInvite) e;
+        //gui.refresh(message.getUserTo());
+
     }
 
-    public void setGui(RollerballPanel p){
+
+    //========= END HANDLES ========//
+
+
+    public void setGui(MenuGUI p){
         this.gui = p;
     }
 

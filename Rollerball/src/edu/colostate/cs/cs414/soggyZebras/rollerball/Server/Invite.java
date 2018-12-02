@@ -2,21 +2,22 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Server;
 
 public class Invite {
 
-    private User invitee;
-    private User inviter;
+    private String invitee;
+    private String inviter;
     private int inviteID;
+    private boolean accepted;
 
-    public Invite(User invtee, User invtr, int id){
+    public Invite(String invtee, String invtr, int id){
         this.invitee = invtee;
         this.inviter = invtr;
         this.inviteID = id;
     }
 
-    public User getInvitee(){
+    public String getInvitee(){
         return this.invitee;
     }
 
-    public User getInviter(){
+    public String getInviter(){
         return this.inviter;
     }
 

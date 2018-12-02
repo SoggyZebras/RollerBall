@@ -1,5 +1,6 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Server;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Database.Database.Database;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerCache;
@@ -9,13 +10,14 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
+import java.sql.ResultSet;
 
 public class Server implements Node,Runnable {
 
 
     GameCache games;
+    Database db;
     ArrayList<Integer> gameIDs;
     ArrayList<Integer> inviteIDs;
     Random random;
@@ -33,6 +35,7 @@ public class Server implements Node,Runnable {
         this.serverPort = port;
         this.serverCache = new TCPServerCache();
         games = new GameCache();
+        db = new Database();
         this.serverThread = new TCPServerThread(this, serverCache, this.serverPort);
 
     }
@@ -50,8 +53,6 @@ public class Server implements Node,Runnable {
 
             case Client_Make_Move: handleMakeMove(e,socket);break;
 
-            case Client_Request_Game_State: handleClientRequestGameState(e, socket);
-
             case Client_Request_Check_Move: handleCheckMove(e,socket);break;
 
             case Client_Sends_Invite: handleClientSendsInvite(e,socket);break;
@@ -62,7 +63,7 @@ public class Server implements Node,Runnable {
 
             case Client_Sends_Registration:
 
-            case Client_Sends_Invite_Refresh:
+            case Client_Sends_Refresh: handleClientSendsRefresh(e, socket);break;
 
             default:
         }
@@ -70,17 +71,18 @@ public class Server implements Node,Runnable {
 
     private void handleMakeMove(Event e ,Socket socket) throws IOException {
         ClientMakeMove message =(ClientMakeMove) e;
-       games.getGame(message.getGameID()).makeMove(message.getTo(),message.getFrom());
-        handleClientRequestGameState(e,socket);
+        games.getGame(message.getGameID()).makeMove(message.getTo(),message.getFrom());
+        //handleClientRequestGameState(e,socket);
         
     }
 
+    /*
     private void handleClientRequestGameState(Event e, Socket socket) throws IOException {
         //When client asks for a new game state, create a wireformat and send it to the client
         ClientRequestGameState message = (ClientRequestGameState) e;
         ServerRespondsGameState response = new ServerRespondsGameState(games.getGame(message.getGameID()).getBoard(), message.getGameID());
         this.serverCache.getUser(socket).sendData(response.getFile());
-    }
+    }*/
 
     private void handleCheckMove(Event e, Socket socket) throws IOException {
         //When client asks for available spaces, get possible moves from game
@@ -94,38 +96,35 @@ public class Server implements Node,Runnable {
     private void handleClientSendsInvite(Event e, Socket socket) throws IOException{
         ClientSendsInvite message = (ClientSendsInvite) e;
         User sentFrom = this.serverCache.getUser(socket);
-        Invite inv = new Invite(sentFrom,message.getUserTo(),genInviteID());
+        User sendTo = serverCache.getUser(message.getUserTo());
+        Invite inv = new Invite(sentFrom.getUsername(), sendTo.getUsername(), genInviteID());
 
-        message.getUserTo().addInviteSent(inv);
+        sendTo.addInviteSent(inv);
         sentFrom.addInviteGot(inv);
 
-        ServerSendsInvite response = new ServerSendsInvite(sentFrom,inv.getInviteID());
-        ServerRespondsInvite response2 = new ServerRespondsInvite(sentFrom,-1);
+        ServerSendsInvite response = new ServerSendsInvite(sentFrom.getUsername(),sendTo,inv.getInviteID());
+        ServerRespondsInvite response2 = new ServerRespondsInvite(sentFrom);
 
         sentFrom.sendData(response2.getFile());
-        message.getUserTo().sendData(response.getFile());
+        sendTo.sendData(response.getFile());
 
     }
 
     private void handleClientRespondsInvite(Event e, Socket s) throws IOException {
         ClientRespondsInvite message = (ClientRespondsInvite) e;
         User sentUser = this.serverCache.getUser(s);
+        User fromUser = serverCache.getUser(message.getUsername());
         int gID;
-        if(message.getAccpeted()){
-            message.getUserTo().removeInviteGot(message.getInviteID());
-            sentUser.removeInviteSent(message.getInviteID());
-            gID = genGameID();
-            games.addGame(new Game(gID,sentUser,message.getUserTo()));
-        }
-        else{
-            gID = -1;
-        }
+        fromUser.removeInviteGot(message.getInviteID());
+        sentUser.removeInviteSent(message.getInviteID());
+        gID = genGameID();
+        games.addGame(new Game(gID,sentUser,fromUser));
 
-        ServerRespondsInvite response1 = new ServerRespondsInvite(sentUser,gID);
-        ServerRespondsInvite response2 = new ServerRespondsInvite(message.getUserTo(),gID);
+        ServerRespondsInvite response1 = new ServerRespondsInvite(sentUser);
+        ServerRespondsInvite response2 = new ServerRespondsInvite(fromUser);
 
         sentUser.sendData(response1.getFile());
-        message.getUserTo().sendData(response2.getFile());
+        fromUser.sendData(response2.getFile());
 
     }
 
@@ -134,6 +133,10 @@ public class Server implements Node,Runnable {
         // if the user exists, send rejection
         // else fetch it, set the user fields and pass it to gui
         // remove old uid from serverthread
+        // ClientSendsLogin message = (ClientSendsLogin) e;
+        //ResultSet result = db.getUser(message.getUsername(),"");
+
+
     }
 
     private void handleClientSendsRegistration(Event e, Socket socket){
@@ -141,8 +144,15 @@ public class Server implements Node,Runnable {
         // else create user and update database
     }
 
-    private void handleClientSendsInviteRefresh(Event e, Socket socket){
-        //TODO send back the user object
+    private void handleClientSendsRefresh(Event e, Socket socket) throws IOException {
+        ClientSendsRefresh message = (ClientSendsRefresh) e;
+
+        User sendTo = serverCache.getUser(message.getUserID());
+        ServerRespondsRefresh response = new ServerRespondsRefresh(sendTo);
+
+        sendTo.sendData(response.getFile());
+
+
     }
 
     //Check each game and make sure the random numbe generated isn't already in use.

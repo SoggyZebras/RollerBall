@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class Database {
 
-    private ResultSet query(String stmt){
+    private ResultSet query(String stmt, String insert){
         try{
             Class.forName("com.mysql.jdbc.Driver");
             // connect to the database and query
@@ -21,7 +21,13 @@ public class Database {
             try (Connection conn = DriverManager.getConnection("jdbc:mysql://faure.cs.colostate.edu/cntorres", user, password);
                  Statement query = conn.createStatement();
             ) {
-                query.executeUpdate(stmt);
+                if(insert == "insert") {
+                    query.executeUpdate(stmt);
+                    return null;
+                 }
+                 else{
+                     return query.executeQuery(stmt);
+                }
             }
         } catch (Exception e) {
 
@@ -30,45 +36,49 @@ public class Database {
         return null;
     }
 
-    public void insertGame(String p1, String p2, Map<Location, Piece> gameState, String turn, String winner, String loser){
-        String sql = "INSERT INTO Game " +
-                "VALUES (" + p1 + ", " + p2 +", "+ gameState + ", "  + turn + ", " + winner + ", " + loser+ ")";
-
-        query(sql);
+    public void insertGame(String p1, String p2, Game gameState, String turn, String winner, String loser, Boolean inprogress){
+        String sql = "INSERT INTO Game (`Player1`, `Player2`, `GameState`, `Turn`, `Winner`, `Loser`, `InProgress`)" +
+                "VALUES (\"" + p1 + "\", \"" + p2 +"\", \""+ gameState + "\", \""  + turn + "\", \"" + winner + "\", \"" + loser+ "\", \""+  inprogress +"\")";
+        System.out.println(sql);
+        query(sql, "insert");
     }
 
-    public void getGame(String p1, String p2){
-        String sql = "Select * FROM Game WHERE Player1=" + p1+ ", Player2="+p2;
-        query(sql);
+    public ResultSet getGame(String p1, String p2){
+        String sql = "Select * FROM Game WHERE `Player1`=" + p1+ " && `Player2`="+p2;
+        return query(sql, "select");
     }
 
-    public void getUser(String name, String email){
-        String sql = "Select * FROM Game WHERE user=" + name+ ", email="+email;
-        query(sql);
+    public ResultSet getUser(String name, String email){
+        String sql = "Select * FROM userDatabase WHERE `user`=" + name+ "&& `email`="+email;
+        return query(sql, "select");
+    }
+
+    public ResultSet getAllUser(String name, String email){
+        String sql = "Select * FROM userDatabase";
+        return query(sql, "select");
     }
 
     public void insertUser(String name, String password, String email){
-        String sql = "INSERT INTO Game (user, password,email)" +
+        String sql = "INSERT INTO userDatabase (user, password, email) " +
                 "VALUES (\"" + name + "\", \"" + password+"\", \""+ email + "\")";
-
-        query(sql);
+        query(sql, "insert");
     }
 
-    public void getInvite(String from, String to){
-        String sql = "Select * FROM Game WHERE from=" + from+ ", to="+to;
-        query(sql);
+    public ResultSet getInvite(String from, String to){
+        String sql = "Select * FROM Invites WHERE `from` =\"" + from+ "\" && `to`=\""+to+"\"";
+        return query(sql, "select");
     }
 
-    public void insertInvite(String from, String to) throws SQLException {
-        String sql = "INSERT INTO Game " +
-                "VALUES (" + from + ", " + to + ")";
-        query(sql);
+    public void insertInvite(String from, String to)  {
+        String sql = "INSERT INTO Invites (`from`, `to`) " +
+                "VALUES (\'" + from + "\', \'" + to + "\')";
+        query(sql, "insert");
     }
 
 
     public static void main(String[] args){
         Database d = new Database();
-        d.insertUser("name", "password", "email");
+        d.getInvite("Jone", "Doe");
     }
 
 }
