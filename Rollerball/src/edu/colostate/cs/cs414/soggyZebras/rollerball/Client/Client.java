@@ -91,6 +91,8 @@ public class Client implements Node {
 
     private void handleServerSendsConnect(Event e){
         ServerSendsConnect message = (ServerSendsConnect) e;
+        User user = message.getUser();
+        user.setServerConnection(serverConnection);
         gui.refresh(message.getUser());
     }
 

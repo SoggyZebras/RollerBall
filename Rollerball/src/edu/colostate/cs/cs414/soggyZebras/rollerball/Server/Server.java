@@ -217,7 +217,7 @@ public class Server implements Node,Runnable {
     }
 
     public static void main(String []args){
-        Server s = new Server(5003);
+        Server s = new Server(35355);
         s.run();
     }
 }

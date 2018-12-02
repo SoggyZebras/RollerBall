@@ -55,8 +55,25 @@ public class TCPConnection {
         return this.serverSocket;
     }
 
+    public TCPSenderThread getSenSocket() {
+        return senSocket;
+    }
+
+    public TCPReceiverThread getRecSocket() {
+        return recSocket;
+    }
+
+    public Socket getServerSocket() {
+        return serverSocket;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
     public Node getNode() {
         return this.node;
     }
+
 
 }

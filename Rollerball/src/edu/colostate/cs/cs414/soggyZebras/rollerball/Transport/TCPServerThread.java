@@ -48,7 +48,6 @@ public class TCPServerThread implements Runnable{
         try {
             this.node = node;
             serverSocket = new ServerSocket(port);
-            System.out.println("Listening on port " + port);
             this.serverCache = c;
             userNumbers = new ArrayList<>();
         } catch (IOException e) {
@@ -63,7 +62,7 @@ public class TCPServerThread implements Runnable{
 
     @Override
     public void run() {
-
+        System.out.println("Listening on port " + this.serverSocket.getLocalPort());
         while(true) {
             try {
                 //Accept incoming connection
