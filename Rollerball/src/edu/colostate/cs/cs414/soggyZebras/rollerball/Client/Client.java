@@ -203,15 +203,16 @@ public class Client implements Node {
      */
     private void handleServerCheckMove(Event e){
         ServerRespondsCheckMove message = (ServerRespondsCheckMove) e;
-        //gui.updateValidMoves(message.getGameID(), message.getList());
+        gui.updateValidMoves(message.getGameID(), message.getList());
     }
 
     private void handleServerRespondsInvite(Event e){
         ServerRespondsInvite message = (ServerRespondsInvite) e;
-        //gui.refresh(message.getUserTo());
+        gui.refresh(message.getUser());
     }
 
     private void handleServerRespondsLogin(Event e, Socket socket){
+        System.err.println("respond login");
         //TODO process event to see if the login was successful
         ServerRespondsLogin message = (ServerRespondsLogin) e;
         gui.onLoginResponse(message.getUser(), message.getReject_reason());

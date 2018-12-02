@@ -1,5 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,16 +12,23 @@ import java.io.IOException;
  * represents the login screen
  */
 public class LoginPanel extends MenuPanel {
+    private boolean loggingIn;
 
     public LoginPanel(MenuGUI menuGUI) {
         super("login", menuGUI);
-        // TODO: add forms for logging in
+        refresh(menuGUI.loggedInUser);
+    }
+
+    @Override
+    public void refresh(User updatedUser) {
+        removeAll();
         add(new JLabel("username: "));
         add(new TextField(30));
         add(new JLabel("password: "));
         add(new TextField(30));
         add(createLinkedActionButton("Login", new LoginListener()));
         add(createLinkedButton("Back", "register_login"));
+        loggingIn = false;
     }
 
     class LoginListener implements ActionListener {
@@ -28,15 +37,16 @@ public class LoginPanel extends MenuPanel {
             String username = ((TextField)getComponent(1)).getText().trim();
             String password = ((TextField)getComponent(3)).getText().trim();
             try {
-                getMenuGUI().client.login(username, password);
-                // TODO: notify that we are waiting for a response
+                if (!loggingIn) {
+                    loggingIn = true;
+                    add(new JLabel("Logging in..."));
+                    revalidate();
+                    repaint();
+                    getMenuGUI().client.login(username, password);
+                }
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-
-            // TODO: update logged in user on success
-            clearTextFields();
-            getMenuGUI().setMenu("main_menu");
         }
     }
 }

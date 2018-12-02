@@ -41,7 +41,7 @@ public class MenuGUI extends JFrame {
 
         try {
             // TODO: change server address
-            client = new Client("127.0.0.1",5003);
+            client = new Client("3.16.42.80",35355);
             client.initialize();
             client.setGui(this);
         } catch (IOException e) {
@@ -65,6 +65,7 @@ public class MenuGUI extends JFrame {
      * @param newMenu the name of the new menu to show, for example "register"
      */
     public void setMenu(String newMenu) {
+        cardContainer.refreshAll(loggedInUser);
         cardContainer.show(newMenu);
     }
 
@@ -149,6 +150,7 @@ public class MenuGUI extends JFrame {
      * @param message an error message
      */
     public void onLoginResponse(User user, String message) {
+        System.err.println("login response");
         login(user, message);
     }
 
