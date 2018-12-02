@@ -49,6 +49,8 @@ public class Game implements java.io.Serializable {
 
         Set<Location> allWLocs = new HashSet<Location>();
         ArrayList<Location> KingMoves = new ArrayList<Location>();
+        ArrayList<Location> compare = new ArrayList<Location>();
+        Location kingLoc = null;
 
         for(Location I :board.keySet()){
             if(board.get(I).getColor()=='w'){
@@ -58,28 +60,37 @@ public class Game implements java.io.Serializable {
             }
             if(board.get(I).getColor()=='b'&& board.get(I).getType()=="king"){
                 KingMoves = validMoves(I);
+                kingLoc = I;
             }
         }
-        System.out.println("White King Moves:" + KingMoves.size());
+        System.out.println("Black King Moves:" + KingMoves.size());
+        System.out.println("Black King Loc:" + kingLoc.toString());
+
         //Now all valid black moves and white king moves are populated.
 
-        if(KingMoves.isEmpty()){ //case for if all pieces around them are the same color
-            return false;
+        if(KingMoves.isEmpty()&&allWLocs.contains(kingLoc)){ //case for if King has no valid moves and will be captured
+            return true;
         }
         else {
+            compare.addAll(KingMoves);
             for (Location I : KingMoves) {
                 if (allWLocs.contains(I)) {
-                    KingMoves.remove(I);
+                    compare.remove(I);
                 }
             }
         }
-        return KingMoves.isEmpty();
+        return compare.isEmpty();
 
     }
+
+
 
     public boolean wonGameB(){
         Set<Location> allBLocs = new HashSet<Location>();
         ArrayList<Location> KingMoves = new ArrayList<Location>();
+        ArrayList<Location> compare = new ArrayList<Location>();
+
+        Location kingLoc = null;
 
         for(Location I :board.keySet()){
             if(board.get(I).getColor()=='b'){
@@ -89,23 +100,31 @@ public class Game implements java.io.Serializable {
             }
             if(board.get(I).getColor()=='w'&& board.get(I).getType()=="king"){
                 KingMoves = validMoves(I);
+                kingLoc = I;
             }
         }
         //Now all valid black moves and white king moves are populated.
-        System.out.println("Black King Moves:" + KingMoves.size());
+        System.out.println("White King Moves:" + KingMoves.size());
+        System.out.println("White King Loc:" + kingLoc.toString());
 
-        if(KingMoves.isEmpty()){ //case for if all pieces around them are the same color
-            return false;
+
+        if(KingMoves.isEmpty()&&allBLocs.contains(kingLoc)){ //case for if King has no valid moves and will be captured
+            return true;
         }
         else {
+            compare.addAll(KingMoves);
             for (Location I : KingMoves) {
                 if (allBLocs.contains(I)) {
-                    KingMoves.remove(I);
+                    compare.remove(I);
                 }
             }
         }
-        return KingMoves.isEmpty();
+        return compare.isEmpty();
     }
+
+
+
+
 
     public boolean stalemate(){
         Set<Location> allWLocs = new HashSet<Location>();
