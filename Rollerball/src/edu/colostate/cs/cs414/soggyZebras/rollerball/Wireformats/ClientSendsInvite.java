@@ -12,12 +12,12 @@ public class ClientSendsInvite implements Event {
 
     //Information to be serialized or deserialized
     private String message_type;
-    private User userTo;
+    private String userTo;
 
     //Sending message constructor
 
 
-    public ClientSendsInvite(User to){
+    public ClientSendsInvite(String to, int flag){
 
         this.message_type = Client_Sends_Invite;
         this.userTo = to;
@@ -40,7 +40,7 @@ public class ClientSendsInvite implements Event {
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
-        this.userTo = (User) oin.readObject();
+        this.userTo = (String) oin.readObject();
 
 
 
@@ -75,7 +75,7 @@ public class ClientSendsInvite implements Event {
     }
 
 
-    public User getUserTo(){
+    public String getUserTo(){
         return userTo;
     }
 

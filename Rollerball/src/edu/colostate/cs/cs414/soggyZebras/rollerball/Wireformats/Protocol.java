@@ -20,8 +20,8 @@ public interface Protocol {
      String Client_Sends_Login = "clientSendsLogin.msg";
      String Server_Responds_Login = "serverRespondsLogin.msg";
 
-     String Client_Sends_Invite_Refresh = "clientSendsInviteRefresh.msg";
-     String Server_Responds_Invite_Refresh = "serverSendsInviteRefresh.msg";
+     String Client_Sends_Refresh = "clientSendsRefresh.msg";
+     String Server_Responds_Refresh = "serverRespondsRefresh.msg";
 
      String Client_Sends_Invite = "clientSendsInvite.msg";
      String Client_Responds_Invite = "clientRespondsInvite";

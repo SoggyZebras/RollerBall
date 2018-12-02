@@ -1,5 +1,6 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Server;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 
 import java.util.ArrayList;
@@ -14,13 +15,18 @@ public class User {
     private TCPConnection userConnection;
     private ArrayList<Invite> sentInvites;
     private ArrayList<Invite> gotInvites;
+    private ArrayList<Game> games;
 
     //Constructors
-    public User(int uID, String username, String password, TCPConnection con){
+    public User(int uID, String username, String password,String email ,TCPConnection con){
         this.userID = uID;
         this.username = username;
         this.password = password;
+        this.email = email;
         this.userConnection = con;
+        sentInvites = new ArrayList<>();
+        gotInvites = new ArrayList<>();
+        games = new ArrayList<>();
     }
 
     //Get and Set
@@ -93,4 +99,12 @@ public class User {
     public String getPassword(){
         return password;
     }
+
+    public String getEmail() { return email;}
+
+    public ArrayList<Invite> getSentInvites() { return sentInvites;}
+
+    public ArrayList<Invite> getGotInvites() { return gotInvites;}
+
+    public ArrayList<Game> getGames() { return games;}
 }

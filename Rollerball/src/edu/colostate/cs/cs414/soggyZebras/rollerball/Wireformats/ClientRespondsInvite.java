@@ -10,17 +10,16 @@ public class ClientRespondsInvite implements Event {
 
     //Information to be serialized or deserialized
     private String message_type;
-    private User userTo;
+    private String username;
     private int inviteID;
-    private boolean accepted;
 
     //Sending message constructor
 
 
-    public ClientRespondsInvite(User to, int inv){
+    public ClientRespondsInvite(String name, int inv){
 
         this.message_type = Client_Responds_Invite;
-        this.userTo = to;
+        this.username = name;
         this.inviteID = inv;
     }
 
@@ -41,8 +40,7 @@ public class ClientRespondsInvite implements Event {
         // deserialize the objects into their proper local variables
 
         this.message_type = (String) oin.readObject();
-        this.userTo = (User) oin.readObject();
-        this.accepted = (boolean) oin.readObject();
+        this.username = (String) oin.readObject();
         this.inviteID = oin.readInt();
 
 
@@ -63,8 +61,7 @@ public class ClientRespondsInvite implements Event {
 
         // Take the local variables and serialize them into a file
         oout.writeObject(filename);
-        oout.writeObject(this.userTo);
-        oout.writeObject(this.accepted);
+        oout.writeObject(this.username);
         oout.writeInt(this.inviteID);
 
         //flush the objects to the stream and close the streams
@@ -79,12 +76,7 @@ public class ClientRespondsInvite implements Event {
         return this.message_type;
     }
 
-
-    public User getUserTo(){
-        return userTo;
-    }
-
-    public boolean getAccpeted() { return accepted; }
+    public String getUsername() {return this.username;}
 
     public int getInviteID() { return this.inviteID;}
 

@@ -36,18 +36,19 @@ public class TCPServerCache {
         return null;
     }
 
-    /**
-     *
-     * @param ip
-     * @param p
-     * @return TCPConnection
-     */
-    public User getUser(byte[] ip, int p) {
-        for(int i = 0; i < this.cache.size();++i) {
-            if(cache.get(i).getUserConnection().getSocket().getPort() == p) {
-                if(Arrays.equals(cache.get(i).getUserConnection().getSocket().getInetAddress().getAddress(),ip)) {
-                    return cache.get(i);
-                }
+    public User getUser(int i){
+        for(User u : getAllUsers()){
+            if(u.getUserID() == i){
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public User getUser(String s){
+        for(User u : getAllUsers()){
+            if(u.getUsername() == s){
+                return u;
             }
         }
         return null;
