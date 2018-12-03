@@ -19,6 +19,11 @@ public class MainMenuPanel extends MenuPanel {
     public MainMenuPanel(MenuGUI menuGUI) {
         super("main_menu", menuGUI);
 
+    }
+
+    @Override
+    public void refresh(User updatedUser) {
+
         JLabel title = new JLabel("Active Games");
         add(title);
 
@@ -43,11 +48,6 @@ public class MainMenuPanel extends MenuPanel {
         add(createLinkedActionButton("Unregister", new UnregisterListener()));
     }
 
-    @Override
-    public void refresh(User updatedUser) {
-        // TODO: update activeGamesListModel
-    }
-
     class StartGameListener implements ActionListener {
         private JList<String> gamesList;
 
@@ -66,16 +66,27 @@ public class MainMenuPanel extends MenuPanel {
     class LogoutListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            getMenuGUI().loggedInUser = null;
-            getMenuGUI().setMenu("register_login");
+            int logout = JOptionPane.showOptionDialog(getMenuGUI(),
+                    "Are you sure you want to logout?", "Logout Confirmation",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            if (logout == 0) {
+                getMenuGUI().loggedInUser = null;
+                getMenuGUI().setMenu("register_login");
+            }
         }
     }
 
     class UnregisterListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            getMenuGUI().loggedInUser = null;
-            getMenuGUI().setMenu("register_login");
+            int unreg = JOptionPane.showOptionDialog(getMenuGUI(),
+                    "Are you sure you want to unregister? All of this user's data will be lost", "Unregister Confirmation",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            if (unreg == 0) {
+                // TODO: unregister user from db
+                getMenuGUI().loggedInUser = null;
+                getMenuGUI().setMenu("register_login");
+            }
         }
     }
 }

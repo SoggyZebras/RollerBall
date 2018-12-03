@@ -6,8 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class PendingInvitesPanel extends MenuPanel {
 
@@ -57,6 +55,7 @@ public class PendingInvitesPanel extends MenuPanel {
         public void actionPerformed(ActionEvent e) {
             String user = pendingInvitesList.getSelectedValue();
             pendingInvitesListModel.remove(pendingInvitesListModel.indexOf(user));
+            // TODO: tell server that game was started
             getMenuGUI().revalidate();
             getMenuGUI().repaint();
 
@@ -66,7 +65,9 @@ public class PendingInvitesPanel extends MenuPanel {
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 
             if (loadGame == 0) {
-                // TODO: start game
+                // TODO: get game id
+                int gameId = 0;
+                getMenuGUI().openGameGUI(gameId);
             }
         }
     }

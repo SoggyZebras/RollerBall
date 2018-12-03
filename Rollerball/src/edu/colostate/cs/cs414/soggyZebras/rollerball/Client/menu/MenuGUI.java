@@ -32,7 +32,7 @@ public class MenuGUI extends JFrame {
      */
     public User loggedInUser;
 
-    private Map<Integer,RollerballPanel> activeGameGUIs;
+    public Map<Integer,RollerballPanel> activeGameGUIs;
 
     public MenuGUI() {
         super("Rollerball Menu");
@@ -73,10 +73,6 @@ public class MenuGUI extends JFrame {
         return cardContainer;
     }
 
-    public void addActiveGameGUI(int gameID, RollerballPanel gameGUI) {
-        activeGameGUIs.put(gameID, gameGUI);
-    }
-
     /**
      * open a game window for the game with the given gameID
      * @param gameID
@@ -95,7 +91,7 @@ public class MenuGUI extends JFrame {
             // open that game
             try {
                 GameGUI gameGUI = new GameGUI(client, loadedGame, this);
-                addActiveGameGUI(gameID, gameGUI.panel);
+                activeGameGUIs.put(gameID, gameGUI.panel);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -167,6 +163,7 @@ public class MenuGUI extends JFrame {
         }
         else {
             // TODO: popup error message
+            JOptionPane.showMessageDialog(this, message);
             System.err.println(message);
         }
     }
