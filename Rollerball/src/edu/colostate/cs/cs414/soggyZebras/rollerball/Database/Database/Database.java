@@ -2,10 +2,8 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Database.Database;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.*;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.*;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Database {
 
@@ -15,7 +13,6 @@ public class Database {
             // connect to the database and query
             String user = "cntorres";
             String password = "830429517";
-
             try (Connection conn = DriverManager.getConnection("jdbc:mysql://faure.cs.colostate.edu/cntorres", user, password);
                  Statement query = conn.createStatement();
             ) {
@@ -60,7 +57,7 @@ public class Database {
         return new User(id, username, password, e);
     }
 
-    public ArrayList<User> getAllUser(String name, String email) throws SQLException {
+    public ArrayList<User> getAllUser() throws SQLException {
         String sql = "Select * FROM user";
         ArrayList<User> users = new ArrayList<User>();
         ResultSet rs= query(sql, "select");
@@ -74,7 +71,7 @@ public class Database {
         return users;
     }
 
-    public void insertUser(int id, String name, String password, String email, Array sentInvites, Array gotInvites, Array games){
+    public void insertUser(int id, String name, String password, String email, Invite[] sentInvites, Invite[] gotInvites, Game[] games){
         String sql = "INSERT INTO user (id, user, password, email, sentInvites, gotInvites, games) " +
                 "VALUES ("+ id  + ", \"" + name + "\", \"" + password+"\", \""+ email + "\", \""  +  sentInvites  + "\", \"" +    gotInvites + "\", \"" +    games + "\")";
         query(sql, "insert");

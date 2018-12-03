@@ -9,9 +9,9 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
-import java.sql.ResultSet;
 
 public class Server implements Node,Runnable {
 
@@ -44,13 +44,52 @@ public class Server implements Node,Runnable {
     public void run(){
 
         //load previous state from database
-        init();
+        try {
+            init();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
 
         //Start server thread(send/receive threads
         this.serverThread.run();
     }
 
-    private void init(){
+    private void init() throws SQLException {
+        System.out.println("begin user init...");
+        if(db.getAllUser()!= null){
+            serverCache.setCache(db.getAllUser());
+        }
+
+        System.out.println("begin invite init...");
+        for(User u : serverCache.getAllUsers()){
+            for(User k: serverCache.getAllUsers()){
+                    Invite tmp = db.getInvite(u.getUsername(),k.getUsername());
+                    if(tmp != null){
+                        u.addInviteSent(tmp);
+                        k.addInviteGot(tmp);
+                    }
+
+            }
+        }
+
+        System.out.println("begin game init...");
+        for(User u : serverCache.getAllUsers()){
+            for(User k: serverCache.getAllUsers()){
+                Game tmp = db.getGame(u.getUsername(),k.getUsername());
+                if(tmp != null) {
+                    u.addGame(tmp);
+                    k.addGame(tmp);
+                }
+
+                Game tmp2 = db.getGame(k.getUsername(),u.getUsername());
+                if(tmp2 != null) {
+                    u.addGame(tmp2);
+                    k.addGame(tmp2);
+                }
+
+            }
+        }
 
     }
 
@@ -106,6 +145,7 @@ public class Server implements Node,Runnable {
 
         sendTo.addInviteSent(inv);
         sentFrom.addInviteGot(inv);
+        db.insertInvite(inv.getInviteID(),inv.getInviter(),inv.getInvitee());
 
         if(serverCache.getConnection(sendTo.getUserID())!= null){
             ServerSendsInvite response = new ServerSendsInvite(sentFrom.getUsername(),sendTo,inv.getInviteID());
@@ -152,7 +192,7 @@ public class Server implements Node,Runnable {
         if(checkUsername(message.getUsername())){
             if(!serverCache.UserLoggedIn(serverCache.getUser(message.getUsername()).getUserID())){
                 user = serverCache.getUser(message.getUsername());
-                serverCache.getUserCon(socket).setConID(user.getUserID());
+                user.setUserID(serverCache.getUserCon(socket).getConID());
             }
             else{
                 reason = "User already logged in";
@@ -170,8 +210,6 @@ public class Server implements Node,Runnable {
     }
 
     private void handleClientSendsRegistration(Event e, Socket socket) throws IOException{
-        //TODO check username and password with login database, if in database reject
-        // else create user and update database
         ClientSendsRegistration message = (ClientSendsRegistration) e;
         User user = null;
         String reason = "";
@@ -182,6 +220,8 @@ public class Server implements Node,Runnable {
                     user.setPassword(message.getPassword());
                     user.setEmail(message.getEmail());
                     user.setUserID(serverCache.getUserCon(socket).getConID());
+
+                    db.insertUser(user.getUserID(),user.getUsername(),user.getPassword(),user.getEmail(),user.getSentInvites(),user.getGotInvites(),user.getGames());
 
                 }
                 else{
@@ -214,7 +254,6 @@ public class Server implements Node,Runnable {
     }
 
     private void handleClientSendsDeregister(Event e, Socket socket) throws IOException{
-        //TODO set all attributes of the user to nothing, and delete the user from the userdatabase
         System.err.println("processing deregistration");
         ClientSendsDeregister message = (ClientSendsDeregister) e;
         User user = serverCache.getUser(message.getUserID());
@@ -225,6 +264,7 @@ public class Server implements Node,Runnable {
         user.setSentInvites(new Invite[0]);
         user.setGames(new Game[0]);
 
+        db.removeUser(message.getUserID());
         ServerRespondsDeregister response = new ServerRespondsDeregister(user);
         serverCache.getUserCon(socket).sendData(response.getFile());
     }

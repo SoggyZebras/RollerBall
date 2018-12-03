@@ -5,7 +5,6 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class TCPServerCache {
 
@@ -58,9 +57,9 @@ public class TCPServerCache {
 
     public TCPConnection getUserCon(Socket s){
         //access TCPConnection from the cache
-        for(int i = 0; i < connections.size();i++) {
-            if(getConnection(cache.get(i).getUserID()).getSocket() == s) {
-                return connections.get(i);
+        for(TCPConnection c : connections){
+            if(c.getSocket() == s){
+                return c;
             }
         }
         return null;
@@ -92,6 +91,7 @@ public class TCPServerCache {
         for(TCPConnection c: connections){
             if(c.getConID() == id){
                 connections.remove(c);
+                break;
             }
         }
     }
@@ -99,4 +99,7 @@ public class TCPServerCache {
     public ArrayList<User> getAllUsers(){
         return cache;
     }
+
+    public synchronized void setCache(ArrayList<User> c){this.cache = c;}
+
 }

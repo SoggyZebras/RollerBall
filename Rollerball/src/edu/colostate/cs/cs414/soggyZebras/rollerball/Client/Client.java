@@ -1,5 +1,6 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
@@ -60,7 +61,7 @@ public class Client implements Node {
     }
 
     @Override
-    public void onEvent(Event e, Socket socket) {
+    public void onEvent(Event e, Socket socket) throws IOException{
 
         switch(e.getType()){
 
@@ -217,10 +218,11 @@ public class Client implements Node {
 
     }
 
-    private void handleServerRespondsRegistration(Event e, Socket socket){
+    private void handleServerRespondsRegistration(Event e, Socket socket) throws IOException{
         System.err.println("handling registration from server");
         ServerRespondsRegistration message = (ServerRespondsRegistration) e;
         gui.onRegisterResponse(message.getUser(), message.getReason());
+        logout(message.getUser().getUserID());
     }
 
     private void handleServerRespondsRefresh(Event e, Socket socket){
