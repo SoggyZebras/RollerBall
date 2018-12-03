@@ -122,11 +122,13 @@ public class MenuGUI extends JFrame {
         cardContainer.refreshAll();
 
         // update game windows
-        for (Game userGame : updatedUser.getGames()) {
-            RollerballPanel activeGame = activeGameGUIs.get(userGame.getGameID());
-            if (activeGame != null) {
-                // TODO: should we just pass the entire game?
-                activeGame.updateState(userGame.getBoard());
+        if(updatedUser != null) {
+            for (Game userGame : updatedUser.getGames()) {
+                RollerballPanel activeGame = activeGameGUIs.get(userGame.getGameID());
+                if (activeGame != null) {
+                    // TODO: should we just pass the entire game?
+                    activeGame.updateState(userGame.getBoard());
+                }
             }
         }
     }

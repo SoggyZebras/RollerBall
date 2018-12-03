@@ -2,6 +2,7 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 
@@ -221,8 +222,6 @@ public class Client implements Node {
         System.err.println("handling registration from server");
         ServerRespondsRegistration message = (ServerRespondsRegistration) e;
         gui.onRegisterResponse(message.getUser(), message.getReason());
-        // TODO: should we call logout here?
-        logout(message.getUser().getUserID());
     }
 
     private void handleServerRespondsRefresh(Event e, Socket socket){

@@ -35,6 +35,8 @@ public class Server implements Node,Runnable {
         this.serverPort = port;
         this.serverCache = new TCPServerCache();
         games = new GameCache();
+        gameIDs = new ArrayList<>();
+        inviteIDs = new ArrayList<>();
         db = new Database();
         this.serverThread = new TCPServerThread(this, serverCache, this.serverPort);
 
@@ -43,13 +45,13 @@ public class Server implements Node,Runnable {
 
     public void run(){
 
-        //load previous state from database
-        try {
-            init();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
+//        //load previous state from database
+//        try {
+//            init();
+//        }
+//        catch(SQLException e){
+//            e.printStackTrace();
+//        }
 
         //Start server thread(send/receive threads
         this.serverThread.run();
@@ -191,8 +193,13 @@ public class Server implements Node,Runnable {
         String reason = "";
         if(checkUsername(message.getUsername())){
             if(!serverCache.UserLoggedIn(serverCache.getUser(message.getUsername()).getUserID())){
-                user = serverCache.getUser(message.getUsername());
-                user.setUserID(serverCache.getUserCon(socket).getConID());
+                if(serverCache.matchPassword(message.getUsername(),message.getPassword())) {
+                    user = serverCache.getUser(message.getUsername());
+                    serverCache.getUserCon(socket).setConID(user.getUserID());
+                }
+                else{
+                    reason = "Incorrect Password!";
+                }
             }
             else{
                 reason = "User already logged in";
@@ -215,14 +222,17 @@ public class Server implements Node,Runnable {
         String reason = "";
         if(checkPassword(message.getPassword())){
                 if(!checkUsername(message.getUsername())){
-                    user = serverCache.getUser(socket);
-                    user.setUsername(message.getUsername());
-                    user.setPassword(message.getPassword());
-                    user.setEmail(message.getEmail());
-                    user.setUserID(serverCache.getUserCon(socket).getConID());
 
-                    db.insertUser(user.getUserID(),user.getUsername(),user.getPassword(),user.getEmail(),user.getSentInvites(),user.getGotInvites(),user.getGames());
-
+                        user = new User(genUserID(), "", "", "");
+                        user.setUsername(message.getUsername());
+                        user.setPassword(message.getPassword());
+                        user.setEmail(message.getEmail());
+                        user.setSentInvites(new Invite[0]);
+                        user.setGotInvites(new Invite[0]);
+                        user.setGames(new Game[0]);
+                        serverCache.getUserCon(socket).setConID(user.getUserID());
+                        serverCache.addUser(user);
+                        db.insertUser(user.getUserID(), user.getUsername(), user.getPassword(), user.getEmail(), user.getSentInvites(), user.getGotInvites(), user.getGames());
                 }
                 else{
                     reason = "User already exists!";
@@ -249,23 +259,22 @@ public class Server implements Node,Runnable {
     }
 
     private void handleClientSendsLogout(Event e, Socket socket){
+        Random random = new Random();
         ClientSendsLogout message = (ClientSendsLogout) e;
-        serverCache.removeConnection(message.getuID());
+        int conid = random.nextInt();
+        while(serverCache.containsConID(conid) || conid >0){
+            conid = random.nextInt();
+        }
+        serverCache.getConnection(message.getuID()).setConID(conid);
     }
 
     private void handleClientSendsDeregister(Event e, Socket socket) throws IOException{
         System.err.println("processing deregistration");
         ClientSendsDeregister message = (ClientSendsDeregister) e;
-        User user = serverCache.getUser(message.getUserID());
-        user.setEmail("");
-        user.setPassword("");
-        user.setUsername("");
-        user.setGotInvites(new Invite[0]);
-        user.setSentInvites(new Invite[0]);
-        user.setGames(new Game[0]);
+        serverCache.removeUser(message.getUserID());
 
         db.removeUser(message.getUserID());
-        ServerRespondsDeregister response = new ServerRespondsDeregister(user);
+        ServerRespondsDeregister response = new ServerRespondsDeregister((User)null);
         serverCache.getUserCon(socket).sendData(response.getFile());
     }
 
@@ -281,6 +290,9 @@ public class Server implements Node,Runnable {
     }
 
     private boolean checkUsername(String username){
+        if(username.equals("")){
+            return false;
+        }
         for(User u : this.serverCache.getAllUsers()){
             if(u.getUsername().equals(username)){
                 return true;
@@ -289,18 +301,30 @@ public class Server implements Node,Runnable {
         return false;
     }
 
+
     private int genInviteID(){
+        Random random = new Random();
         int id = random.nextInt(Integer.MAX_VALUE);
 
-        while(!inviteIDs.contains(id)){
+        while(inviteIDs.contains(id) || id <=0){
             id = random.nextInt(Integer.MAX_VALUE);
         }
         inviteIDs.add(id);
         return id;
     }
 
+    private int genUserID(){
+        Random rand = new Random();
+        int uID = rand.nextInt();
+        while(serverCache.containsUserID(uID) || uID <0){uID = rand.nextInt();}
+        return uID;
+    }
+
     private boolean checkPassword(String pass){
-        if(pass.contains(";(),/}{\"\'\\") || pass.length() < 8){
+        if(pass.equals("")){
+            return false;
+        }
+        if(pass.matches(".*[;(),/}{\"\'].*") || pass.length() < 8){
             return false;
         }
         return true;

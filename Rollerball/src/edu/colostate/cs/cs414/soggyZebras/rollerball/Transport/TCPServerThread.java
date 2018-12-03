@@ -64,10 +64,9 @@ public class TCPServerThread implements Runnable{
             try {
                 //Accept incoming connection
                 this.socket = serverSocket.accept();
-
                 //get random user ID number
                 int uID = rand.nextInt();
-                while(userNumbers.contains(uID)){uID = rand.nextInt();}
+                while(userNumbers.contains(uID) || uID <0){uID = rand.nextInt();}
                 userNumbers.add(uID);
 
                 connection = new TCPConnection(node,socket,uID);

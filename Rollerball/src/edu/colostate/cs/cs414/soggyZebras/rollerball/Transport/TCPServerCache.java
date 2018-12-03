@@ -26,7 +26,7 @@ public class TCPServerCache {
         return false;
     }
 
-    protected void addUser(User u) {
+    public void addUser(User u) {
         //add TCPConnection to the cache
         this.cache.add(u);
     }
@@ -40,6 +40,34 @@ public class TCPServerCache {
         return null;
     }
 
+    public boolean containsConID(int id){
+        for(TCPConnection c : connections){
+            if(c.getConID() == id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsUserID(int id){
+        for(User u : getAllUsers()){
+            if(u.getUserID() == id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean matchPassword(String username, String pass){
+        User tmp = getUser(username);
+        if(tmp != null){
+            if(tmp.getPassword().equals(pass)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      *
      * @param s
@@ -47,9 +75,12 @@ public class TCPServerCache {
      */
     public User getUser(Socket s) {
         //access TCPConnection from the cache
-        for(int i = 0; i < cache.size();i++) {
-            if(getConnection(cache.get(i).getUserID()).getSocket() == s) {
-                return cache.get(i);
+        for(User u: getAllUsers()){
+            TCPConnection t = getConnection(u.getUserID());
+            if(t != null) {
+                if (getConnection(u.getUserID()).getSocket() == s) {
+                    return u;
+                }
             }
         }
         return null;
@@ -62,6 +93,7 @@ public class TCPServerCache {
                 return c;
             }
         }
+
         return null;
     }
 
@@ -91,6 +123,15 @@ public class TCPServerCache {
         for(TCPConnection c: connections){
             if(c.getConID() == id){
                 connections.remove(c);
+                break;
+            }
+        }
+    }
+
+    public void removeUser(int id){
+        for(User u : getAllUsers()){
+            if(u.getUserID() == id){
+                cache.remove(u);
                 break;
             }
         }

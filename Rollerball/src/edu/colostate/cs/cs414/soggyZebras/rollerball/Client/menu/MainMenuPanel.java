@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 /**
  * represents the main menu screen (current games, history, new game)
@@ -74,7 +75,12 @@ public class MainMenuPanel extends MenuPanel {
                     "Are you sure you want to logout?", "Logout Confirmation",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
             if (logout == 0) {
-                getMenuGUI().loggedInUser = null;
+                try {
+                    getMenuGUI().client.logout(getMenuGUI().loggedInUser.getUserID());
+                }
+                catch(IOException i){
+                    i.printStackTrace();
+                }
                 getMenuGUI().setMenu("register_login");
             }
         }
@@ -88,7 +94,12 @@ public class MainMenuPanel extends MenuPanel {
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
             if (unreg == 0) {
                 // TODO: unregister user from db
-                getMenuGUI().loggedInUser = null;
+                try {
+                    getMenuGUI().client.deregister(getMenuGUI().loggedInUser.getUserID());
+                }
+                catch(IOException i){
+                    i.printStackTrace();
+                }
                 getMenuGUI().setMenu("register_login");
             }
         }

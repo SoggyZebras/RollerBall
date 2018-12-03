@@ -18,7 +18,7 @@ public class EventFactory implements Protocol {
      */
     public synchronized static void work(String filename, Node node, Socket socket) throws ClassNotFoundException {
         // Depending on what type of message has arrived, perfom an action
-
+        System.out.println(filename);
         try {
             switch (filename) {
 
