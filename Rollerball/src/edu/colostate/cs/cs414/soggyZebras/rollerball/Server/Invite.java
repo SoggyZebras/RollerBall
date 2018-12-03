@@ -1,6 +1,8 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Server;
 
-public class Invite {
+import java.io.Serializable;
+
+public class Invite implements Serializable{
 
     private String invitee;
     private String inviter;

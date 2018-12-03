@@ -86,6 +86,7 @@ public class Server implements Node,Runnable {
     }
 
     private void handleClientSendsInvite(Event e, Socket socket) throws IOException{
+        System.out.println("processing invite");
         ClientSendsInvite message = (ClientSendsInvite) e;
         User sentFrom = this.serverCache.getUser(socket);
         User sendTo = serverCache.getUser(message.getUserTo());
@@ -103,6 +104,7 @@ public class Server implements Node,Runnable {
     }
 
     private void handleClientRespondsInvite(Event e, Socket s) throws IOException {
+        System.out.println("processing invite response");
         ClientRespondsInvite message = (ClientRespondsInvite) e;
         User sentUser = this.serverCache.getUser(s);
         User fromUser = serverCache.getUser(message.getUsername());
@@ -125,6 +127,7 @@ public class Server implements Node,Runnable {
         // if the user does not exists, send rejection
         // else fetch it, set the user fields and pass it to gui
         // remove old uid from serverthread
+        System.out.println("processing login request");
         ClientSendsLogin message = (ClientSendsLogin) e;
         User user = null;
         String reason = "";
@@ -145,6 +148,7 @@ public class Server implements Node,Runnable {
     private void handleClientSendsRegistration(Event e, Socket socket) throws IOException{
         //TODO check username and password with login database, if in database reject
         // else create user and update database
+        System.out.println("processing registration");
         ClientSendsRegistration message = (ClientSendsRegistration) e;
         User user = null;
         String reason = "";

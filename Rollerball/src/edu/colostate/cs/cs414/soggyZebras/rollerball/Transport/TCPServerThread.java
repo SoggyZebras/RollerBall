@@ -72,7 +72,7 @@ public class TCPServerThread implements Runnable{
 
                 //get random user ID number
                 int uID = rand.nextInt();
-                while(!userNumbers.contains(uID)){uID = rand.nextInt();}
+                while(userNumbers.contains(uID)){uID = rand.nextInt();}
                 userNumbers.add(uID);
 
                 //populate the server cache with a new user
