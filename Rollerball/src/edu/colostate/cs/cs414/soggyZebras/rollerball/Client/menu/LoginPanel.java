@@ -29,6 +29,8 @@ public class LoginPanel extends MenuPanel {
         add(createLinkedActionButton("Login", new LoginListener()));
         add(createLinkedButton("Back", "register_login"));
         loggingIn = false;
+        revalidate();
+        repaint();
     }
 
     class LoginListener implements ActionListener {

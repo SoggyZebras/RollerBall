@@ -33,6 +33,8 @@ public class RegPanel extends MenuPanel {
         add(createLinkedActionButton("Register", new RegisterListener()));
         add(createLinkedButton("Back", "register_login"));
         registering = false;
+        revalidate();
+        repaint();
     }
 
     class RegisterListener implements ActionListener {
@@ -45,7 +47,6 @@ public class RegPanel extends MenuPanel {
                 if (!registering) {
                     registering = true;
                     add(new JLabel("Registering..."));
-                    getMenuGUI().setMenu("main_menu");
                     revalidate();
                     repaint();
                     getMenuGUI().client.register(username, password, email);

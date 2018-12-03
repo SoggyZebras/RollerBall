@@ -1,6 +1,5 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;

@@ -138,6 +138,8 @@ public class MenuGUI extends JFrame {
      */
     public void onRegisterResponse(User user, String message) {
         login(user, message);
+        // remove "Registering..." and allow user to attempt it again if there was a problem
+        cardContainer.menuPanels.get("register").refresh(loggedInUser);
     }
 
     /**
@@ -146,8 +148,9 @@ public class MenuGUI extends JFrame {
      * @param message an error message
      */
     public void onLoginResponse(User user, String message) {
-        System.err.println("login response");
         login(user, message);
+        // remove "Logging in..." and allow user to attempt it again if there was a problem
+        cardContainer.menuPanels.get("login").refresh(loggedInUser);
     }
 
     /**
@@ -162,7 +165,7 @@ public class MenuGUI extends JFrame {
             refresh(user);
         }
         else {
-            // TODO: popup error message
+            // TODO: notify login/register panel that register was unsuccessful
             JOptionPane.showMessageDialog(this, message);
             System.err.println(message);
         }
