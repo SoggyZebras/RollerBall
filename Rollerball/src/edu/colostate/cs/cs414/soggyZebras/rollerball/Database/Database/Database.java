@@ -41,36 +41,65 @@ public class Database {
         query(sql, "insert");
     }
 
-    public ResultSet getGame(String p1, String p2){
+    public Game getGame(String p1, String p2) throws SQLException {
         String sql = "Select * FROM Game WHERE `Player1`=" + p1+ " && `Player2`="+p2;
-        return query(sql, "select");
+        ResultSet rs= query(sql, "select");
+        rs.next();
+        int id = rs.getInt("id");
+        return new Game(id, getUser(p1), getUser(p2));
     }
 
-    public ResultSet getUser(String name, String email){
-        String sql = "Select * FROM userDatabase WHERE `user`=" + name+ "&& `email`="+email;
-        return query(sql, "select");
+    public User getUser(String name) throws SQLException {
+        String sql = "Select * FROM user WHERE `user`=\"" + name+ "\"";
+        ResultSet rs= query(sql, "select");
+        rs.next();
+        int id = rs.getInt("id");
+        String username = rs.getString("name");
+        String password = rs.getString("password");
+        String e = rs.getString("email");
+        return new User(id, username, password, e);
     }
 
-    public ResultSet getAllUser(String name, String email){
-        String sql = "Select * FROM userDatabase";
-        return query(sql, "select");
+    public ArrayList<User> getAllUser(String name, String email) throws SQLException {
+        String sql = "Select * FROM user";
+        ArrayList<User> users = new ArrayList<User>();
+        ResultSet rs= query(sql, "select");
+        while(rs.next()) {
+            int id = rs.getInt("id");
+            String username = rs.getString("name");
+            String password = rs.getString("password");
+            String e = rs.getString("email");
+            users.add(new User(id, username, password, e));
+        }
+        return users;
     }
 
-    public void insertUser(int id, String name, String password, String email, TCPConnection userCon, TCPConnection serverCon, ArrayList<Invite> sentInvites, ArrayList<Invite> gotInvites, ArrayList<Game> games){
-        String sql = "INSERT INTO userDatabase (id, user, password, email, userCon, serverCon, sentInvites, gotInvites, games) " +
-                "VALUES (\""+ id  + "\", \"" + name + "\", \"" + password+"\", \""+ email + "\", \"" +    userCon  +  "\", \"" +   serverCon + "\", \"" +  sentInvites  + "\", \"" +    gotInvites + "\", \"" +    games + "\")";
+    public void insertUser(int id, String name, String password, String email, Array sentInvites, Array gotInvites, Array games){
+        String sql = "INSERT INTO user (id, user, password, email, sentInvites, gotInvites, games) " +
+                "VALUES ("+ id  + ", \"" + name + "\", \"" + password+"\", \""+ email + "\", \""  +  sentInvites  + "\", \"" +    gotInvites + "\", \"" +    games + "\")";
         query(sql, "insert");
     }
 
-    public ResultSet getInvite(String from, String to){
+    public void removeUser(int id){
+        String sql = "DELETE FROM `user` WHERE `id` = \"" + id + "\"";
+        query(sql, "insert");
+    }
+    
+    public Invite getInvite(String from, String to) throws SQLException {
         String sql = "Select * FROM Invites WHERE `from` =\"" + from+ "\" && `to`=\""+to+"\"";
-        return query(sql, "select");
+        ResultSet rs= query(sql, "select");
+        rs.next();
+        int id = rs.getInt("id");
+        return new Invite(to, from, id);
     }
 
     public void insertInvite(int id, String from, String to)  {
         String sql = "INSERT INTO Invites (`id`, `from`, `to`) " +
                 "VALUES (\'"+ id + "\', \'"+ from + "\', \'" + to + "\')";
         query(sql, "insert");
+    }
+
+    public static void main(String[] args){
     }
 
 
