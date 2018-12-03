@@ -65,7 +65,7 @@ public class MenuGUI extends JFrame {
      * @param newMenu the name of the new menu to show, for example "register"
      */
     public void setMenu(String newMenu) {
-        cardContainer.refreshAll(loggedInUser);
+        cardContainer.refreshAll();
         cardContainer.show(newMenu);
     }
 
@@ -119,7 +119,7 @@ public class MenuGUI extends JFrame {
 
         // refresh menu
         // this assumes that each card has its refresh function filled out
-        cardContainer.refreshAll(updatedUser);
+        cardContainer.refreshAll();
 
         // update game windows
         for (Game userGame : updatedUser.getGames()) {
@@ -139,7 +139,7 @@ public class MenuGUI extends JFrame {
     public void onRegisterResponse(User user, String message) {
         login(user, message);
         // remove "Registering..." and allow user to attempt it again if there was a problem
-        cardContainer.menuPanels.get("register").refresh(loggedInUser);
+        cardContainer.menuPanels.get("register").refresh();
     }
 
     /**
@@ -150,7 +150,7 @@ public class MenuGUI extends JFrame {
     public void onLoginResponse(User user, String message) {
         login(user, message);
         // remove "Logging in..." and allow user to attempt it again if there was a problem
-        cardContainer.menuPanels.get("login").refresh(loggedInUser);
+        cardContainer.menuPanels.get("login").refresh();
     }
 
     /**

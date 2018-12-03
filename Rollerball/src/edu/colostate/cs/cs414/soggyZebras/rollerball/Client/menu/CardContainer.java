@@ -1,10 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,9 +36,9 @@ public class CardContainer extends JPanel {
         add(name, panel);
     }
 
-    public void refreshAll(User updatedUser) {
+    public void refreshAll() {
         for (MenuPanel mp : menuPanels.values()) {
-            mp.refresh(updatedUser);
+            mp.refresh();
         }
     }
 

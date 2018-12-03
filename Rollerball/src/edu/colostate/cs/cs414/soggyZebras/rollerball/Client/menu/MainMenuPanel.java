@@ -1,17 +1,12 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.GameGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.listdisplay.GameListDisplay;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * represents the main menu screen (current games, history, new game)
@@ -23,7 +18,7 @@ public class MainMenuPanel extends MenuPanel {
     }
 
     @Override
-    public void refresh(User updatedUser) {
+    public void refresh() {
         removeAll();
         JLabel title = new JLabel("Active Games");
         add(title);

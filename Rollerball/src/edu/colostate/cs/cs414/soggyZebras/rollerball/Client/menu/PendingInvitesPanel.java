@@ -2,7 +2,6 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.listdisplay.PendingInviteListDisplay;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Invite;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,11 +14,11 @@ public class PendingInvitesPanel extends MenuPanel {
 
     public PendingInvitesPanel(MenuGUI menuGUI) {
         super("pending_invites", menuGUI);
-        refresh(menuGUI.loggedInUser);
+        refresh();
     }
 
     @Override
-    public void refresh(User updatedUser) {
+    public void refresh() {
         removeAll();
         JLabel title = new JLabel("Pending Invites");
         add(title);

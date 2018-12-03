@@ -1,7 +1,5 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,11 +14,11 @@ public class LoginPanel extends MenuPanel {
 
     public LoginPanel(MenuGUI menuGUI) {
         super("login", menuGUI);
-        refresh(menuGUI.loggedInUser);
+        refresh();
     }
 
     @Override
-    public void refresh(User updatedUser) {
+    public void refresh() {
         removeAll();
         add(new JLabel("username: "));
         add(new TextField(30));

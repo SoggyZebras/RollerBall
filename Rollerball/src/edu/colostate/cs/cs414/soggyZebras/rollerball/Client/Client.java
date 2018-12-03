@@ -221,6 +221,7 @@ public class Client implements Node {
         System.err.println("handling registration from server");
         ServerRespondsRegistration message = (ServerRespondsRegistration) e;
         gui.onRegisterResponse(message.getUser(), message.getReason());
+        // TODO: should we call logout here?
         logout(message.getUser().getUserID());
     }
 
