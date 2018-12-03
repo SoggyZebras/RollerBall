@@ -77,7 +77,6 @@ public class TCPServerThread implements Runnable{
                 User tmp = new User(uID,"","","");
                 this.serverCache.addUser(tmp);
                 this.serverCache.addConnection(connection);
-                connection.sendData(new ServerSendsConnect(tmp).getFile());
 
             }
             catch(IOException ioe) {

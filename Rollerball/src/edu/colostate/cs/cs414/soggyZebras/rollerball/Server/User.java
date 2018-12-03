@@ -3,9 +3,10 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Server;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
 
     //Local variables
     private int userID;
@@ -22,9 +23,9 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
-        sentInvites = new Invite[500];
-        gotInvites = new Invite[500];
-        games = new Game[500];
+        sentInvites = new Invite[0];
+        gotInvites = new Invite[0];
+        games = new Game[0];
     }
 
     //Get and Set
@@ -69,19 +70,34 @@ public class User {
 
 
     public void removeInviteSent(int id){
-        for(Invite i : sentInvites){
-            if(i.getInviteID() == id){
-                //sentInvites.remove(i);
+
+        Invite[] tmp = new Invite[sentInvites.length-1];
+
+        for(int i=0,j=0; i < sentInvites.length-1;i++){
+            if(sentInvites[i].getInviteID() == id){
+
+            }
+            else{
+                tmp[j] = sentInvites[i];
+                j++;
             }
         }
+        sentInvites = tmp;
     }
 
     public void removeInviteGot(int id){
-        for (Invite i : gotInvites){
-            if(i.getInviteID() == id){
-                //gotInvites.remove(i);
+        Invite[] tmp = new Invite[gotInvites.length-1];
+
+        for(int i=0,j=0; i < gotInvites.length-1;i++){
+            if(gotInvites[i].getInviteID() == id){
+
+            }
+            else{
+                tmp[j] = gotInvites[i];
+                j++;
             }
         }
+        gotInvites = tmp;
     }
 
     public String getUsername(){
@@ -94,11 +110,11 @@ public class User {
 
     public String getEmail() { return email;}
 
-    //public ArrayList<Invite> getSentInvites() { return sentInvites;}
+    public Invite[] getSentInvites() { return sentInvites;}
 
-    //public ArrayList<Invite> getGotInvites() { return gotInvites;}
+    public Invite[] getGotInvites() { return gotInvites;}
 
-    public ArrayList<Game> getGames() { return null; }//return games;}
+    public Game[] getGames() { return games;}
 
     public void setUsername(String username) {
         this.username = username;
@@ -112,10 +128,10 @@ public class User {
         this.email = email;
     }
 
-    //public void setSentInvites(ArrayList<Invite> sentInvites) { this.sentInvites = sentInvites; }
+    public void setSentInvites(Invite[] sentInvites) { this.sentInvites = sentInvites; }
 
-    //public void setGotInvites(ArrayList<Invite> gotInvites) { this.gotInvites = gotInvites; }
+    public void setGotInvites(Invite[] gotInvites) { this.gotInvites = gotInvites; }
 
-    //public void setGames(ArrayList<Game> games) { this.games = games; }
+    public void setGames(Game[] games) { this.games = games; }
 
 }

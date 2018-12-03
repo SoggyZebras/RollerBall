@@ -198,10 +198,10 @@ public class Server implements Node,Runnable {
     private boolean checkUsername(String username){
         for(User u : this.serverCache.getAllUsers()){
             if(u.getUsername() == username){
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     private int genInviteID(){
@@ -215,7 +215,7 @@ public class Server implements Node,Runnable {
     }
 
     private boolean checkPassword(String pass){
-        if(pass.contains(";(),/}{\"\'\\") && pass.length() >= 8){
+        if(pass.contains(";(),/}{\"\'\\") || pass.length() < 8){
             return false;
         }
         return true;
