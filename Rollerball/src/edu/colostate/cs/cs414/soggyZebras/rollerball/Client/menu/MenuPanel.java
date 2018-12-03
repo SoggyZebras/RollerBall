@@ -17,10 +17,11 @@ public abstract class MenuPanel extends JPanel {
     public MenuPanel(String menuName, MenuGUI menuGUI) {
         this.menuName = menuName;
         this.menuGUI = menuGUI;
+        setBackground(Color.lightGray);
         BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
+        //setLayout(layout);
         revalidate();
         repaint();
-        //setLayout(layout);
     }
 
     /**

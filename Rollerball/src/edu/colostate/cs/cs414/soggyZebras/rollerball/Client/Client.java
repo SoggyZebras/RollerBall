@@ -69,6 +69,7 @@ public class Client implements Node {
     @Override
     public void onEvent(Event e, Socket socket) {
 
+        System.err.println("on event");
         switch(e.getType()){
             case Server_Sends_Connect: handleServerSendsConnect(e);break;
 
@@ -91,6 +92,7 @@ public class Client implements Node {
 
     private void handleServerSendsConnect(Event e){
         ServerSendsConnect message = (ServerSendsConnect) e;
+        System.err.println("got it");
         User user = message.getUser();
         user.setServerConnection(serverConnection);
         gui.refresh(message.getUser());

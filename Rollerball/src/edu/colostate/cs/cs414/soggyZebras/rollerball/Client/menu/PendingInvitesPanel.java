@@ -11,55 +11,52 @@ import java.util.HashMap;
 
 public class PendingInvitesPanel extends MenuPanel {
 
-    // holds player who invited current user->button for that invite
-    private HashMap<String,Component> inviteButtons;
-
-    private JScrollPane scrollPane;
+    private DefaultListModel<String> pendingInvitesListModel;
 
     public PendingInvitesPanel(MenuGUI menuGUI) {
         super("pending_invites", menuGUI);
-
-        scrollPane = new JScrollPane();
-        scrollPane.setPreferredSize(new Dimension(250, 100));
-
-        ArrayList<String> invites = new ArrayList<>();
-        if (getMenuGUI().loggedInUser != null) {
-            // TODO: lookup users invites, call invites.add(invitersName) on each
-        }
-        invites.add("temp-joe");
-        invites.add("temp-bob");
-        invites.add("temp-billy");
-
-
-        // add all invites to the gui and create a map entry for them
-        inviteButtons = new HashMap<>();
-        for (String s : invites) {
-            inviteButtons.put(s,
-                    scrollPane.add(createLinkedActionButton("accept invite from " + s, new AcceptInviteListener(s))));
-        }
-
-        add(scrollPane);
-
-        // to make sure Back is on a new line
-        add(new JLabel("                                                            "));
-        add(createLinkedButton("Back", "main_menu"));
+        refresh(menuGUI.loggedInUser);
     }
 
     @Override
     public void refresh(User updatedUser) {
+        removeAll();
+        JLabel title = new JLabel("Pending Invites");
+        add(title);
+
+        pendingInvitesListModel = new DefaultListModel();
+
+        // TODO: actually get active games from server
+        if (getMenuGUI().loggedInUser != null) {
+        }
+        pendingInvitesListModel.add(0, "invite from a");
+        pendingInvitesListModel.add(1, "invite from a");
+        pendingInvitesListModel.add(2, "invite from a");
+        JList<String> pendingInvitesList = new JList<>(pendingInvitesListModel);
+        pendingInvitesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane listScroller = new JScrollPane(pendingInvitesList);
+        listScroller.setPreferredSize(new Dimension(250, 100));
+        add(listScroller);
+
+        add(createLinkedActionButton("Accept Invite", new AcceptInviteListener(pendingInvitesList)));
+
+        // to make sure Back is on a new line
+        add(new JLabel("                                                            "));
+        add(createLinkedButton("Back", "main_menu"));
         // TODO: update pending invites buttons
     }
 
     class AcceptInviteListener implements ActionListener {
-        private String user;
+        private JList<String> pendingInvitesList;
 
-        public AcceptInviteListener(String user) {
-            this.user = user;
+        public AcceptInviteListener(JList<String> pendingInviteList) {
+            this.pendingInvitesList = pendingInviteList;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            scrollPane.remove(inviteButtons.get(user));
+            String user = pendingInvitesList.getSelectedValue();
+            pendingInvitesListModel.remove(pendingInvitesListModel.indexOf(user));
             getMenuGUI().revalidate();
             getMenuGUI().repaint();
 
