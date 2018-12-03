@@ -8,10 +8,11 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class TCPReceiverThread extends Thread{
+public class TCPReceiverThread extends Thread implements Serializable{
     private Socket socket;
     private ObjectInputStream oin;
     private Node node;

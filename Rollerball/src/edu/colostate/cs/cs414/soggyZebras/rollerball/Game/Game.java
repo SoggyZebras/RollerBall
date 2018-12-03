@@ -14,10 +14,11 @@ public class Game implements java.io.Serializable {
     private User player2;
     private boolean inProgress;
     private User winner;
+    private User loser;
     private int gameID;
 
     // set to 'w' or 'b' depending on who's turn it is
-    private char whosTurn;
+    private User whosTurn;
 
     /**
      * create a new game
@@ -28,6 +29,7 @@ public class Game implements java.io.Serializable {
         this.player1 = p1;
         this.player2 = p2;
         this.inProgress = true;
+        this.whosTurn = p1;
 
         // add white pieces
         addPiece(new Pawn(new Location(5, 2), 'w', "pawn"));
@@ -46,10 +48,7 @@ public class Game implements java.io.Serializable {
         addPiece(new Rook(new Location(1, 2), 'b', "rook"));
     }
 
-    // TODO: just added this so it compiles, it is used in RookTest. It should probably return a starting board state
-    public Game() {
-
-    }
+    public Game(){}
 
     public Game(Map<Location,Piece> m) {
         this.board = m;
@@ -59,15 +58,28 @@ public class Game implements java.io.Serializable {
         board.put(p.loc, p);
     }
 
-    public ArrayList<Location> validMoves(Location l){
-        return board.get(l).validMoves(board);
+    public ArrayList<Location> validMoves(User p, Location l){
+        if(whosTurn == p){
+            return board.get(l).validMoves(board);
+        }
+        else{
+            return null;
+        }
 
     }
 
-    public Map<Location, Piece> makeMove(Location to, Location from){
-        board.put((to), board.get(from));
-        board.get(to).setLoc(to);
-        board.remove(from);
+    public Map<Location, Piece> makeMove(User p, Location to, Location from){
+        if(whosTurn == p) {
+            board.put((to), board.get(from));
+            board.get(to).setLoc(to);
+            board.remove(from);
+            if (whosTurn == player1) {
+                whosTurn = player2;
+            } else {
+                whosTurn = player1;
+            }
+        }
+
         return board;
     }
 
@@ -90,9 +102,25 @@ public class Game implements java.io.Serializable {
         return gameID;
     }
 
+
     public void setGameID(int gID){
         gameID = gID;
     }
 
 
+    public User getWhosTurn(){
+        return whosTurn;
+    }
+
+    public boolean isInProgress() {
+        return inProgress;
+    }
+
+    public User getWinner() {
+        return winner;
+    }
+
+    public User getLoser() {
+        return loser;
+    }
 }

@@ -1,14 +1,9 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
 
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.RollerballPanel;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuDemoRunner;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Server;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerThread;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 
 import java.io.IOException;
@@ -20,7 +15,6 @@ public class Client implements Node {
 
     MenuGUI gui;
 
-    // TODO: does Client need a game object?
     private boolean debug = true;
 
     //========== NETWORK SETUP ==========//
@@ -62,16 +56,14 @@ public class Client implements Node {
         }
         //Setup a connection to the server
         serverSocket = new Socket(InetAddress.getByName(this.serverHost),this.serverPort);
-        serverConnection = new TCPConnection(this, serverSocket);
+        serverConnection = new TCPConnection(this, serverSocket,0);
         serverConnection.initiate();
     }
 
     @Override
-    public void onEvent(Event e, Socket socket) {
+    public void onEvent(Event e, Socket socket) throws IOException{
 
-        System.err.println("on event");
         switch(e.getType()){
-            case Server_Sends_Connect: handleServerSendsConnect(e);break;
 
             case Server_Responds_Check_Move: handleServerCheckMove(e);break;
 
@@ -85,18 +77,13 @@ public class Client implements Node {
 
             case Server_Responds_Refresh: handleServerRespondsRefresh(e,socket);break;
 
+            case Server_Responds_Deregister: handleServerRespondsDeregister(e, socket);break;
+
             default:
         }
 
     }
 
-    private void handleServerSendsConnect(Event e){
-        ServerSendsConnect message = (ServerSendsConnect) e;
-        System.err.println("got it");
-        User user = message.getUser();
-        user.setServerConnection(serverConnection);
-        gui.refresh(message.getUser());
-    }
 
     //========= END NETWORK SETUP =========//
 
@@ -121,6 +108,16 @@ public class Client implements Node {
 
     public void login(String username, String password) throws IOException{
         ClientSendsLogin message = new ClientSendsLogin(username,password);
+        serverConnection.sendData(message.getFile());
+    }
+
+    public void logout(int uid) throws IOException{
+        ClientSendsLogout message = new ClientSendsLogout(uid);
+        serverConnection.sendData(message.getFile());
+    }
+
+    public void deregister(int id) throws IOException{
+        ClientSendsDeregister message = new ClientSendsDeregister(id);
         serverConnection.sendData(message.getFile());
     }
 
@@ -216,17 +213,16 @@ public class Client implements Node {
     }
 
     private void handleServerRespondsLogin(Event e, Socket socket){
-        System.err.println("respond login");
-        //TODO process event to see if the login was successful
         ServerRespondsLogin message = (ServerRespondsLogin) e;
         gui.onLoginResponse(message.getUser(), message.getReject_reason());
 
     }
 
-    private void handleServerRespondsRegistration(Event e, Socket socket){
-        //TODO process event to see if the registration was successful or not
+    private void handleServerRespondsRegistration(Event e, Socket socket) throws IOException{
+        System.err.println("handling registration from server");
         ServerRespondsRegistration message = (ServerRespondsRegistration) e;
         gui.onRegisterResponse(message.getUser(), message.getReason());
+        logout(message.getUser().getUserID());
     }
 
     private void handleServerRespondsRefresh(Event e, Socket socket){
@@ -239,6 +235,11 @@ public class Client implements Node {
         ServerSendsInvite message = (ServerSendsInvite) e;
         gui.refresh(message.getUserTo());
 
+    }
+
+    private void handleServerRespondsDeregister(Event e, Socket socket){
+        ServerRespondsDeregister message = (ServerRespondsDeregister) e;
+        gui.refresh(message.getUser());
     }
 
 
