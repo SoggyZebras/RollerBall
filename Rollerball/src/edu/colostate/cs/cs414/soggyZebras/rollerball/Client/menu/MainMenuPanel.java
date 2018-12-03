@@ -33,12 +33,6 @@ public class MainMenuPanel extends MenuPanel {
             }
         }
 
-        // TODO: remove this soon
-        Game g1 = new Game();
-        Game g2 = new Game();
-        activeGamesListModel.add(0, new GameListDisplay(g1));
-        activeGamesListModel.add(1, new GameListDisplay(g2));
-
         JList<GameListDisplay> activeGamesList = new JList<>(activeGamesListModel);
         activeGamesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane listScroller = new JScrollPane(activeGamesList);
