@@ -44,7 +44,8 @@ public class RegPanel extends MenuPanel {
             try {
                 if (!registering) {
                     registering = true;
-                    add(new JLabel("Registering...:"));
+                    add(new JLabel("Registering..."));
+                    getMenuGUI().setMenu("main_menu");
                     revalidate();
                     repaint();
                     getMenuGUI().client.register(username, password, email);

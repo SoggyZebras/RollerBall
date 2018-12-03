@@ -1,14 +1,8 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
 
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.RollerballPanel;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuDemoRunner;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Server;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerThread;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 
 import java.io.IOException;
@@ -20,7 +14,6 @@ public class Client implements Node {
 
     MenuGUI gui;
 
-    // TODO: does Client need a game object?
     private boolean debug = true;
 
     //========== NETWORK SETUP ==========//
@@ -70,7 +63,6 @@ public class Client implements Node {
     public void onEvent(Event e, Socket socket) {
 
         switch(e.getType()){
-            case Server_Sends_Connect: handleServerSendsConnect(e);break;
 
             case Server_Responds_Check_Move: handleServerCheckMove(e);break;
 
@@ -89,11 +81,6 @@ public class Client implements Node {
 
     }
 
-    private void handleServerSendsConnect(Event e){
-        System.out.println("server sent connect");
-        ServerSendsConnect message = (ServerSendsConnect) e;
-        gui.refresh(message.getUser());
-    }
 
     //========= END NETWORK SETUP =========//
 
@@ -112,10 +99,8 @@ public class Client implements Node {
     }
 
     public void register(String username, String password, String email) throws IOException{
-        System.out.println("sending register");
         ClientSendsRegistration message = new ClientSendsRegistration(username,password,email);
         serverConnection.sendData(message.getFile());
-        System.out.println("sent registration");
     }
 
     public void login(String username, String password) throws IOException{
@@ -215,15 +200,12 @@ public class Client implements Node {
     }
 
     private void handleServerRespondsLogin(Event e, Socket socket){
-        System.err.println("respond login");
-        //TODO process event to see if the login was successful
         ServerRespondsLogin message = (ServerRespondsLogin) e;
         gui.onLoginResponse(message.getUser(), message.getReject_reason());
 
     }
 
     private void handleServerRespondsRegistration(Event e, Socket socket){
-        //TODO process event to see if the registration was successful or not
         ServerRespondsRegistration message = (ServerRespondsRegistration) e;
         gui.onRegisterResponse(message.getUser(), message.getReason());
     }
