@@ -1,12 +1,10 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Database.Database;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.*;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.*;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Database {
@@ -58,9 +56,9 @@ public class Database {
         return query(sql, "select");
     }
 
-    public void insertUser(String name, String password, String email){
-        String sql = "INSERT INTO userDatabase (user, password, email) " +
-                "VALUES (\"" + name + "\", \"" + password+"\", \""+ email + "\")";
+    public void insertUser(int id, String name, String password, String email, TCPConnection userCon, TCPConnection serverCon, ArrayList<Invite> sentInvites, ArrayList<Invite> gotInvites, ArrayList<Game> games){
+        String sql = "INSERT INTO userDatabase (id, user, password, email, userCon, serverCon, sentInvites, gotInvites, games) " +
+                "VALUES (\""+ id  + "\", \"" + name + "\", \"" + password+"\", \""+ email + "\", \"" +    userCon  +  "\", \"" +   serverCon + "\", \"" +  sentInvites  + "\", \"" +    gotInvites + "\", \"" +    games + "\")";
         query(sql, "insert");
     }
 
@@ -69,16 +67,11 @@ public class Database {
         return query(sql, "select");
     }
 
-    public void insertInvite(String from, String to)  {
-        String sql = "INSERT INTO Invites (`from`, `to`) " +
-                "VALUES (\'" + from + "\', \'" + to + "\')";
+    public void insertInvite(int id, String from, String to)  {
+        String sql = "INSERT INTO Invites (`id`, `from`, `to`) " +
+                "VALUES (\'"+ id + "\', \'"+ from + "\', \'" + to + "\')";
         query(sql, "insert");
     }
 
-
-    public static void main(String[] args){
-        Database d = new Database();
-        d.getInvite("Jone", "Doe");
-    }
 
 }
