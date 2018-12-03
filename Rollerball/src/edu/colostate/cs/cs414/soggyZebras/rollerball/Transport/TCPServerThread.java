@@ -1,10 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Transport;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerCache;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ServerSendsConnect;
 
 import java.io.IOException;
 import java.net.ServerSocket;
