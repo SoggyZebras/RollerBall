@@ -1,20 +1,26 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Transport;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerCache;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.ServerSendsConnect;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class TCPServerThread implements Runnable{
 
     private ServerSocket serverSocket = null;
-    private TCPServerCache serverCache = null;
+    private TCPServerCache serverCache = new TCPServerCache();
     private Socket socket = null;
     private TCPConnection connection = null;
     private Node node = null;
+    private Random rand = new Random();
+    private ArrayList<Integer> userNumbers;
 
     /**
      *
@@ -42,30 +48,43 @@ public class TCPServerThread implements Runnable{
         try {
             this.node = node;
             serverSocket = new ServerSocket(port);
-            System.out.println("Listening on port " + port);
             this.serverCache = c;
+            userNumbers = new ArrayList<>();
         } catch (IOException e) {
             // TODO Auto-generated catch block
         }
 
     }
 
+    public synchronized void removeUID(int uid){
+        userNumbers.remove(uid);
+    }
 
     @Override
     public void run() {
-
+        System.out.println("Listening on port " + this.serverSocket.getLocalPort());
         while(true) {
             try {
                 //Accept incoming connection
                 this.socket = serverSocket.accept();
                 connection = new TCPConnection(node,socket);
                 connection.initiate();
-                this.serverCache.addConnection(connection);
+
+                //get random user ID number
+                int uID = rand.nextInt();
+                while(!userNumbers.contains(uID)){uID = rand.nextInt();}
+                userNumbers.add(uID);
+
+                //populate the server cache with a new user
+                User tmp = new User(uID,"","","",connection);
+                this.serverCache.addUser(tmp);
+                connection.sendData(new ServerSendsConnect(tmp).getFile());
 
             }
             catch(IOException ioe) {
                 try {
                     this.socket.close();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

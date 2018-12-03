@@ -1,6 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.Client;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
@@ -17,6 +18,7 @@ import java.util.Map;
 public class RollerballPanel extends JPanel {
 
     private Map<Location,Piece> board;
+    private Game game;
     private Client client;
     private PieceDrawer pieceDrawer;
 
@@ -34,15 +36,15 @@ public class RollerballPanel extends JPanel {
     // when a piece is clicked, this will be populated with the potential moves for that piece
     private ArrayList<Location> potentialMoves;
 
-    public RollerballPanel(Game game, Client client, int gameSide) throws IOException {
+    public RollerballPanel(Game game, Client client, MenuGUI menuGUI, int gameSide) throws IOException {
         super();
+
         setSize(gameSide, gameSide);
         addMouseListener(new RollerballMouseListener(this));
 
+        this.game = game;
         board = game.getBoard();
         this.client = client;
-        client.setGui(this);
-        this.client.initialize();
         selectedPiece = null;
         unselectSquares();
 
@@ -138,7 +140,7 @@ public class RollerballPanel extends JPanel {
                 unselectSquares();
             }
             if (potentialMoves.contains(clickLoc)) {
-                client.makeMove(selectedPiece.getLoc(), clickLoc);
+                client.makeMove(selectedPiece.getLoc(), clickLoc, game.getGameID());
                 selectedPiece = null;
                 unselectSquares();
                 potentialMoves.clear();
@@ -148,7 +150,7 @@ public class RollerballPanel extends JPanel {
         else if (board.containsKey(clickLoc)) {
             selectSquare(clickLoc.row, clickLoc.col);
             selectedPiece = board.get(clickLoc);
-            client.checkValidMove(selectedPiece.getLoc());
+            client.checkValidMove(selectedPiece.getLoc(), game.getGameID());
         }
         repaint();
     }

@@ -3,13 +3,15 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Transport;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.Socket;
 
-public class TCPConnection {
+public class TCPConnection implements Serializable{
     private TCPSenderThread senSocket;
     private TCPReceiverThread recSocket;
     private Socket serverSocket;
     private Node node;
+    private int ID;
 
     /**
      *
@@ -30,8 +32,9 @@ public class TCPConnection {
 
 
     public void initiate() {
-        new Thread(this.recSocket).start();
-        new Thread(this.senSocket).start();
+
+        this.recSocket.start();
+        this.senSocket.start();
 
     }
 
@@ -53,7 +56,25 @@ public class TCPConnection {
         return this.serverSocket;
     }
 
+    public TCPSenderThread getSenSocket() {
+        return senSocket;
+    }
+
+    public TCPReceiverThread getRecSocket() {
+        return recSocket;
+    }
+
+    public Socket getServerSocket() {
+        return serverSocket;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
     public Node getNode() {
         return this.node;
     }
+
+
 }

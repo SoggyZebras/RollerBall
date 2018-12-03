@@ -1,5 +1,8 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +10,11 @@ import java.util.Map;
 public class Game implements java.io.Serializable {
 
     protected Map<Location,Piece> board;
+    private User player1;
+    private User player2;
+    private boolean inProgress;
+    private User winner;
+    private int gameID;
 
     // set to 'w' or 'b' depending on who's turn it is
     private char whosTurn;
@@ -14,8 +22,12 @@ public class Game implements java.io.Serializable {
     /**
      * create a new game
      */
-    public Game() {
+    public Game(int id,User p1, User p2) {
         this.board = new HashMap<>();
+        this.gameID = id;
+        this.player1 = p1;
+        this.player2 = p2;
+        this.inProgress = true;
 
         // add white pieces
         addPiece(new Pawn(new Location(5, 2), 'w', "pawn"));
@@ -34,6 +46,11 @@ public class Game implements java.io.Serializable {
         addPiece(new Rook(new Location(1, 2), 'b', "rook"));
     }
 
+    // TODO: just added this so it compiles, it is used in RookTest. It should probably return a starting board state
+    public Game() {
+
+    }
+
     public Game(Map<Location,Piece> m) {
         this.board = m;
     }
@@ -48,7 +65,6 @@ public class Game implements java.io.Serializable {
     }
 
     public Map<Location, Piece> makeMove(Location to, Location from){
-        System.err.println(board);
         board.put((to), board.get(from));
         board.get(to).setLoc(to);
         board.remove(from);
@@ -58,4 +74,25 @@ public class Game implements java.io.Serializable {
     public Map<Location, Piece> getBoard() {
         return board;
     }
+
+
+    public User getPlayer1(){
+        return player1;
+    }
+
+
+    public User getPlayer2(){
+        return player2;
+    }
+
+
+    public int getGameID(){
+        return gameID;
+    }
+
+    public void setGameID(int gID){
+        gameID = gID;
+    }
+
+
 }

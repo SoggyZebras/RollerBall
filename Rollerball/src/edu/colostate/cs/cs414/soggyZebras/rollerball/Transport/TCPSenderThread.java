@@ -5,10 +5,11 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class TCPSenderThread implements Runnable{
+public class TCPSenderThread extends Thread{
     private Socket socket;
     private ObjectOutputStream oout;
     private MessageQueue queue;
+    private boolean closed = false;
 
     /**
      *
@@ -21,13 +22,14 @@ public class TCPSenderThread implements Runnable{
         this.oout = new ObjectOutputStream(socket.getOutputStream());
     }
 
-    public void run() {
-        while(socket != null){
+    public void run(){
+        while (socket != null) {
 
-            forward(this.queue.take());
-
-
-
+            try {
+                forward(this.queue.take());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -35,7 +37,7 @@ public class TCPSenderThread implements Runnable{
         this.queue.add(dataToSend);
     }
 
-    private void forward(String dataToSend) {
+    private void forward(String dataToSend) throws IOException{
         synchronized(this.socket) {
             try {
 
@@ -46,7 +48,8 @@ public class TCPSenderThread implements Runnable{
 
             } catch (IOException e) {
                 System.out.println("IO Exception in TCP Sender Thread");
-                e.printStackTrace();
+                this.socket.close();
+                this.closed = true;
             }
         }
     }
