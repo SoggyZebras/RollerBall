@@ -91,6 +91,8 @@ public class Client implements Node {
 
     private void handleServerSendsConnect(Event e){
         ServerSendsConnect message = (ServerSendsConnect) e;
+        User user = message.getUser();
+        user.setServerConnection(serverConnection);
         gui.refresh(message.getUser());
     }
 
@@ -203,45 +205,37 @@ public class Client implements Node {
      */
     private void handleServerCheckMove(Event e){
         ServerRespondsCheckMove message = (ServerRespondsCheckMove) e;
-        //gui.updateValidMoves(message.getGameID(), message.getList());
+        gui.updateValidMoves(message.getGameID(), message.getList());
     }
 
     private void handleServerRespondsInvite(Event e){
         ServerRespondsInvite message = (ServerRespondsInvite) e;
-        //gui.refresh(message.getUserTo());
+        gui.refresh(message.getUser());
     }
 
     private void handleServerRespondsLogin(Event e, Socket socket){
+        System.err.println("respond login");
         //TODO process event to see if the login was successful
         ServerRespondsLogin message = (ServerRespondsLogin) e;
-        if(message.getReject_reason() == ""){
-            //gui.refresh(message.getUser());
-        }
-        else{
-            //gui.error(message.getReject_reason());
-        }
+        gui.onLoginResponse(message.getUser(), message.getReject_reason());
+
     }
 
     private void handleServerRespondsRegistration(Event e, Socket socket){
         //TODO process event to see if the registration was successful or not
         ServerRespondsRegistration message = (ServerRespondsRegistration) e;
-        if(message.getReason() == ""){
-            //gui.refresh(message.getUser());
-        }
-        else{
-            //gui.error(message.getReason());
-        }
+        gui.onRegisterResponse(message.getUser(), message.getReason());
     }
 
     private void handleServerRespondsRefresh(Event e, Socket socket){
         ServerRespondsRefresh message = (ServerRespondsRefresh) e;
-        //gui.refresh(message.getUser());
+        gui.refresh(message.getUser());
 
     }
 
     private void handleServerSendsInvite(Event e, Socket socket){
         ServerSendsInvite message = (ServerSendsInvite) e;
-        //gui.refresh(message.getUserTo());
+        gui.refresh(message.getUserTo());
 
     }
 

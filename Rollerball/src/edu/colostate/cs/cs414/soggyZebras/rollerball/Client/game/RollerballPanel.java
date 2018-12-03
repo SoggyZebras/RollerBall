@@ -45,8 +45,6 @@ public class RollerballPanel extends JPanel {
         this.game = game;
         board = game.getBoard();
         this.client = client;
-        client.setGui(menuGUI);
-        this.client.initialize();
         selectedPiece = null;
         unselectSquares();
 

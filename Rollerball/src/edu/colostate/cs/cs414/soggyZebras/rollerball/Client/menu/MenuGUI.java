@@ -1,6 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.Client;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.GameGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.RollerballPanel;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
@@ -40,7 +41,7 @@ public class MenuGUI extends JFrame {
 
         try {
             // TODO: change server address
-            client = new Client("127.0.0.1",5003);
+            client = new Client("3.16.42.80",35355);
             client.initialize();
             client.setGui(this);
         } catch (IOException e) {
@@ -64,6 +65,7 @@ public class MenuGUI extends JFrame {
      * @param newMenu the name of the new menu to show, for example "register"
      */
     public void setMenu(String newMenu) {
+        cardContainer.refreshAll(loggedInUser);
         cardContainer.show(newMenu);
     }
 
@@ -75,12 +77,47 @@ public class MenuGUI extends JFrame {
         activeGameGUIs.put(gameID, gameGUI);
     }
 
-    // THESE 2 METHODS ARE CALLED BY THE CLIENT WHEN GAME STATE IS UPDATED
+    /**
+     * open a game window for the game with the given gameID
+     * @param gameID
+     */
+    public void openGameGUI(int gameID) {
+        if (!activeGameGUIs.containsKey(gameID)) {
+
+            // find game with correct id
+            Game loadedGame = null;
+            for (Game game : loggedInUser.getGames()) {
+                if (game.getGameID() == gameID) {
+                    loadedGame = game;
+                }
+            }
+
+            // open that game
+            try {
+                GameGUI gameGUI = new GameGUI(client, loadedGame, this);
+                addActiveGameGUI(gameID, gameGUI.panel);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // THESE METHODS ARE CALLED BY THE CLIENT WHEN GAME/MENU STATE IS UPDATED
+
+    /**
+     * updates the valid moves of a RollerballPanel with a specific gameID
+     * @param gameID
+     * @param validMoves
+     */
     public void updateValidMoves(int gameID, ArrayList<Location> validMoves) {
         RollerballPanel gameWindow = activeGameGUIs.get(gameID);
         gameWindow.updateValidMoves(validMoves);
     }
 
+    /**
+     * updates the logged in user and updates all the menus
+     * @param updatedUser
+     */
     public void refresh(User updatedUser) {
         this.loggedInUser = updatedUser;
 
@@ -95,6 +132,42 @@ public class MenuGUI extends JFrame {
                 // TODO: should we just pass the entire game?
                 activeGame.updateState(userGame.getBoard());
             }
+        }
+    }
+
+    /**
+     * called when the server responds to a register attempt
+     * @param user the user that was registered, null if unsuccessful
+     * @param message an error message
+     */
+    public void onRegisterResponse(User user, String message) {
+        login(user, message);
+    }
+
+    /**
+     * called when the server responds to a login attempt
+     * @param user the user that was logged in, null if unsuccessful
+     * @param message an error message
+     */
+    public void onLoginResponse(User user, String message) {
+        System.err.println("login response");
+        login(user, message);
+    }
+
+    /**
+     * log in a user, show error if user is null
+     * @param user
+     * @param message
+     */
+    private void login(User user, String message) {
+        if (user != null) {
+            loggedInUser = user;
+            setMenu("main_menu");
+            refresh(user);
+        }
+        else {
+            // TODO: popup error message
+            System.err.println(message);
         }
     }
 }

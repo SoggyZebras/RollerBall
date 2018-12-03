@@ -13,6 +13,7 @@ public class User {
     private String password;
     private String email;
     private TCPConnection userConnection;
+    private TCPConnection serverConnection;
     private ArrayList<Invite> sentInvites;
     private ArrayList<Invite> gotInvites;
     private ArrayList<Game> games;
@@ -131,4 +132,8 @@ public class User {
     public void setGames(ArrayList<Game> games) {
         this.games = games;
     }
+
+    public TCPConnection getServerConnection() {return this.serverConnection;}
+
+    public void setServerConnection(TCPConnection s) { this.serverConnection = s; }
 }
