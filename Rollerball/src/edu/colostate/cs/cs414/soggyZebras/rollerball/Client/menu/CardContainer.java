@@ -7,7 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * holds all of the cards that represent the different menus
+ * holds all of the 'cards' that represent the different menus
  */
 public class CardContainer extends JPanel {
 
