@@ -12,46 +12,26 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private TCPConnection userConnection;
-    private TCPConnection serverConnection;
-    private ArrayList<Invite> sentInvites;
-    private ArrayList<Invite> gotInvites;
-    private ArrayList<Game> games;
+    private Invite[] sentInvites;
+    private Invite[] gotInvites;
+    private Game[] games;
 
     //Constructors
-    public User(int uID, String username, String password,String email ,TCPConnection con){
+    public User(int uID, String username, String password,String email){
         this.userID = uID;
         this.username = username;
         this.password = password;
         this.email = email;
-        this.userConnection = con;
-        sentInvites = new ArrayList<>();
-        gotInvites = new ArrayList<>();
-        games = new ArrayList<>();
+        sentInvites = new Invite[500];
+        gotInvites = new Invite[500];
+        games = new Game[500];
     }
 
     //Get and Set
 
-    public void setUserID(int uID){
-        this.userID = uID;
-    }
+    public void setUserID(int uID){ this.userID = uID; }
 
-    public int getUserID(){
-        return userID;
-    }
-
-    public void setUserConnection(TCPConnection con){
-        this.userConnection = con;
-    }
-
-    public TCPConnection getUserConnection(){
-        return userConnection;
-    }
-
-    //Wrapper wrapper for TCPConnection send method
-    public void sendData(String data){
-        this.userConnection.sendData(data);
-    }
+    public int getUserID(){ return userID; }
 
     public boolean containsInviteID(int id){
         for(Invite i : gotInvites){
@@ -70,17 +50,28 @@ public class User {
     }
 
     public void addInviteSent(Invite inv){
-        this.sentInvites.add(inv);
+        Invite[] tmp = new Invite[this.sentInvites.length + 1];
+        for(int i = 0; i < sentInvites.length;i++){
+            tmp[i] = sentInvites[i];
+        }
+        tmp[tmp.length-1] = inv;
+        this.sentInvites = tmp;
     }
 
     public void addInviteGot(Invite inv){
-        this.gotInvites.add(inv);
+        Invite[] tmp = new Invite[this.gotInvites.length + 1];
+        for(int i = 0; i < gotInvites.length;i++){
+            tmp[i] = gotInvites[i];
+        }
+        tmp[tmp.length-1] = inv;
+        this.gotInvites = tmp;
     }
+
 
     public void removeInviteSent(int id){
         for(Invite i : sentInvites){
             if(i.getInviteID() == id){
-                sentInvites.remove(i);
+                //sentInvites.remove(i);
             }
         }
     }
@@ -88,7 +79,7 @@ public class User {
     public void removeInviteGot(int id){
         for (Invite i : gotInvites){
             if(i.getInviteID() == id){
-                gotInvites.remove(i);
+                //gotInvites.remove(i);
             }
         }
     }
@@ -103,11 +94,11 @@ public class User {
 
     public String getEmail() { return email;}
 
-    public ArrayList<Invite> getSentInvites() { return sentInvites;}
+    //public ArrayList<Invite> getSentInvites() { return sentInvites;}
 
-    public ArrayList<Invite> getGotInvites() { return gotInvites;}
+    //public ArrayList<Invite> getGotInvites() { return gotInvites;}
 
-    public ArrayList<Game> getGames() { return games;}
+    public ArrayList<Game> getGames() { return null; }//return games;}
 
     public void setUsername(String username) {
         this.username = username;
@@ -121,19 +112,10 @@ public class User {
         this.email = email;
     }
 
-    public void setSentInvites(ArrayList<Invite> sentInvites) {
-        this.sentInvites = sentInvites;
-    }
+    //public void setSentInvites(ArrayList<Invite> sentInvites) { this.sentInvites = sentInvites; }
 
-    public void setGotInvites(ArrayList<Invite> gotInvites) {
-        this.gotInvites = gotInvites;
-    }
+    //public void setGotInvites(ArrayList<Invite> gotInvites) { this.gotInvites = gotInvites; }
 
-    public void setGames(ArrayList<Game> games) {
-        this.games = games;
-    }
+    //public void setGames(ArrayList<Game> games) { this.games = games; }
 
-    public TCPConnection getServerConnection() {return this.serverConnection;}
-
-    public void setServerConnection(TCPConnection s) { this.serverConnection = s; }
 }

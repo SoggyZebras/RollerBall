@@ -67,17 +67,19 @@ public class TCPServerThread implements Runnable{
             try {
                 //Accept incoming connection
                 this.socket = serverSocket.accept();
-                connection = new TCPConnection(node,socket);
-                connection.initiate();
 
                 //get random user ID number
                 int uID = rand.nextInt();
                 while(userNumbers.contains(uID)){uID = rand.nextInt();}
                 userNumbers.add(uID);
 
+                connection = new TCPConnection(node,socket,uID);
+                connection.initiate();
+
                 //populate the server cache with a new user
-                User tmp = new User(uID,"","","",connection);
+                User tmp = new User(uID,"","","");
                 this.serverCache.addUser(tmp);
+                this.serverCache.addConnection(connection);
                 connection.sendData(new ServerSendsConnect(tmp).getFile());
 
             }

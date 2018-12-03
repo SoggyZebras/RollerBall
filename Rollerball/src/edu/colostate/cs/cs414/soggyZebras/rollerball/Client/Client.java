@@ -62,7 +62,7 @@ public class Client implements Node {
         }
         //Setup a connection to the server
         serverSocket = new Socket(InetAddress.getByName(this.serverHost),this.serverPort);
-        serverConnection = new TCPConnection(this, serverSocket);
+        serverConnection = new TCPConnection(this, serverSocket,0);
         serverConnection.initiate();
     }
 
@@ -90,9 +90,8 @@ public class Client implements Node {
     }
 
     private void handleServerSendsConnect(Event e){
+        System.out.println("server sent connect");
         ServerSendsConnect message = (ServerSendsConnect) e;
-        User user = message.getUser();
-        user.setServerConnection(serverConnection);
         gui.refresh(message.getUser());
     }
 
@@ -113,8 +112,10 @@ public class Client implements Node {
     }
 
     public void register(String username, String password, String email) throws IOException{
+        System.out.println("sending register");
         ClientSendsRegistration message = new ClientSendsRegistration(username,password,email);
         serverConnection.sendData(message.getFile());
+        System.out.println("sent registration");
     }
 
     public void login(String username, String password) throws IOException{

@@ -82,7 +82,7 @@ public class Server implements Node,Runnable {
 
         ServerRespondsCheckMove response = new ServerRespondsCheckMove(games.getGame(message.getGameID()).validMoves(message.getPlace()),message.getGameID());
 
-        this.serverCache.getUser(socket).sendData(response.getFile());
+        this.serverCache.getUserCon(socket).sendData(response.getFile());
     }
 
     private void handleClientSendsInvite(Event e, Socket socket) throws IOException{
@@ -98,8 +98,8 @@ public class Server implements Node,Runnable {
         ServerSendsInvite response = new ServerSendsInvite(sentFrom.getUsername(),sendTo,inv.getInviteID());
         ServerRespondsInvite response2 = new ServerRespondsInvite(sentFrom);
 
-        sentFrom.sendData(response2.getFile());
-        sendTo.sendData(response.getFile());
+        this.serverCache.getConnection(sentFrom.getUserID()).sendData(response2.getFile());
+        this.serverCache.getConnection(sendTo.getUserID()).sendData(response.getFile());
 
     }
 
@@ -117,8 +117,8 @@ public class Server implements Node,Runnable {
         ServerRespondsInvite response1 = new ServerRespondsInvite(sentUser);
         ServerRespondsInvite response2 = new ServerRespondsInvite(fromUser);
 
-        sentUser.sendData(response1.getFile());
-        fromUser.sendData(response2.getFile());
+        this.serverCache.getConnection(sentUser.getUserID()).sendData(response1.getFile());
+        this.serverCache.getConnection(fromUser.getUserID()).sendData(response2.getFile());
 
     }
 
@@ -139,7 +139,7 @@ public class Server implements Node,Runnable {
             reason = "User does not exist";
         }
         ServerRespondsLogin response = new ServerRespondsLogin(user,reason);
-        serverCache.getUser(socket).sendData(response.getFile());
+        serverCache.getUserCon(socket).sendData(response.getFile());
         //ResultSet result = db.getUser(message.getUsername(),"");
 
 
@@ -169,16 +169,17 @@ public class Server implements Node,Runnable {
         }
 
         ServerRespondsRegistration response = new ServerRespondsRegistration(user,reason);
-        serverCache.getUser(socket).sendData(response.getFile());
+        serverCache.getUserCon(socket).sendData(response.getFile());
     }
 
     private void handleClientSendsRefresh(Event e, Socket socket) throws IOException {
+
         ClientSendsRefresh message = (ClientSendsRefresh) e;
 
         User sendTo = serverCache.getUser(message.getUserID());
         ServerRespondsRefresh response = new ServerRespondsRefresh(sendTo);
 
-        sendTo.sendData(response.getFile());
+        this.serverCache.getConnection(sendTo.getUserID()).sendData(response.getFile());
 
 
     }
