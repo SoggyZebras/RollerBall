@@ -1,5 +1,7 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.listdisplay.PendingInviteListDisplay;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Invite;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 
 import javax.swing.*;
@@ -9,7 +11,7 @@ import java.awt.event.ActionListener;
 
 public class PendingInvitesPanel extends MenuPanel {
 
-    private DefaultListModel<String> pendingInvitesListModel;
+    private DefaultListModel<PendingInviteListDisplay> pendingInvitesListModel;
 
     public PendingInvitesPanel(MenuGUI menuGUI) {
         super("pending_invites", menuGUI);
@@ -24,13 +26,22 @@ public class PendingInvitesPanel extends MenuPanel {
 
         pendingInvitesListModel = new DefaultListModel();
 
-        // TODO: actually get active games from server
+        // get users pending invites
         if (getMenuGUI().loggedInUser != null) {
+            for (Invite invite : getMenuGUI().loggedInUser.getGotInvites()) {
+                pendingInvitesListModel.add(0, new PendingInviteListDisplay(invite));
+            }
         }
-        pendingInvitesListModel.add(0, "invite from a");
-        pendingInvitesListModel.add(1, "invite from a");
-        pendingInvitesListModel.add(2, "invite from a");
-        JList<String> pendingInvitesList = new JList<>(pendingInvitesListModel);
+
+        // TODO: remove this soon
+        Invite i1 = new Invite("bob", "joe", 0);
+        Invite i2 = new Invite("bob", "joebob", 1);
+        Invite i3 = new Invite("bob", "joey", 2);
+        pendingInvitesListModel.add(0, new PendingInviteListDisplay(i1));
+        pendingInvitesListModel.add(1, new PendingInviteListDisplay(i2));
+        pendingInvitesListModel.add(2, new PendingInviteListDisplay(i3));
+
+        JList<PendingInviteListDisplay> pendingInvitesList = new JList<>(pendingInvitesListModel);
         pendingInvitesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane listScroller = new JScrollPane(pendingInvitesList);
         listScroller.setPreferredSize(new Dimension(250, 100));
@@ -45,23 +56,23 @@ public class PendingInvitesPanel extends MenuPanel {
     }
 
     class AcceptInviteListener implements ActionListener {
-        private JList<String> pendingInvitesList;
+        private JList<PendingInviteListDisplay> pendingInvitesList;
 
-        public AcceptInviteListener(JList<String> pendingInviteList) {
+        public AcceptInviteListener(JList<PendingInviteListDisplay> pendingInviteList) {
             this.pendingInvitesList = pendingInviteList;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String user = pendingInvitesList.getSelectedValue();
-            pendingInvitesListModel.remove(pendingInvitesListModel.indexOf(user));
+            PendingInviteListDisplay invite = pendingInvitesList.getSelectedValue();
+            pendingInvitesListModel.remove(pendingInvitesListModel.indexOf(invite));
             // TODO: tell server that game was started
             getMenuGUI().revalidate();
             getMenuGUI().repaint();
 
             // load game is 1 if they choose no, 0 if they choose yes
             int loadGame = JOptionPane.showOptionDialog(getMenuGUI(),
-                    "Game created with user " + user + ", would you like to load this game?", "Game Started",
+                    "Game created with user " + invite.invite.getInviter() + ", would you like to load this game?", "Game Started",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 
             if (loadGame == 0) {

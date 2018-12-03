@@ -40,8 +40,8 @@ public class MenuGUI extends JFrame {
         activeGameGUIs = new HashMap<>();
 
         try {
-            // TODO: change server address
-            client = new Client("3.16.42.80",35355);
+            client = new Client("127.0.0.1",35355);
+            // TODO: client is hanging on init
             client.initialize();
             client.setGui(this);
         } catch (IOException e) {
