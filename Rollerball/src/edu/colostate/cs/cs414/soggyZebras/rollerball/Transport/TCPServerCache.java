@@ -77,7 +77,7 @@ public class TCPServerCache {
 
     public User getUser(String s){
         for(User u : getAllUsers()){
-            if(u.getUsername() == s){
+            if(u.getUsername().equals(s)){
                 return u;
             }
         }

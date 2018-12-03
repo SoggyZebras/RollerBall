@@ -110,6 +110,11 @@ public class Client implements Node {
         serverConnection.sendData(message.getFile());
     }
 
+    public void logout(int uid) throws IOException{
+        ClientSendsLogout message = new ClientSendsLogout(uid);
+        serverConnection.sendData(message.getFile());
+    }
+
     public void deregister(int id) throws IOException{
         ClientSendsDeregister message = new ClientSendsDeregister(id);
         serverConnection.sendData(message.getFile());
@@ -213,6 +218,7 @@ public class Client implements Node {
     }
 
     private void handleServerRespondsRegistration(Event e, Socket socket){
+        System.err.println("handling registration from server");
         ServerRespondsRegistration message = (ServerRespondsRegistration) e;
         gui.onRegisterResponse(message.getUser(), message.getReason());
     }

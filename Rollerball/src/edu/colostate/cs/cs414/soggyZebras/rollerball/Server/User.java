@@ -68,6 +68,15 @@ public class User implements Serializable {
         this.gotInvites = tmp;
     }
 
+    public void addGame(Game g){
+        Game[] tmp = new Game[this.games.length + 1];
+        for(int i = 0; i < games.length;i++){
+            tmp[i] = games[i];
+        }
+        tmp[tmp.length-1] = g;
+        this.games = tmp;
+    }
+
 
     public void removeInviteSent(int id){
 
@@ -98,6 +107,22 @@ public class User implements Serializable {
             }
         }
         gotInvites = tmp;
+    }
+
+    public void removeGame(Game g){
+
+        Game[] tmp = new Game[games.length-1];
+
+        for(int i=0,j=0; i < games.length-1;i++){
+            if(games[i].getGameID() == g.getGameID()){
+
+            }
+            else{
+                tmp[j] = games[i];
+                j++;
+            }
+        }
+        games = tmp;
     }
 
     public String getUsername(){

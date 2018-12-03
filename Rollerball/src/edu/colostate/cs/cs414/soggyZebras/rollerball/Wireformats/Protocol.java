@@ -32,4 +32,6 @@ public interface Protocol {
      String Client_Sends_Deregister = "clientSendsDeregister.msg";
      String Server_Responds_Deregister = "serverRespondsDeregister.msg";
 
+     String Client_Sends_Logout = "clientSendsLogout.msg";
+
 }

@@ -42,9 +42,18 @@ public class Server implements Node,Runnable {
 
 
     public void run(){
+
+        //load previous state from database
+        init();
+
         //Start server thread(send/receive threads
         this.serverThread.run();
     }
+
+    private void init(){
+
+    }
+
 
     @Override
     public void onEvent(Event e, Socket socket) throws IOException, ClassNotFoundException {
@@ -66,13 +75,15 @@ public class Server implements Node,Runnable {
             case Client_Sends_Refresh: handleClientSendsRefresh(e, socket);break;
 
             case Client_Sends_Deregister: handleClientSendsDeregister(e, socket);break;
+
+            case Client_Sends_Logout: handleClientSendsLogout(e, socket);break;
             default:
         }
     }
 
     private void handleMakeMove(Event e ,Socket socket) throws IOException {
         ClientMakeMove message =(ClientMakeMove) e;
-        games.getGame(message.getGameID()).makeMove(message.getTo(),message.getFrom());
+        games.getGame(message.getGameID()).makeMove(serverCache.getUser(socket),message.getTo(),message.getFrom());
         //handleClientRequestGameState(e,socket);
         
     }
@@ -81,9 +92,10 @@ public class Server implements Node,Runnable {
         //When client asks for available spaces, get possible moves from game
         ClientRequestsCheckMove message = (ClientRequestsCheckMove) e;
 
-        ServerRespondsCheckMove response = new ServerRespondsCheckMove(games.getGame(message.getGameID()).validMoves(message.getPlace()),message.getGameID());
-
-        this.serverCache.getUserCon(socket).sendData(response.getFile());
+        ServerRespondsCheckMove response = new ServerRespondsCheckMove(games.getGame(message.getGameID()).validMoves(serverCache.getUser(socket),message.getPlace()),message.getGameID());
+        if(response.getList() != null){
+            this.serverCache.getUserCon(socket).sendData(response.getFile());
+        }
     }
 
     private void handleClientSendsInvite(Event e, Socket socket) throws IOException{
@@ -95,11 +107,13 @@ public class Server implements Node,Runnable {
         sendTo.addInviteSent(inv);
         sentFrom.addInviteGot(inv);
 
-        ServerSendsInvite response = new ServerSendsInvite(sentFrom.getUsername(),sendTo,inv.getInviteID());
-        ServerRespondsInvite response2 = new ServerRespondsInvite(sentFrom);
+        if(serverCache.getConnection(sendTo.getUserID())!= null){
+            ServerSendsInvite response = new ServerSendsInvite(sentFrom.getUsername(),sendTo,inv.getInviteID());
+            this.serverCache.getConnection(sendTo.getUserID()).sendData(response.getFile());
+        }
 
+        ServerRespondsInvite response2 = new ServerRespondsInvite(sentFrom);
         this.serverCache.getConnection(sentFrom.getUserID()).sendData(response2.getFile());
-        this.serverCache.getConnection(sendTo.getUserID()).sendData(response.getFile());
 
     }
 
@@ -111,13 +125,19 @@ public class Server implements Node,Runnable {
         fromUser.removeInviteGot(message.getInviteID());
         sentUser.removeInviteSent(message.getInviteID());
         gID = genGameID();
-        games.addGame(new Game(gID,sentUser,fromUser));
+        Game newGame = new Game(gID,sentUser,fromUser);
+        games.addGame(newGame);
+        sentUser.addGame(newGame);
+        fromUser.addGame(newGame);
+        db.insertGame(newGame.getPlayer1().getUsername(),newGame.getPlayer2().getUsername(),newGame,newGame.getWhosTurn().getUsername(),newGame.getWinner().getUsername(),newGame.getLoser().getUsername(),newGame.isInProgress());
+
+        if(serverCache.getConnection(fromUser.getUserID()) != null){
+            ServerRespondsInvite response2 = new ServerRespondsInvite(fromUser);
+            this.serverCache.getConnection(fromUser.getUserID()).sendData(response2.getFile());
+        }
 
         ServerRespondsInvite response1 = new ServerRespondsInvite(sentUser);
-        ServerRespondsInvite response2 = new ServerRespondsInvite(fromUser);
-
         this.serverCache.getConnection(sentUser.getUserID()).sendData(response1.getFile());
-        this.serverCache.getConnection(fromUser.getUserID()).sendData(response2.getFile());
 
     }
 
@@ -161,6 +181,7 @@ public class Server implements Node,Runnable {
                     user.setUsername(message.getUsername());
                     user.setPassword(message.getPassword());
                     user.setEmail(message.getEmail());
+                    user.setUserID(serverCache.getUserCon(socket).getConID());
 
                 }
                 else{
@@ -185,6 +206,11 @@ public class Server implements Node,Runnable {
         this.serverCache.getConnection(sendTo.getUserID()).sendData(response.getFile());
 
 
+    }
+
+    private void handleClientSendsLogout(Event e, Socket socket){
+        ClientSendsLogout message = (ClientSendsLogout) e;
+        serverCache.removeConnection(message.getuID());
     }
 
     private void handleClientSendsDeregister(Event e, Socket socket) throws IOException{
@@ -216,7 +242,6 @@ public class Server implements Node,Runnable {
 
     private boolean checkUsername(String username){
         for(User u : this.serverCache.getAllUsers()){
-            System.err.println(u.getUsername());
             if(u.getUsername().equals(username)){
                 return true;
             }
