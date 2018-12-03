@@ -143,10 +143,10 @@ public class Server implements Node,Runnable {
         ClientSendsInvite message = (ClientSendsInvite) e;
         User sentFrom = this.serverCache.getUser(socket);
         User sendTo = serverCache.getUser(message.getUserTo());
-        Invite inv = new Invite(sentFrom.getUsername(), sendTo.getUsername(), genInviteID());
+        Invite inv = new Invite(sendTo.getUsername(), sentFrom.getUsername(), genInviteID());
 
-        sendTo.addInviteSent(inv);
-        sentFrom.addInviteGot(inv);
+        sendTo.addInviteGot(inv);
+        sentFrom.addInviteSent(inv);
         db.insertInvite(inv.getInviteID(),inv.getInviter(),inv.getInvitee());
 
         if(serverCache.getConnection(sendTo.getUserID())!= null){
