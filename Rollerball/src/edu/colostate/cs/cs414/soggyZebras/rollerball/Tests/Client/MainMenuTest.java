@@ -27,6 +27,5 @@ class MainMenuTest {
         regButton.doClick();
         RegPanel regPanel = (RegPanel) mainMenu.getComponent(1);
         ((JButton)regPanel.getComponent(3)).doClick();
-
     }
 }
