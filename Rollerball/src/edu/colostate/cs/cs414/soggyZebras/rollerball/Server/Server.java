@@ -65,6 +65,7 @@ public class Server implements Node,Runnable {
 
             case Client_Sends_Refresh: handleClientSendsRefresh(e, socket);break;
 
+            case Client_Sends_Deregister: handleClientSendsDeregister(e, socket);break;
             default:
         }
     }
@@ -86,7 +87,6 @@ public class Server implements Node,Runnable {
     }
 
     private void handleClientSendsInvite(Event e, Socket socket) throws IOException{
-        System.out.println("processing invite");
         ClientSendsInvite message = (ClientSendsInvite) e;
         User sentFrom = this.serverCache.getUser(socket);
         User sendTo = serverCache.getUser(message.getUserTo());
@@ -104,7 +104,6 @@ public class Server implements Node,Runnable {
     }
 
     private void handleClientRespondsInvite(Event e, Socket s) throws IOException {
-        System.out.println("processing invite response");
         ClientRespondsInvite message = (ClientRespondsInvite) e;
         User sentUser = this.serverCache.getUser(s);
         User fromUser = serverCache.getUser(message.getUsername());
@@ -127,12 +126,17 @@ public class Server implements Node,Runnable {
         // if the user does not exists, send rejection
         // else fetch it, set the user fields and pass it to gui
         // remove old uid from serverthread
-        System.out.println("processing login request");
         ClientSendsLogin message = (ClientSendsLogin) e;
         User user = null;
         String reason = "";
         if(checkUsername(message.getUsername())){
-            user = serverCache.getUser(message.getUsername());
+            if(!serverCache.UserLoggedIn(serverCache.getUser(message.getUsername()).getUserID())){
+                user = serverCache.getUser(message.getUsername());
+                serverCache.getUserCon(socket).setConID(user.getUserID());
+            }
+            else{
+                reason = "User already logged in";
+            }
 
         }
         else{
@@ -148,7 +152,6 @@ public class Server implements Node,Runnable {
     private void handleClientSendsRegistration(Event e, Socket socket) throws IOException{
         //TODO check username and password with login database, if in database reject
         // else create user and update database
-        System.out.println("processing registration");
         ClientSendsRegistration message = (ClientSendsRegistration) e;
         User user = null;
         String reason = "";
@@ -184,6 +187,22 @@ public class Server implements Node,Runnable {
 
     }
 
+    private void handleClientSendsDeregister(Event e, Socket socket) throws IOException{
+        //TODO set all attributes of the user to nothing, and delete the user from the userdatabase
+        System.err.println("processing deregistration");
+        ClientSendsDeregister message = (ClientSendsDeregister) e;
+        User user = serverCache.getUser(message.getUserID());
+        user.setEmail("");
+        user.setPassword("");
+        user.setUsername("");
+        user.setGotInvites(new Invite[0]);
+        user.setSentInvites(new Invite[0]);
+        user.setGames(new Game[0]);
+
+        ServerRespondsDeregister response = new ServerRespondsDeregister(user);
+        serverCache.getUserCon(socket).sendData(response.getFile());
+    }
+
     //Check each game and make sure the random numbe generated isn't already in use.
     private int genGameID(){
        int id = random.nextInt(Integer.MAX_VALUE);
@@ -197,7 +216,8 @@ public class Server implements Node,Runnable {
 
     private boolean checkUsername(String username){
         for(User u : this.serverCache.getAllUsers()){
-            if(u.getUsername() == username){
+            System.err.println(u.getUsername());
+            if(u.getUsername().equals(username)){
                 return true;
             }
         }

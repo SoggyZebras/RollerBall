@@ -76,6 +76,8 @@ public class Client implements Node {
 
             case Server_Responds_Refresh: handleServerRespondsRefresh(e,socket);break;
 
+            case Server_Responds_Deregister: handleServerRespondsDeregister(e, socket);break;
+
             default:
         }
 
@@ -105,6 +107,11 @@ public class Client implements Node {
 
     public void login(String username, String password) throws IOException{
         ClientSendsLogin message = new ClientSendsLogin(username,password);
+        serverConnection.sendData(message.getFile());
+    }
+
+    public void deregister(int id) throws IOException{
+        ClientSendsDeregister message = new ClientSendsDeregister(id);
         serverConnection.sendData(message.getFile());
     }
 
@@ -220,6 +227,11 @@ public class Client implements Node {
         ServerSendsInvite message = (ServerSendsInvite) e;
         gui.refresh(message.getUserTo());
 
+    }
+
+    private void handleServerRespondsDeregister(Event e, Socket socket){
+        ServerRespondsDeregister message = (ServerRespondsDeregister) e;
+        gui.refresh(message.getUser());
     }
 
 

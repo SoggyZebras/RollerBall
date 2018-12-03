@@ -48,9 +48,10 @@ public class EventFactory implements Protocol {
 
                 case Server_Responds_Login: node.onEvent(new ServerRespondsLogin(filename),socket);break;
 
-                //case Client_Sends_Invite_Refresh:
+                case Client_Sends_Deregister: node.onEvent(new ClientSendsDeregister(filename),socket);break;
 
-                //case Server_Responds_Invite_Refresh:
+                case Server_Responds_Deregister: node.onEvent(new ServerRespondsDeregister(filename),socket);break;
+
 
                 default:
 

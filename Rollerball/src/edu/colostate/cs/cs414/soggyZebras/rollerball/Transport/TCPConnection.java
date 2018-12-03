@@ -62,4 +62,6 @@ public class TCPConnection {
 
     public int getConID() { return this.ID;}
 
+    public void setConID(int id) { this.ID = id;}
+
 }

@@ -18,6 +18,15 @@ public class TCPServerCache {
         this.connections = new ArrayList<>();
     }
 
+    public boolean UserLoggedIn(int id){
+        for(TCPConnection c: connections){
+            if(c.getConID() == id){
+                return true;
+            }
+        }
+        return false;
+    }
+
     protected void addUser(User u) {
         //add TCPConnection to the cache
         this.cache.add(u);
