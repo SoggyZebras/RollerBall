@@ -7,7 +7,7 @@ public class Game implements java.io.Serializable {
     protected Map<Location,Piece> board;
 
     // set to 'w' or 'b' depending on who's turn it is
-    private char whosTurn;
+    //private char whosTurn;
 
     /**
      * create a new game
@@ -63,8 +63,8 @@ public class Game implements java.io.Serializable {
                 kingLoc = I;
             }
         }
-        System.out.println("Black King Moves:" + KingMoves.size());
-        System.out.println("Black King Loc:" + kingLoc.toString());
+       // System.out.println("Black King Moves:" + KingMoves.size());
+       // System.out.println("Black King Loc:" + kingLoc.toString());
 
         //Now all valid black moves and white king moves are populated.
 
@@ -104,8 +104,8 @@ public class Game implements java.io.Serializable {
             }
         }
         //Now all valid black moves and white king moves are populated.
-        System.out.println("White King Moves:" + KingMoves.size());
-        System.out.println("White King Loc:" + kingLoc.toString());
+      //  System.out.println("White King Moves:" + KingMoves.size());
+       // System.out.println("White King Loc:" + kingLoc.toString());
 
 
         if(KingMoves.isEmpty()&&allBLocs.contains(kingLoc)){ //case for if King has no valid moves and will be captured
