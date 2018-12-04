@@ -9,9 +9,11 @@ import java.util.Objects;
  */
 public class GameListDisplay {
     public Game game;
+    private String myUsername;
 
-    public GameListDisplay(Game game) {
+    public GameListDisplay(Game game, String myUsername) {
         this.game = game;
+        this.myUsername = myUsername;
     }
 
     @Override
@@ -29,6 +31,11 @@ public class GameListDisplay {
 
     @Override
     public String toString() {
-        return "ID: " + game.getGameID() + " Players: " + game.getPlayer1() + ", " + game.getPlayer2();
+        String otherUser = game.getPlayer1().getUsername().equals(myUsername) ?
+                game.getPlayer2().getUsername() : game.getPlayer1().getUsername();
+
+        String turnMessage = game.getWhosTurn().getUsername().equals(otherUser) ? "their" : "your";
+
+        return turnMessage + " turn - game against " + otherUser + " - ID: " + game.getGameID();
     }
 }

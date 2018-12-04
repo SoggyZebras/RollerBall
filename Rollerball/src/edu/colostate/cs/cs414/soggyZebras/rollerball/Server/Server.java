@@ -63,35 +63,35 @@ public class Server implements Node,Runnable {
             serverCache.setCache(db.getAllUser());
         }
 
-        System.out.println("begin invite init...");
-        for(User u : serverCache.getAllUsers()){
-            for(User k: serverCache.getAllUsers()){
-                    Invite tmp = db.getInvite(u.getUsername(),k.getUsername());
-                    if(tmp != null){
-                        u.addInviteSent(tmp);
-                        k.addInviteGot(tmp);
-                    }
+//        System.out.println("begin invite init...");
+//        for(User u : serverCache.getAllUsers()){
+//            for(User k: serverCache.getAllUsers()){
+//                    Invite tmp = db.getInvite(u.getUsername(),k.getUsername());
+//                    if(tmp != null){
+//                        u.addInviteSent(tmp);
+//                        k.addInviteGot(tmp);
+//                    }
+//
+//            }
+//        }
 
-            }
-        }
-
-        System.out.println("begin game init...");
-        for(User u : serverCache.getAllUsers()){
-            for(User k: serverCache.getAllUsers()){
-                Game tmp = db.getGame(u.getUsername(),k.getUsername());
-                if(tmp != null) {
-                    u.addGame(tmp);
-                    k.addGame(tmp);
-                }
-
-                Game tmp2 = db.getGame(k.getUsername(),u.getUsername());
-                if(tmp2 != null) {
-                    u.addGame(tmp2);
-                    k.addGame(tmp2);
-                }
-
-            }
-        }
+//        System.out.println("begin game init...");
+//        for(User u : serverCache.getAllUsers()){
+//            for(User k: serverCache.getAllUsers()){
+//                Game tmp = db.getGame(u.getUsername(),k.getUsername());
+//                if(tmp != null) {
+//                    u.addGame(tmp);
+//                    k.addGame(tmp);
+//                }
+//
+//                Game tmp2 = db.getGame(k.getUsername(),u.getUsername());
+//                if(tmp2 != null) {
+//                    u.addGame(tmp2);
+//                    k.addGame(tmp2);
+//                }
+//
+//            }
+//        }
 
     }
 
@@ -101,31 +101,41 @@ public class Server implements Node,Runnable {
         //React to messages sent to the server
         switch(e.getType()){
 
-            case Client_Make_Move: handleMakeMove(e,socket);break;
+            case eClient_Make_Move: handleMakeMove(e,socket);break;
 
-            case Client_Request_Check_Move: handleCheckMove(e,socket);break;
+            case eClient_Request_Check_Move: handleCheckMove(e,socket);break;
 
-            case Client_Sends_Invite: handleClientSendsInvite(e,socket);break;
+            case eClient_Sends_Invite: handleClientSendsInvite(e,socket);break;
 
-            case Client_Responds_Invite: handleClientRespondsInvite(e,socket);break;
+            case eClient_Responds_Invite: handleClientRespondsInvite(e,socket);break;
 
-            case Client_Sends_Login: handleClientSendsLogin(e, socket);break;
+            case eClient_Sends_Login: handleClientSendsLogin(e, socket);break;
 
-            case Client_Sends_Registration: handleClientSendsRegistration(e, socket);break;
+            case eClient_Sends_Registration: handleClientSendsRegistration(e, socket);break;
 
-            case Client_Sends_Refresh: handleClientSendsRefresh(e, socket);break;
+            case eClient_Sends_Refresh: handleClientSendsRefresh(e, socket);break;
 
-            case Client_Sends_Deregister: handleClientSendsDeregister(e, socket);break;
+            case eClient_Sends_Deregister: handleClientSendsDeregister(e, socket);break;
 
-            case Client_Sends_Logout: handleClientSendsLogout(e, socket);break;
+            case eClient_Sends_Logout: handleClientSendsLogout(e, socket);break;
             default:
         }
     }
 
     private void handleMakeMove(Event e ,Socket socket) throws IOException {
         ClientMakeMove message =(ClientMakeMove) e;
-        games.getGame(message.getGameID()).makeMove(serverCache.getUser(socket),message.getTo(),message.getFrom());
-        //handleClientRequestGameState(e,socket);
+        Game tmp = games.getGame(message.getGameID());
+        tmp.makeMove(serverCache.getUser(socket),message.getTo(),message.getFrom());
+        User p1 = serverCache.getUser(tmp.getPlayer1().getUserID());
+        User p2 = serverCache.getUser(tmp.getPlayer2().getUserID());
+
+        p1.updateGame(message.getGameID(),tmp);
+        p2.updateGame(message.getGameID(),tmp);
+        ServerRespondsRefresh response1 = new ServerRespondsRefresh(p1);
+        ServerRespondsRefresh response2 = new ServerRespondsRefresh(p2);
+
+        serverCache.getConnection(p1.getUserID()).sendData(response1.getFile());
+        serverCache.getConnection(p2.getUserID()).sendData(response2.getFile());
         
     }
 
@@ -139,24 +149,27 @@ public class Server implements Node,Runnable {
         }
     }
 
-    private void handleClientSendsInvite(Event e, Socket socket) throws IOException{
+    private void handleClientSendsInvite(Event e, Socket socket) throws IOException {
         ClientSendsInvite message = (ClientSendsInvite) e;
         User sentFrom = this.serverCache.getUser(socket);
         User sendTo = serverCache.getUser(message.getUserTo());
-        Invite inv = new Invite(sendTo.getUsername(), sentFrom.getUsername(), genInviteID());
-
-        sendTo.addInviteGot(inv);
-        sentFrom.addInviteSent(inv);
-        db.insertInvite(inv.getInviteID(),inv.getInviter(),inv.getInvitee());
-
-        if(serverCache.getConnection(sendTo.getUserID())!= null){
-            ServerSendsInvite response = new ServerSendsInvite(sentFrom.getUsername(),sendTo,inv.getInviteID());
-            this.serverCache.getConnection(sendTo.getUserID()).sendData(response.getFile());
+        if(sentFrom == null || sendTo == null){
         }
+        else {
+          Invite inv = new Invite(sendTo.getUsername(), sentFrom.getUsername(), genInviteID());
 
-        ServerRespondsInvite response2 = new ServerRespondsInvite(sentFrom);
-        this.serverCache.getConnection(sentFrom.getUserID()).sendData(response2.getFile());
+          sendTo.addInviteGot(inv);
+          sentFrom.addInviteSent(inv);
+          db.insertInvite(inv.getInviteID(), inv.getInviter(), inv.getInvitee());
 
+          if (serverCache.getConnection(sendTo.getUserID()) != null) {
+            ServerSendsInvite response = new ServerSendsInvite(sentFrom.getUsername(), sendTo, inv.getInviteID());
+            this.serverCache.getConnection(sendTo.getUserID()).sendData(response.getFile());
+          }
+
+          ServerRespondsInvite response2 = new ServerRespondsInvite(sentFrom);
+          this.serverCache.getConnection(sentFrom.getUserID()).sendData(response2.getFile());
+        }
     }
 
     private void handleClientRespondsInvite(Event e, Socket s) throws IOException {
@@ -164,14 +177,15 @@ public class Server implements Node,Runnable {
         User sentUser = this.serverCache.getUser(s);
         User fromUser = serverCache.getUser(message.getUsername());
         int gID;
-        fromUser.removeInviteGot(message.getInviteID());
-        sentUser.removeInviteSent(message.getInviteID());
+        fromUser.removeInviteSent(message.getInviteID());
+        sentUser.removeInviteGot(message.getInviteID());
         gID = genGameID();
-        Game newGame = new Game(gID,sentUser,fromUser);
+        Game newGame = new Game(gID,fromUser,sentUser);
         games.addGame(newGame);
         sentUser.addGame(newGame);
         fromUser.addGame(newGame);
-        db.insertGame(newGame.getPlayer1().getUsername(),newGame.getPlayer2().getUsername(),newGame,newGame.getWhosTurn().getUsername(),newGame.getWinner().getUsername(),newGame.getLoser().getUsername(),newGame.isInProgress());
+     //   db.insertGame(newGame);
+        db.insertGame(newGame.getGameID(), newGame);
 
         if(serverCache.getConnection(fromUser.getUserID()) != null){
             ServerRespondsInvite response2 = new ServerRespondsInvite(fromUser);
@@ -232,7 +246,7 @@ public class Server implements Node,Runnable {
                         user.setGames(new Game[0]);
                         serverCache.getUserCon(socket).setConID(user.getUserID());
                         serverCache.addUser(user);
-                        db.insertUser(user.getUserID(), user.getUsername(), user.getPassword(), user.getEmail(), user.getSentInvites(), user.getGotInvites(), user.getGames());
+                        db.insertUser(user.getUserID(), user);
                 }
                 else{
                     reason = "User already exists!";
@@ -280,9 +294,10 @@ public class Server implements Node,Runnable {
 
     //Check each game and make sure the random numbe generated isn't already in use.
     private int genGameID(){
+        Random random = new Random();
        int id = random.nextInt(Integer.MAX_VALUE);
 
-       while(!gameIDs.contains(id)){
+       while(gameIDs.contains(id) || id <=0){
            id = random.nextInt(Integer.MAX_VALUE);
        }
        gameIDs.add(id);
@@ -291,7 +306,7 @@ public class Server implements Node,Runnable {
 
     private boolean checkUsername(String username){
         if(username.equals("")){
-            return false;
+            return true;
         }
         for(User u : this.serverCache.getAllUsers()){
             if(u.getUsername().equals(username)){

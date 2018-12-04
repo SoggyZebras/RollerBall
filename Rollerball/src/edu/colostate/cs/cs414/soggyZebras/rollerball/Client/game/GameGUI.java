@@ -5,6 +5,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -14,18 +15,20 @@ import java.io.IOException;
  */
 public class GameGUI extends JFrame {
     public final int WIDTH = 600;
-    public final int HEIGHT = 700;
+    public final int HEIGHT = 620;
 
     public RollerballPanel panel;
 
     public GameGUI(Client client, Game game, MenuGUI menuGUI) throws IOException {
         // setup enclosing frame
         super("Rollerball");
-        setSize(WIDTH, HEIGHT + 22);
+        setSize(WIDTH, HEIGHT);
         setResizable(false);
         setFocusable(true);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        setBackground(Color.black);
+        repaint();
 
         // setup panel (what gets drawn on)
         panel = new RollerballPanel(game, client, menuGUI, WIDTH);

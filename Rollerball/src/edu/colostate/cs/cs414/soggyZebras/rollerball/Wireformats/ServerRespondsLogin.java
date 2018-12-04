@@ -3,14 +3,14 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 
 import java.io.*;
-
+import java.util.Base64;
 
 
 public class ServerRespondsLogin implements Event {
 
 
     //Information to be serialized or deserialized
-    private String message_type;
+    private int message_type;
     private User user;
     private String reject_reason;
 
@@ -19,7 +19,7 @@ public class ServerRespondsLogin implements Event {
 
     public ServerRespondsLogin(User u,String reason){
 
-        this.message_type = Server_Responds_Login;
+        this.message_type = eServer_Responds_Login;
         this.user = u;
         this.reject_reason = reason;
 
@@ -29,19 +29,18 @@ public class ServerRespondsLogin implements Event {
 
     /**
      *
-     * @param filename
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public ServerRespondsLogin(String filename) throws IOException, ClassNotFoundException {
+    public ServerRespondsLogin(String input) throws IOException, ClassNotFoundException {
 
-        // Create a file input stream and a object input stream to read the incomming message
-        FileInputStream fileStream = new FileInputStream(filename);
-        ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(fileStream));
 
+        byte[] data = Base64.getDecoder().decode(input);
+        ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(data));
         // deserialize the objects into their proper local variables
 
-        this.message_type = (String) oin.readObject();
+
+        this.message_type = oin.readInt();
         this.user = (User) oin.readObject();
         this.reject_reason = (String) oin.readObject();
 
@@ -49,7 +48,7 @@ public class ServerRespondsLogin implements Event {
 
         // Close streams
         oin.close();
-        fileStream.close();
+
     }
 
 
@@ -57,24 +56,25 @@ public class ServerRespondsLogin implements Event {
     public String getFile() throws IOException {
 
         // Create a new String, file output stream, object output stream
-        String filename = this.message_type;
-        FileOutputStream fileStream = new FileOutputStream(filename);
-        ObjectOutputStream oout = new ObjectOutputStream(new BufferedOutputStream(fileStream));
+        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+        ObjectOutputStream oout = new ObjectOutputStream(ostream);
+
 
         // Take the local variables and serialize them into a file
-        oout.writeObject(filename);
+        oout.writeInt(this.message_type);
         oout.writeObject(this.user);
         oout.writeObject(this.reject_reason);
 
         //flush the objects to the stream and close the streams
         oout.flush();
         oout.close();
-        fileStream.close();
-        return filename;
+
+        return Base64.getEncoder().encodeToString(ostream.toByteArray());
+
     }
 
     @Override
-    public String getType() {
+    public int getType() {
         return this.message_type;
     }
 

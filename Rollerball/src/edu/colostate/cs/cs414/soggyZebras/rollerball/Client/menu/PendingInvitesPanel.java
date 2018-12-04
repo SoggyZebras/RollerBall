@@ -4,16 +4,21 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.listdisplay.Pen
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Invite;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class PendingInvitesPanel extends MenuPanel {
 
     private DefaultListModel<PendingInviteListDisplay> pendingInvitesListModel;
+    private PendingInviteListDisplay selectedInvite;
 
     public PendingInvitesPanel(MenuGUI menuGUI) {
         super("pending_invites", menuGUI);
+        selectedInvite = null;
         refresh();
     }
 
@@ -32,16 +37,20 @@ public class PendingInvitesPanel extends MenuPanel {
             }
         }
 
-        // TODO: remove this soon
-        Invite i1 = new Invite("bob", "joe", 0);
-        Invite i2 = new Invite("bob", "joebob", 1);
-        Invite i3 = new Invite("bob", "joey", 2);
-        pendingInvitesListModel.add(0, new PendingInviteListDisplay(i1));
-        pendingInvitesListModel.add(1, new PendingInviteListDisplay(i2));
-        pendingInvitesListModel.add(2, new PendingInviteListDisplay(i3));
-
         JList<PendingInviteListDisplay> pendingInvitesList = new JList<>(pendingInvitesListModel);
         pendingInvitesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        pendingInvitesList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                selectedInvite = pendingInvitesList.getSelectedValue();
+            }
+        });
+
+        // make it so that the selected invite doesn't change even if it is refreshed
+        if (selectedInvite != null) {
+            pendingInvitesList.setSelectedValue(selectedInvite, true);
+        }
+
         JScrollPane listScroller = new JScrollPane(pendingInvitesList);
         listScroller.setPreferredSize(new Dimension(250, 100));
         add(listScroller);
@@ -51,7 +60,6 @@ public class PendingInvitesPanel extends MenuPanel {
         // to make sure Back is on a new line
         add(new JLabel("                                                            "));
         add(createLinkedButton("Back", "main_menu"));
-        // TODO: update pending invites buttons
     }
 
     class AcceptInviteListener implements ActionListener {
@@ -63,22 +71,24 @@ public class PendingInvitesPanel extends MenuPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            PendingInviteListDisplay invite = pendingInvitesList.getSelectedValue();
-            pendingInvitesListModel.remove(pendingInvitesListModel.indexOf(invite));
-            // TODO: tell server that game was started
+            PendingInviteListDisplay listInvite = pendingInvitesList.getSelectedValue();
+            if (listInvite == null) {
+                JOptionPane.showMessageDialog(getMenuGUI(), "No invite was selected.");
+                return;
+            }
+            pendingInvitesListModel.remove(pendingInvitesListModel.indexOf(listInvite));
             getMenuGUI().revalidate();
             getMenuGUI().repaint();
 
-            // load game is 1 if they choose no, 0 if they choose yes
-            int loadGame = JOptionPane.showOptionDialog(getMenuGUI(),
-                    "Game created with user " + invite.invite.getInviter() + ", would you like to load this game?", "Game Started",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-
-            if (loadGame == 0) {
-                // TODO: get game id
-                int gameId = 0;
-                getMenuGUI().openGameGUI(gameId);
+            try {
+                getMenuGUI().client.respondInvite(listInvite.invite.getInviter(), listInvite.invite.getInviteID());
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
+
+            // notify user
+            JOptionPane.showMessageDialog(getMenuGUI(),
+                    "Game created with user " + listInvite.invite.getInviter() + ".\nGo to the main menu to start the game.");
         }
     }
 

@@ -4,46 +4,57 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.listdisplay.Gam
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * represents the main menu screen (current games, history, new game)
  */
 public class MainMenuPanel extends MenuPanel {
+    private GameListDisplay selectedGame;
+
     public MainMenuPanel(MenuGUI menuGUI) {
         super("main_menu", menuGUI);
-
+        selectedGame = null;
     }
 
     @Override
     public void refresh() {
         removeAll();
-        JLabel title = new JLabel("Active Games");
-        add(title);
 
+        add(new JLabel("<html>Logged in as " + getMenuGUI().loggedInUser.getUsername() + "<br>Active Games</html>"));
         DefaultListModel<GameListDisplay> activeGamesListModel = new DefaultListModel();
 
         // get this users games
         if (getMenuGUI().loggedInUser != null) {
             for (Game game : getMenuGUI().loggedInUser.getGames()) {
-                activeGamesListModel.add(0, new GameListDisplay(game));
+                activeGamesListModel.add(0, new GameListDisplay(game, getMenuGUI().loggedInUser.getUsername()));
             }
         }
 
-        // TODO: remove this soon
-        Game g1 = new Game();
-        Game g2 = new Game();
-        activeGamesListModel.add(0, new GameListDisplay(g1));
-        activeGamesListModel.add(1, new GameListDisplay(g2));
-
         JList<GameListDisplay> activeGamesList = new JList<>(activeGamesListModel);
         activeGamesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        activeGamesList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                selectedGame = activeGamesList.getSelectedValue();
+            }
+        });
+
         JScrollPane listScroller = new JScrollPane(activeGamesList);
         listScroller.setPreferredSize(new Dimension(250, 100));
         add(listScroller);
+
+        // make it so that the selected game doesn't change even if it is refreshed
+        if (selectedGame != null) {
+            activeGamesList.setSelectedValue(selectedGame, true);
+            System.err.println(selectedGame+ " set");
+        }
 
         add(createLinkedActionButton("Start Selected Game", new StartGameListener(activeGamesList)));
         add(createLinkedButton("Invite Players", "create_invite"));
@@ -63,8 +74,14 @@ public class MainMenuPanel extends MenuPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             GameListDisplay selected = gamesList.getSelectedValue();
-            int gameID = selected.game.getGameID(); // TODO: get gameid
-            getMenuGUI().openGameGUI(gameID);
+            if (selected == null) {
+                JOptionPane.showMessageDialog(getMenuGUI(), "No game was selected.");
+                return;
+            }
+            if (gamesList.getSelectedValue() != null) {
+                int gameID = selected.game.getGameID();
+                getMenuGUI().openGameGUI(gameID);
+            }
         }
     }
 
