@@ -184,6 +184,7 @@ public class Server implements Node,Runnable {
                 if(serverCache.matchPassword(message.getUsername(),message.getPassword())) {
                     user = serverCache.getUser(message.getUsername());
                     serverCache.getUserCon(socket).setConID(user.getUserID());
+                    System.out.println("logged in");
                 }
                 else{
                     reason = "Incorrect Password!";
@@ -221,6 +222,7 @@ public class Server implements Node,Runnable {
                         serverCache.getUserCon(socket).setConID(user.getUserID());
                         serverCache.addUser(user);
                         db.insertUser(user.getUserID(), user);
+                    System.out.println("registered");
                 }
                 else{
                     reason = "User already exists!";
