@@ -1,7 +1,5 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,11 +16,11 @@ public class RegPanel extends MenuPanel {
     public RegPanel(MenuGUI menuGUI) {
         super("register", menuGUI);
         // TODO: add forms for registering
-        refresh(menuGUI.loggedInUser);
+        refresh();
     }
 
     @Override
-    public void refresh(User updatedUser) {
+    public void refresh() {
         removeAll();
         add(new JLabel("username: "));
         add(new TextField(30));
@@ -33,6 +31,8 @@ public class RegPanel extends MenuPanel {
         add(createLinkedActionButton("Register", new RegisterListener()));
         add(createLinkedButton("Back", "register_login"));
         registering = false;
+        revalidate();
+        repaint();
     }
 
     class RegisterListener implements ActionListener {
@@ -44,7 +44,7 @@ public class RegPanel extends MenuPanel {
             try {
                 if (!registering) {
                     registering = true;
-                    add(new JLabel("Registering...:"));
+                    add(new JLabel("Registering..."));
                     revalidate();
                     repaint();
                     getMenuGUI().client.register(username, password, email);
