@@ -4,18 +4,21 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.listdisplay.Pen
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Invite;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class PendingInvitesPanel extends MenuPanel {
 
     private DefaultListModel<PendingInviteListDisplay> pendingInvitesListModel;
+    private PendingInviteListDisplay selectedInvite;
 
     public PendingInvitesPanel(MenuGUI menuGUI) {
         super("pending_invites", menuGUI);
+        selectedInvite = null;
         refresh();
     }
 
@@ -36,6 +39,18 @@ public class PendingInvitesPanel extends MenuPanel {
 
         JList<PendingInviteListDisplay> pendingInvitesList = new JList<>(pendingInvitesListModel);
         pendingInvitesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        pendingInvitesList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                selectedInvite = pendingInvitesList.getSelectedValue();
+            }
+        });
+
+        // make it so that the selected invite doesn't change even if it is refreshed
+        if (selectedInvite != null) {
+            pendingInvitesList.setSelectedValue(selectedInvite, true);
+        }
+
         JScrollPane listScroller = new JScrollPane(pendingInvitesList);
         listScroller.setPreferredSize(new Dimension(250, 100));
         add(listScroller);
@@ -57,6 +72,10 @@ public class PendingInvitesPanel extends MenuPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             PendingInviteListDisplay listInvite = pendingInvitesList.getSelectedValue();
+            if (listInvite == null) {
+                JOptionPane.showMessageDialog(getMenuGUI(), "No invite was selected.");
+                return;
+            }
             pendingInvitesListModel.remove(pendingInvitesListModel.indexOf(listInvite));
             getMenuGUI().revalidate();
             getMenuGUI().repaint();
