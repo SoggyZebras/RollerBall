@@ -29,4 +29,9 @@ public interface Protocol {
      String Server_Sends_Invite = "serverSendsInvite.msg";
      String Server_Responds_Invite = "serverRespondsInvite.msg";
 
+     String Client_Sends_Deregister = "clientSendsDeregister.msg";
+     String Server_Responds_Deregister = "serverRespondsDeregister.msg";
+
+     String Client_Sends_Logout = "clientSendsLogout.msg";
+
 }

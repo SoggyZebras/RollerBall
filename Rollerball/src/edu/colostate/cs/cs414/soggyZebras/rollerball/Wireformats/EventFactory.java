@@ -18,11 +18,9 @@ public class EventFactory implements Protocol {
      */
     public synchronized static void work(String filename, Node node, Socket socket) throws ClassNotFoundException {
         // Depending on what type of message has arrived, perfom an action
-
+        System.out.println(filename);
         try {
             switch (filename) {
-
-                case Server_Sends_Connect: node.onEvent(new ServerSendsConnect(filename),socket);break;
 
                 case Client_Make_Move: node.onEvent(new ClientMakeMove(filename), socket);break
                     ;
@@ -42,15 +40,19 @@ public class EventFactory implements Protocol {
 
                 case Client_Responds_Invite: node.onEvent(new ClientRespondsInvite(filename), socket);break;
 
-                case Server_Responds_Registration:
+                case Server_Responds_Registration: node.onEvent(new ServerRespondsRegistration(filename), socket);break;
 
-                case Client_Sends_Registration:
+                case Client_Sends_Registration: node.onEvent(new ClientSendsRegistration(filename), socket);break;
 
-                case Client_Sends_Login:
+                case Client_Sends_Login: node.onEvent(new ClientSendsLogin(filename), socket);break;
 
-                //case Client_Sends_Invite_Refresh:
+                case Server_Responds_Login: node.onEvent(new ServerRespondsLogin(filename),socket);break;
 
-                //case Server_Responds_Invite_Refresh:
+                case Client_Sends_Deregister: node.onEvent(new ClientSendsDeregister(filename),socket);break;
+
+                case Server_Responds_Deregister: node.onEvent(new ServerRespondsDeregister(filename),socket);break;
+
+                case Client_Sends_Logout: node.onEvent(new ClientSendsLogout(filename),socket);break;
 
                 default:
 

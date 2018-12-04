@@ -32,7 +32,7 @@ public class MenuGUI extends JFrame {
      */
     public User loggedInUser;
 
-    private Map<Integer,RollerballPanel> activeGameGUIs;
+    public Map<Integer,RollerballPanel> activeGameGUIs;
 
     public MenuGUI() {
         super("Rollerball Menu");
@@ -41,7 +41,7 @@ public class MenuGUI extends JFrame {
 
         try {
             // TODO: change server address
-            client = new Client("3.16.42.80",35355);
+            client = new Client("127.0.0.1",35355);
             client.initialize();
             client.setGui(this);
         } catch (IOException e) {
@@ -65,16 +65,12 @@ public class MenuGUI extends JFrame {
      * @param newMenu the name of the new menu to show, for example "register"
      */
     public void setMenu(String newMenu) {
-        cardContainer.refreshAll(loggedInUser);
+        cardContainer.refreshAll();
         cardContainer.show(newMenu);
     }
 
     public CardContainer getCardContainer() {
         return cardContainer;
-    }
-
-    public void addActiveGameGUI(int gameID, RollerballPanel gameGUI) {
-        activeGameGUIs.put(gameID, gameGUI);
     }
 
     /**
@@ -95,7 +91,7 @@ public class MenuGUI extends JFrame {
             // open that game
             try {
                 GameGUI gameGUI = new GameGUI(client, loadedGame, this);
-                addActiveGameGUI(gameID, gameGUI.panel);
+                activeGameGUIs.put(gameID, gameGUI.panel);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -123,14 +119,16 @@ public class MenuGUI extends JFrame {
 
         // refresh menu
         // this assumes that each card has its refresh function filled out
-        cardContainer.refreshAll(updatedUser);
+        cardContainer.refreshAll();
 
         // update game windows
-        for (Game userGame : updatedUser.getGames()) {
-            RollerballPanel activeGame = activeGameGUIs.get(userGame.getGameID());
-            if (activeGame != null) {
-                // TODO: should we just pass the entire game?
-                activeGame.updateState(userGame.getBoard());
+        if(updatedUser != null) {
+            for (Game userGame : updatedUser.getGames()) {
+                RollerballPanel activeGame = activeGameGUIs.get(userGame.getGameID());
+                if (activeGame != null) {
+                    // TODO: should we just pass the entire game?
+                    activeGame.updateState(userGame.getBoard());
+                }
             }
         }
     }
@@ -142,6 +140,8 @@ public class MenuGUI extends JFrame {
      */
     public void onRegisterResponse(User user, String message) {
         login(user, message);
+        // remove "Registering..." and allow user to attempt it again if there was a problem
+        cardContainer.menuPanels.get("register").refresh();
     }
 
     /**
@@ -150,8 +150,9 @@ public class MenuGUI extends JFrame {
      * @param message an error message
      */
     public void onLoginResponse(User user, String message) {
-        System.err.println("login response");
         login(user, message);
+        // remove "Logging in..." and allow user to attempt it again if there was a problem
+        cardContainer.menuPanels.get("login").refresh();
     }
 
     /**
@@ -166,7 +167,8 @@ public class MenuGUI extends JFrame {
             refresh(user);
         }
         else {
-            // TODO: popup error message
+            // TODO: notify login/register panel that register was unsuccessful
+            JOptionPane.showMessageDialog(this, message);
             System.err.println(message);
         }
     }

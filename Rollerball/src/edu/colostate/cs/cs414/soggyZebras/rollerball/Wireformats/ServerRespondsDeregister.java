@@ -4,21 +4,23 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 
 import java.io.*;
 
-import static edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Protocol.Client_Responds_Invite;
+import static edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Protocol.Server_Responds_Deregister;
 
-public class ServerSendsConnect implements Event {
+public class ServerRespondsDeregister implements Event {
 
     //Information to be serialized or deserialized
     private String message_type;
     private User user;
 
+
     //Sending message constructor
 
 
-    public ServerSendsConnect(User u){
+    public ServerRespondsDeregister(User user){
 
-        this.message_type = Server_Responds_Invite;
-        this.user = u;
+        this.message_type = Server_Responds_Deregister;
+        this.user = user;
+
     }
 
     //Recieving message constructor
@@ -29,7 +31,7 @@ public class ServerSendsConnect implements Event {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public ServerSendsConnect(String filename) throws IOException, ClassNotFoundException {
+    public ServerRespondsDeregister(String filename) throws IOException, ClassNotFoundException {
 
         // Create a file input stream and a object input stream to read the incomming message
         FileInputStream fileStream = new FileInputStream(filename);
@@ -39,6 +41,7 @@ public class ServerSendsConnect implements Event {
 
         this.message_type = (String) oin.readObject();
         this.user = (User) oin.readObject();
+
 
 
 
@@ -60,6 +63,7 @@ public class ServerSendsConnect implements Event {
         oout.writeObject(filename);
         oout.writeObject(this.user);
 
+
         //flush the objects to the stream and close the streams
         oout.flush();
         oout.close();
@@ -72,10 +76,7 @@ public class ServerSendsConnect implements Event {
         return this.message_type;
     }
 
-
-    public User getUser(){
-        return user;
-    }
+    public User getUser() { return this.user;}
 
 
 }

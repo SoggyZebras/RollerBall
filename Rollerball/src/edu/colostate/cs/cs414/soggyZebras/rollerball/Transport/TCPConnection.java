@@ -3,10 +3,9 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Transport;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.Socket;
 
-public class TCPConnection implements Serializable{
+public class TCPConnection {
     private TCPSenderThread senSocket;
     private TCPReceiverThread recSocket;
     private Socket serverSocket;
@@ -19,10 +18,11 @@ public class TCPConnection implements Serializable{
      * @param server
      * @throws IOException
      */
-    public TCPConnection(Node node,Socket server) throws IOException {
+    public TCPConnection(Node node,Socket server,int id) throws IOException {
         //create TCP sender with socket given
         this.serverSocket = server;
         this.node = node;
+        this.ID = id;
 
         //create receiver socket to communicate
         this.recSocket = new TCPReceiverThread(this.node,server);
@@ -56,25 +56,12 @@ public class TCPConnection implements Serializable{
         return this.serverSocket;
     }
 
-    public TCPSenderThread getSenSocket() {
-        return senSocket;
-    }
-
-    public TCPReceiverThread getRecSocket() {
-        return recSocket;
-    }
-
-    public Socket getServerSocket() {
-        return serverSocket;
-    }
-
-    public int getID() {
-        return ID;
-    }
-
     public Node getNode() {
         return this.node;
     }
 
+    public int getConID() { return this.ID;}
+
+    public void setConID(int id) { this.ID = id;}
 
 }
