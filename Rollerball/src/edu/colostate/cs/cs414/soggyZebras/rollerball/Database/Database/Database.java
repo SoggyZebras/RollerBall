@@ -15,15 +15,15 @@ public class Database {
     String user = "cntorres";
     String password = "830429517";
 
-    private static Game fromString(String gameState) throws IOException, ClassNotFoundException {
+    private static Object fromString(String gameState) throws IOException, ClassNotFoundException {
         byte [] data = Base64.getDecoder().decode(gameState);
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(  data ) );
         Object o  = ois.readObject();
         ois.close();
-        return (Game) o;
+        return o;
     }
 
-    private static String toString( Game o ) throws IOException {
+    private static String toString(Object o) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(o);
@@ -62,7 +62,7 @@ public class Database {
             ) {
                     ResultSet rs = query.executeQuery(sql);
                     rs.next();
-                    return fromString(rs.getString("gameState"));
+                    return (Game)fromString(rs.getString("gameState"));
 
             }
         } catch (Exception e) {
@@ -72,8 +72,8 @@ public class Database {
         return null;
     }
 
-    public User getUser(String name) throws SQLException {
-        String sql = "Select * FROM user WHERE `user`=\"" + name+ "\"";
+    public User getUser(int id) throws SQLException {
+        String sql = "Select * FROM user WHERE `id`=" + id;
 
         try{
             Class.forName("com.mysql.jdbc.Driver");
@@ -85,11 +85,7 @@ public class Database {
             ) {
                 ResultSet rs= query.executeQuery(sql);
                 rs.next();
-                int id = rs.getInt("id");
-                String username = rs.getString("name");
-                String password = rs.getString("password");
-                String e = rs.getString("email");
-                return new User(id, username, password, e);
+                return (User)fromString(rs.getString("user"));
             }
         } catch (Exception e) {
 
@@ -128,9 +124,9 @@ public class Database {
 
     }
 
-    public void insertUser(int id, String name, String password, String email, Invite[] sentInvites, Invite[] gotInvites, Game[] games){
-        String sql = "INSERT INTO user (id, user, password, email, sentInvites, gotInvites, games) " +
-                "VALUES ("+ id  + ", \"" + name + "\", \"" + password+"\", \""+ email + "\", \""  +  sentInvites  + "\", \"" +    gotInvites + "\", \"" +    games + "\")";
+    public void insertUser(int id, User u) throws IOException {
+        String sql = "INSERT INTO user (id, user) " +
+                "VALUES ("+ id  + ", \"" + toString(user) + "\")";
         try{
             Class.forName("com.mysql.jdbc.Driver");
             // connect to the database and query
