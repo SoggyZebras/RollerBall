@@ -50,6 +50,14 @@ public class User implements Serializable {
         return false;
     }
 
+    public void updateGame(int gID, Game game){
+        for(Game g : games){
+            if(g.getGameID() == gID){
+                g = game;
+            }
+        }
+    }
+
     public void addInviteSent(Invite inv){
         Invite[] tmp = new Invite[this.sentInvites.length + 1];
         for(int i = 0; i < sentInvites.length;i++){

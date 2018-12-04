@@ -3,11 +3,12 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 
 import java.io.*;
+import java.util.Base64;
 
 public class ClientMakeMove implements Event {
 
     //Information to be serialized or deserialized
-    private String message_type;
+    private int message_type;
     private Location to;
     private Location from;
     private int gameID;
@@ -21,7 +22,7 @@ public class ClientMakeMove implements Event {
      */
     public ClientMakeMove(Location from, Location to, int id){
 
-        this.message_type = Client_Make_Move;
+        this.message_type = eClient_Make_Move;
         this.to = to;
         this.from =from;
         this.gameID = id;
@@ -31,19 +32,16 @@ public class ClientMakeMove implements Event {
 
     /**
      *
-     * @param filename
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public ClientMakeMove(String filename) throws IOException, ClassNotFoundException {
+    public ClientMakeMove(String input) throws IOException, ClassNotFoundException {
 
-        // Create a file input stream and a object input stream to read the incomming message
-        FileInputStream fileStream = new FileInputStream(filename);
-        ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(fileStream));
-
+        byte[] data = Base64.getDecoder().decode(input);
+        ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(data));
         // deserialize the objects into their proper local variables
 
-        this.message_type = (String) oin.readObject();
+        this.message_type = oin.readInt();
         this.gameID = oin.readInt();
         this.to = (Location) oin.readObject();
         this.from = (Location) oin.readObject();
@@ -52,7 +50,7 @@ public class ClientMakeMove implements Event {
 
         // Close streams
         oin.close();
-        fileStream.close();
+
     }
 
 
@@ -60,12 +58,11 @@ public class ClientMakeMove implements Event {
     public String getFile() throws IOException {
 
         // Create a new String, file output stream, object output stream
-        String filename = this.message_type;
-        FileOutputStream fileStream = new FileOutputStream(filename);
-        ObjectOutputStream oout = new ObjectOutputStream(new BufferedOutputStream(fileStream));
+        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+        ObjectOutputStream oout = new ObjectOutputStream(ostream);
 
         // Take the local variables and serialize them into a file
-        oout.writeObject(filename);
+        oout.writeInt(this.message_type);
         oout.writeInt(gameID);
         oout.writeObject(this.to);
         oout.writeObject(this.from);
@@ -73,12 +70,12 @@ public class ClientMakeMove implements Event {
         //flush the objects to the stream and close the streams
         oout.flush();
         oout.close();
-        fileStream.close();
-        return filename;
+
+        return Base64.getEncoder().encodeToString(ostream.toByteArray());
     }
 
     @Override
-    public String getType() {
+    public int getType() {
         return this.message_type;
     }
 
