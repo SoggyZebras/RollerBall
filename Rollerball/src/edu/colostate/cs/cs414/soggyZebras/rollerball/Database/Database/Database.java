@@ -200,9 +200,9 @@ public class Database {
     }
 
     public static void main(String[] args) throws IOException, SQLException {
-        Database d = new Database();
-        d.insertUser(1, new User(1, "tester", "", ""));
-        d.getUser(1);
+//        Database d = new Database();
+//        d.insertUser(1, new User(1, "tester", "", ""));
+//        d.getUser(1);
     }
 
 
