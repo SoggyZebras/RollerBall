@@ -99,7 +99,9 @@ public class Server implements Node,Runnable {
     private void handleMakeMove(Event e ,Socket socket) throws IOException {
         ClientMakeMove message =(ClientMakeMove) e;
         Game tmp = games.getGame(message.getGameID());
-        tmp.makeMove(serverCache.getUser(socket),message.getTo(),message.getFrom());
+        if(tmp.getWhosTurn() == serverCache.getUser(socket)){
+            tmp.makeMove(serverCache.getUser(socket),message.getTo(),message.getFrom());
+        }
         User p1 = serverCache.getUser(tmp.getPlayer1().getUserID());
         User p2 = serverCache.getUser(tmp.getPlayer2().getUserID());
 
