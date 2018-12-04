@@ -58,12 +58,12 @@ public class Game implements java.io.Serializable {
     }
 
     public ArrayList<Location> validMoves(User p, Location l){
-        if(whosTurn == p){
+       // if(whosTurn == p){
             return board.get(l).validMoves(board);
-        }
-        else{
-            return null;
-        }
+        //}
+        //else{
+         //   return null;
+        //}
     }
 
     // TODO can we maybe remove this/do we need the check for which user has the turn (in other method)
@@ -97,6 +97,9 @@ public class Game implements java.io.Serializable {
      * @return - returns true if white piece has won
      */
     public boolean wonGameW(){
+
+        //TODO: need a check for if the piece can capture and it is not your turn so you cannot get away in time but the king might have a move - check on clicked? user has chosen the wrong piece and cannot get away
+
 
         Set<Location> allWLocs = new HashSet<Location>();
         ArrayList<Location> KingMoves = new ArrayList<Location>();
@@ -139,6 +142,9 @@ public class Game implements java.io.Serializable {
      * @return - returns true if black piece has won
      */
     public boolean wonGameB(){
+
+        //TODO: need a check for if the piece can capture and it is not your turn so you cannot get away in time but the king might have a move - check on clicked? user has chosen the wrong piece and cannot get away
+
         Set<Location> allBLocs = new HashSet<Location>();
         ArrayList<Location> KingMoves = new ArrayList<Location>();
         ArrayList<Location> compare = new ArrayList<Location>();
