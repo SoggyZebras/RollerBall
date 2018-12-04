@@ -43,7 +43,7 @@ public class MenuGUI extends JFrame {
 
         try {
             // TODO: change server address
-            client = new Client("3.16.167.10",35355);
+            client = new Client("129.82.44.55",35355);
             client.initialize();
             client.setGui(this);
         } catch (IOException e) {
