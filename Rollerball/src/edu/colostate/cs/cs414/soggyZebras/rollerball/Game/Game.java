@@ -6,7 +6,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 import java.util.*;
 
 public class Game implements java.io.Serializable {
-
+    private static final long serialVersionUID = 652968509827690L;
     protected Map<Location,Piece> board;
     private User player1;
     private User player2;

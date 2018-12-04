@@ -38,7 +38,9 @@ public class GameCache {
         return false;
     }
 
-
+    public void setGames(ArrayList<Game> g){
+        games = g;
+    }
 
 
 }

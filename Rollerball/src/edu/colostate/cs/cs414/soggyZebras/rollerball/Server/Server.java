@@ -63,6 +63,10 @@ public class Server implements Node,Runnable {
             serverCache.setCache(db.getAllUser());
         }
 
+        if(db.getAllGame() != null){
+            games.setGames(db.getAllGame());
+        }
+
     }
 
 

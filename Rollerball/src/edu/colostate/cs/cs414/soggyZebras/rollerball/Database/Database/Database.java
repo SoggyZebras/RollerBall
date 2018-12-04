@@ -156,6 +156,37 @@ public class Database {
     }
 
     /**
+     * Gets all the users
+     * @return User
+     * @throws SQLException
+     */
+    public ArrayList<Game> getAllGame() throws SQLException {
+        String sql = "Select * FROM Game";
+        ArrayList<Game> games = new ArrayList<Game>();
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            // connect to the database and query
+
+
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://faure.cs.colostate.edu/cntorres", user, password);
+                 Statement query = conn.createStatement();
+            ) {
+                ResultSet rs = query.executeQuery(sql);
+                while(rs.next()) {
+                    games.add((Game)fromString(rs.getString("gameState")));
+                }
+
+            }
+        } catch (Exception e) {
+
+            System.err.println("Exception: " + e.getMessage());
+        }
+        return games;
+
+
+    }
+
+    /**
      * Inserts a user into the database
      * @param id
      * @param u

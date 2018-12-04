@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class User implements Serializable {
+    private static final long serialVersionUID = 6585098267757690L;
 
     //Local variables
     private int userID;

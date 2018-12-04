@@ -92,7 +92,7 @@ public class AI_Client implements Node {
     }
 
     public void register(String username, String password, String email) throws IOException{
-        ClientSendsRegistration message = new ClientSendsRegistration(username,password,email);
+        ClientSendsLogin message = new ClientSendsLogin(username,password);
         serverConnection.sendData(message.getFile());
     }
 
