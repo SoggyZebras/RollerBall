@@ -15,27 +15,25 @@ public class Database {
     String user = "cntorres";
     String password = "830429517";
 
-    private static Object fromString( String gameState ) throws IOException ,
-            ClassNotFoundException {
+    private static Game fromString(String gameState) throws IOException, ClassNotFoundException {
         byte [] data = Base64.getDecoder().decode(gameState);
-        ObjectInputStream ois = new ObjectInputStream(
-                new ByteArrayInputStream(  data ) );
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(  data ) );
         Object o  = ois.readObject();
         ois.close();
-        return o;
+        return (Game) o;
     }
 
     private static String toString( Game o ) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream( baos );
-        oos.writeObject( o );
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(o);
         oos.close();
         return Base64.getEncoder().encodeToString(baos.toByteArray());
     }
 
-    public void insertGame(String p1, String p2, Game gameState, String turn, String winner, String loser, Boolean inprogress) throws IOException {
-        String sql = "INSERT INTO Game (`Player1`, `Player2`, `GameState`, `Turn`, `Winner`, `Loser`, `InProgress`)" +
-                "VALUES (\"" + p1 + "\", \"" + p2 +"\", \""+ toString(gameState) + "\", \""  + turn + "\", \"" + winner + "\", \"" + loser+ "\", \""+  inprogress +"\")";
+    public void insertGame(int id, Game gameState) throws IOException {
+        String sql = "INSERT INTO Game (`id`,`GameState`)" +
+                "VALUES ("+id + ", \"" + toString(gameState) +"\")";
         try{
             Class.forName("com.mysql.jdbc.Driver");
             // connect to the database and query
@@ -52,8 +50,8 @@ public class Database {
         }
     }
 
-    public Game getGame(String p1, String p2) throws SQLException {
-        String sql = "Select * FROM Game WHERE `Player1`=" + p1+ " && `Player2`="+p2;
+    public Game getGame(int id)   {
+        String sql = "Select * FROM Game WHERE `id`=" + id;
         try{
             Class.forName("com.mysql.jdbc.Driver");
             // connect to the database and query
@@ -62,11 +60,9 @@ public class Database {
             try (Connection conn = DriverManager.getConnection("jdbc:mysql://faure.cs.colostate.edu/cntorres", user, password);
                  Statement query = conn.createStatement();
             ) {
-
                     ResultSet rs = query.executeQuery(sql);
                     rs.next();
-                    int id = rs.getInt("id");
-                    return new Game(id, getUser(p1), getUser(p2));
+                    return fromString(rs.getString("gameState"));
 
             }
         } catch (Exception e) {
@@ -102,7 +98,7 @@ public class Database {
         return null;
     }
 
-    public ArrayList<User> getAllUser(String name, String email) throws SQLException {
+    public ArrayList<User> getAllUser() throws SQLException {
         String sql = "Select * FROM user";
         ArrayList<User> users = new ArrayList<User>();
         try{
@@ -132,7 +128,7 @@ public class Database {
 
     }
 
-    public void insertUser(int id, String name, String password, String email, Array sentInvites, Array gotInvites, Array games){
+    public void insertUser(int id, String name, String password, String email, Invite[] sentInvites, Invite[] gotInvites, Game[] games){
         String sql = "INSERT INTO user (id, user, password, email, sentInvites, gotInvites, games) " +
                 "VALUES ("+ id  + ", \"" + name + "\", \"" + password+"\", \""+ email + "\", \""  +  sentInvites  + "\", \"" +    gotInvites + "\", \"" +    games + "\")";
         try{
@@ -212,8 +208,6 @@ public class Database {
     }
 
     public static void main(String[] args) throws IOException {
-        Database d = new Database();
-        d.insertGame("test", "test", new Game(1, new User(1, "test", "test", "test", null), new User(1, "test", "test", "test", null)), null, null, null, true);
     }
 
 
