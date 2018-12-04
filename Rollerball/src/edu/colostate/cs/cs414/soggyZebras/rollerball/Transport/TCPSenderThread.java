@@ -7,7 +7,7 @@ import java.net.Socket;
 
 public class TCPSenderThread extends Thread{
     private Socket socket;
-    private ObjectOutputStream oout;
+    private ObjectOutputStream dout;
     private MessageQueue queue;
     private boolean closed = false;
 
@@ -19,7 +19,7 @@ public class TCPSenderThread extends Thread{
     protected TCPSenderThread(Socket socket) throws IOException {
         this.socket = socket;
         this.queue = new MessageQueue();
-        this.oout = new ObjectOutputStream(socket.getOutputStream());
+        this.dout = new ObjectOutputStream(socket.getOutputStream());
     }
 
     public void run(){
@@ -42,8 +42,8 @@ public class TCPSenderThread extends Thread{
             try {
 
                 //Write data to the output stream
-                oout.writeObject(dataToSend);
-                oout.flush();
+                dout.write(dataToSend.getBytes());
+                dout.flush();
 
 
             } catch (IOException e) {

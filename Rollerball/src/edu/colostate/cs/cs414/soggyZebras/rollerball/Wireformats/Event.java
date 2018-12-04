@@ -6,5 +6,5 @@ public interface Event extends Protocol {
 
     String getFile() throws IOException;
 
-    String getType();
+    int getType();
 }

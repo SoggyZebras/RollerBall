@@ -11,48 +11,46 @@ public class EventFactory implements Protocol {
 
     /**
      *
-     * @param filename
      * @param node
      * @param socket
      * @throws ClassNotFoundException
      */
-    public synchronized static void work(String filename, Node node, Socket socket) throws ClassNotFoundException {
+    public synchronized static void work(String data, Node node, Socket socket) throws ClassNotFoundException {
         // Depending on what type of message has arrived, perfom an action
-        System.out.println(filename);
         try {
-            switch (filename) {
+            switch (0) {
 
-                case Client_Make_Move: node.onEvent(new ClientMakeMove(filename), socket);break
+                case eClient_Make_Move: node.onEvent(new ClientMakeMove(data), socket);break
                     ;
-                case Client_Request_Check_Move: node.onEvent(new ClientRequestsCheckMove(filename),socket);break
+                case eClient_Request_Check_Move: node.onEvent(new ClientRequestsCheckMove(data),socket);break
                     ;
-                case Server_Responds_Check_Move: node.onEvent(new ServerRespondsCheckMove(filename),socket);break
+                case eServer_Responds_Check_Move: node.onEvent(new ServerRespondsCheckMove(data),socket);break
                     ;
-                case Client_Request_Game_State: node.onEvent(new ClientRequestGameState(filename), socket);break
+                case eClient_Request_Game_State: node.onEvent(new ClientRequestGameState(data), socket);break
                     ;
-                case Server_Responds_Game_State: node.onEvent(new ServerRespondsGameState(filename), socket);break
+                case eServer_Responds_Game_State: node.onEvent(new ServerRespondsGameState(data), socket);break
                     ;
-                case Server_Responds_Invite: node.onEvent(new ServerRespondsInvite(filename), socket);break;
+                case eServer_Responds_Invite: node.onEvent(new ServerRespondsInvite(data), socket);break;
 
-                case Server_Sends_Invite: node.onEvent(new ServerSendsInvite(filename), socket);break;
+                case eServer_Sends_Invite: node.onEvent(new ServerSendsInvite(data), socket);break;
 
-                case Client_Sends_Invite: node.onEvent(new ClientSendsInvite(filename), socket);break;
+                case eClient_Sends_Invite: node.onEvent(new ClientSendsInvite(data), socket);break;
 
-                case Client_Responds_Invite: node.onEvent(new ClientRespondsInvite(filename), socket);break;
+                case eClient_Responds_Invite: node.onEvent(new ClientRespondsInvite(data), socket);break;
 
-                case Server_Responds_Registration: node.onEvent(new ServerRespondsRegistration(filename), socket);break;
+                case eServer_Responds_Registration: node.onEvent(new ServerRespondsRegistration(data), socket);break;
 
-                case Client_Sends_Registration: node.onEvent(new ClientSendsRegistration(filename), socket);break;
+                case eClient_Sends_Registration: node.onEvent(new ClientSendsRegistration(data), socket);break;
 
-                case Client_Sends_Login: node.onEvent(new ClientSendsLogin(filename), socket);break;
+                case eClient_Sends_Login: node.onEvent(new ClientSendsLogin(data), socket);break;
 
-                case Server_Responds_Login: node.onEvent(new ServerRespondsLogin(filename),socket);break;
+                case eServer_Responds_Login: node.onEvent(new ServerRespondsLogin(data),socket);break;
 
-                case Client_Sends_Deregister: node.onEvent(new ClientSendsDeregister(filename),socket);break;
+                case eClient_Sends_Deregister: node.onEvent(new ClientSendsDeregister(data),socket);break;
 
-                case Server_Responds_Deregister: node.onEvent(new ServerRespondsDeregister(filename),socket);break;
+                case eServer_Responds_Deregister: node.onEvent(new ServerRespondsDeregister(data),socket);break;
 
-                case Client_Sends_Logout: node.onEvent(new ClientSendsLogout(filename),socket);break;
+                case eClient_Sends_Logout: node.onEvent(new ClientSendsLogout(data),socket);break;
 
                 default:
 

@@ -14,7 +14,7 @@ import java.net.SocketException;
 
 public class TCPReceiverThread extends Thread implements Serializable{
     private Socket socket;
-    private ObjectInputStream oin;
+    private ObjectInputStream din;
     private Node node;
 
     /**
@@ -30,7 +30,7 @@ public class TCPReceiverThread extends Thread implements Serializable{
 
     public void run() {
         try {
-            this.oin = new ObjectInputStream(socket.getInputStream());
+            this.din = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             System.out.println("bad input stream");
             e.printStackTrace();
@@ -38,8 +38,7 @@ public class TCPReceiverThread extends Thread implements Serializable{
         while(socket != null){
             try {
                 //Read data from input stream
-                String data = (String)oin.readObject();
-                System.out.println("data: " +data);
+                String data = (String)din.readObject();
                 EventFactory.work(data,this.node,this.socket);
             }
             catch(SocketException se) {

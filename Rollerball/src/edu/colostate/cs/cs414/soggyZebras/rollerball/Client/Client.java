@@ -65,19 +65,19 @@ public class Client implements Node {
 
         switch(e.getType()){
 
-            case Server_Responds_Check_Move: handleServerCheckMove(e);break;
+            case eServer_Responds_Check_Move: handleServerCheckMove(e);break;
 
-            case Server_Sends_Invite: handleServerSendsInvite(e,socket);break;
+            case eServer_Sends_Invite: handleServerSendsInvite(e,socket);break;
 
-            case Server_Responds_Invite: handleServerRespondsInvite(e);break;
+            case eServer_Responds_Invite: handleServerRespondsInvite(e);break;
 
-            case Server_Responds_Registration: handleServerRespondsRegistration(e,socket);break;
+            case eServer_Responds_Registration: handleServerRespondsRegistration(e,socket);break;
 
-            case Server_Responds_Login: handleServerRespondsLogin(e,socket);break;
+            case eServer_Responds_Login: handleServerRespondsLogin(e,socket);break;
 
-            case Server_Responds_Refresh: handleServerRespondsRefresh(e,socket);break;
+            case eServer_Responds_Refresh: handleServerRespondsRefresh(e,socket);break;
 
-            case Server_Responds_Deregister: handleServerRespondsDeregister(e, socket);break;
+            case eServer_Responds_Deregister: handleServerRespondsDeregister(e, socket);break;
 
             default:
         }

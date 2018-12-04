@@ -101,23 +101,23 @@ public class Server implements Node,Runnable {
         //React to messages sent to the server
         switch(e.getType()){
 
-            case Client_Make_Move: handleMakeMove(e,socket);break;
+            case eClient_Make_Move: handleMakeMove(e,socket);break;
 
-            case Client_Request_Check_Move: handleCheckMove(e,socket);break;
+            case eClient_Request_Check_Move: handleCheckMove(e,socket);break;
 
-            case Client_Sends_Invite: handleClientSendsInvite(e,socket);break;
+            case eClient_Sends_Invite: handleClientSendsInvite(e,socket);break;
 
-            case Client_Responds_Invite: handleClientRespondsInvite(e,socket);break;
+            case eClient_Responds_Invite: handleClientRespondsInvite(e,socket);break;
 
-            case Client_Sends_Login: handleClientSendsLogin(e, socket);break;
+            case eClient_Sends_Login: handleClientSendsLogin(e, socket);break;
 
-            case Client_Sends_Registration: handleClientSendsRegistration(e, socket);break;
+            case eClient_Sends_Registration: handleClientSendsRegistration(e, socket);break;
 
-            case Client_Sends_Refresh: handleClientSendsRefresh(e, socket);break;
+            case eClient_Sends_Refresh: handleClientSendsRefresh(e, socket);break;
 
-            case Client_Sends_Deregister: handleClientSendsDeregister(e, socket);break;
+            case eClient_Sends_Deregister: handleClientSendsDeregister(e, socket);break;
 
-            case Client_Sends_Logout: handleClientSendsLogout(e, socket);break;
+            case eClient_Sends_Logout: handleClientSendsLogout(e, socket);break;
             default:
         }
     }
@@ -143,8 +143,10 @@ public class Server implements Node,Runnable {
         ClientSendsInvite message = (ClientSendsInvite) e;
         User sentFrom = this.serverCache.getUser(socket);
         User sendTo = serverCache.getUser(message.getUserTo());
+        System.out.println(sentFrom);
+        System.out.println(message.getUserTo());
         if(sentFrom == null || sendTo == null){
-
+            System.out.println("one is null");
         }
         else {
           Invite inv = new Invite(sendTo.getUsername(), sentFrom.getUsername(), genInviteID());
@@ -224,6 +226,7 @@ public class Server implements Node,Runnable {
 
     private void handleClientSendsRegistration(Event e, Socket socket) throws IOException{
         ClientSendsRegistration message = (ClientSendsRegistration) e;
+        System.out.println(message.getUsername());
         User user = null;
         String reason = "";
         if(checkPassword(message.getPassword())){
@@ -238,6 +241,7 @@ public class Server implements Node,Runnable {
                         user.setGames(new Game[0]);
                         serverCache.getUserCon(socket).setConID(user.getUserID());
                         serverCache.addUser(user);
+
                         db.insertUser(user.getUserID(), user.getUsername(), user.getPassword(), user.getEmail(), user.getSentInvites(), user.getGotInvites(), user.getGames());
                 }
                 else{
@@ -298,7 +302,7 @@ public class Server implements Node,Runnable {
 
     private boolean checkUsername(String username){
         if(username.equals("")){
-            return false;
+            return true;
         }
         for(User u : this.serverCache.getAllUsers()){
             if(u.getUsername().equals(username)){
