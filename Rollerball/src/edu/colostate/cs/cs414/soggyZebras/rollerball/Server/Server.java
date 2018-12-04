@@ -63,35 +63,35 @@ public class Server implements Node,Runnable {
             serverCache.setCache(db.getAllUser());
         }
 
-        System.out.println("begin invite init...");
-        for(User u : serverCache.getAllUsers()){
-            for(User k: serverCache.getAllUsers()){
-                    Invite tmp = db.getInvite(u.getUsername(),k.getUsername());
-                    if(tmp != null){
-                        u.addInviteSent(tmp);
-                        k.addInviteGot(tmp);
-                    }
+//        System.out.println("begin invite init...");
+//        for(User u : serverCache.getAllUsers()){
+//            for(User k: serverCache.getAllUsers()){
+//                    Invite tmp = db.getInvite(u.getUsername(),k.getUsername());
+//                    if(tmp != null){
+//                        u.addInviteSent(tmp);
+//                        k.addInviteGot(tmp);
+//                    }
+//
+//            }
+//        }
 
-            }
-        }
-
-        System.out.println("begin game init...");
-        for(User u : serverCache.getAllUsers()){
-            for(User k: serverCache.getAllUsers()){
-                Game tmp = db.getGame(u.getUsername(),k.getUsername());
-                if(tmp != null) {
-                    u.addGame(tmp);
-                    k.addGame(tmp);
-                }
-
-                Game tmp2 = db.getGame(k.getUsername(),u.getUsername());
-                if(tmp2 != null) {
-                    u.addGame(tmp2);
-                    k.addGame(tmp2);
-                }
-
-            }
-        }
+//        System.out.println("begin game init...");
+//        for(User u : serverCache.getAllUsers()){
+//            for(User k: serverCache.getAllUsers()){
+//                Game tmp = db.getGame(u.getUsername(),k.getUsername());
+//                if(tmp != null) {
+//                    u.addGame(tmp);
+//                    k.addGame(tmp);
+//                }
+//
+//                Game tmp2 = db.getGame(k.getUsername(),u.getUsername());
+//                if(tmp2 != null) {
+//                    u.addGame(tmp2);
+//                    k.addGame(tmp2);
+//                }
+//
+//            }
+//        }
 
     }
 
@@ -177,15 +177,13 @@ public class Server implements Node,Runnable {
         games.addGame(newGame);
         sentUser.addGame(newGame);
         fromUser.addGame(newGame);
-        db.insertGame(newGame.getPlayer1().getUsername(),newGame.getPlayer2().getUsername(),newGame,newGame.getWhosTurn().getUsername(),null, null, newGame.isInProgress());
+     //   db.insertGame(newGame);
 
         if(serverCache.getConnection(fromUser.getUserID()) != null){
-          System.out.println(fromUser.getUsername());
-
             ServerRespondsInvite response2 = new ServerRespondsInvite(fromUser);
             this.serverCache.getConnection(fromUser.getUserID()).sendData(response2.getFile());
         }
-        System.out.println(sentUser.getUsername());
+
         ServerRespondsInvite response1 = new ServerRespondsInvite(sentUser);
         this.serverCache.getConnection(sentUser.getUserID()).sendData(response1.getFile());
 
@@ -226,7 +224,6 @@ public class Server implements Node,Runnable {
 
     private void handleClientSendsRegistration(Event e, Socket socket) throws IOException{
         ClientSendsRegistration message = (ClientSendsRegistration) e;
-        System.out.println(message.getUsername());
         User user = null;
         String reason = "";
         if(checkPassword(message.getPassword())){
@@ -241,8 +238,7 @@ public class Server implements Node,Runnable {
                         user.setGames(new Game[0]);
                         serverCache.getUserCon(socket).setConID(user.getUserID());
                         serverCache.addUser(user);
-
-                        db.insertUser(user.getUserID(), user.getUsername(), user.getPassword(), user.getEmail(), user.getSentInvites(), user.getGotInvites(), user.getGames());
+                        //db.insertUser(user.getUserID(), user.getUsername(), user.getPassword(), user.getEmail(), user.getSentInvites(), user.getGotInvites(), user.getGames());
                 }
                 else{
                     reason = "User already exists!";
