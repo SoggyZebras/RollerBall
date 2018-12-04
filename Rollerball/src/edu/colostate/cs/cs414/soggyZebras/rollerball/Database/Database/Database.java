@@ -3,8 +3,11 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Database.Database;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.*;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.*;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
+
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Map;
 
 public class Database {
@@ -12,10 +15,27 @@ public class Database {
     String user = "cntorres";
     String password = "830429517";
 
+    private static Object fromString( String gameState ) throws IOException ,
+            ClassNotFoundException {
+        byte [] data = Base64.getDecoder().decode(gameState);
+        ObjectInputStream ois = new ObjectInputStream(
+                new ByteArrayInputStream(  data ) );
+        Object o  = ois.readObject();
+        ois.close();
+        return o;
+    }
 
-    public void insertGame(String p1, String p2, Game gameState, String turn, String winner, String loser, Boolean inprogress){
+    private static String toString( Game o ) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream( baos );
+        oos.writeObject( o );
+        oos.close();
+        return Base64.getEncoder().encodeToString(baos.toByteArray());
+    }
+
+    public void insertGame(String p1, String p2, Game gameState, String turn, String winner, String loser, Boolean inprogress) throws IOException {
         String sql = "INSERT INTO Game (`Player1`, `Player2`, `GameState`, `Turn`, `Winner`, `Loser`, `InProgress`)" +
-                "VALUES (\"" + p1 + "\", \"" + p2 +"\", \""+ gameState + "\", \""  + turn + "\", \"" + winner + "\", \"" + loser+ "\", \""+  inprogress +"\")";
+                "VALUES (\"" + p1 + "\", \"" + p2 +"\", \""+ toString(gameState) + "\", \""  + turn + "\", \"" + winner + "\", \"" + loser+ "\", \""+  inprogress +"\")";
         try{
             Class.forName("com.mysql.jdbc.Driver");
             // connect to the database and query
@@ -191,7 +211,9 @@ public class Database {
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
+        Database d = new Database();
+        d.insertGame("test", "test", new Game(1, new User(1, "test", "test", "test", null), new User(1, "test", "test", "test", null)), null, null, null, true);
     }
 
 
