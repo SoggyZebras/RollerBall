@@ -32,10 +32,13 @@ public class AI_Player {
 
     public void setGame(Game passed){
         boolean found = false;
+        
+        //TODO: check for concurrent modification exception in this:
         for(Game g: allGames){
             if(g.getGameID()==passed.getGameID()){
                 g = passed; //updating the outdated game state to the new state passed
                 found = true;
+                break;
             }
         }
         if(!found){
@@ -61,6 +64,7 @@ public class AI_Player {
                 currGame = g;
                 Board = currGame.getBoard();
                 found = true;
+                break;
             }
         }
         if (!found) {
@@ -105,9 +109,13 @@ public class AI_Player {
                             break;
                         }
                     }
+                    if(canCapture)break;
                 }
             }
+            if(canCapture)break;
         }
+
+
         return canCapture;
     }
 
@@ -126,17 +134,20 @@ public class AI_Player {
                             //If no valid moves are available then we cant move anywhere and we will have to be captured
                             if(currGame.validMoves(Y).isEmpty()){
                                 canCapture = false;
-                                break;
                             }
                             else {//The validMoves list will have at least 1 location:
                                 currClient.makeMove(Y, currGame.validMoves(Y).get(0));
-                            }
-                            break;
+                                break;
+                        }
                         }
                     }
+                    if(canCapture)break;
                 }
             }
+            if(canCapture)break;
         }
+
+
         return canCapture;
 
     }
@@ -149,6 +160,7 @@ public class AI_Player {
             int value = rand.nextInt(allBLocs.size());
             Location loc = allBLocs.get(value);
             ArrayList<Location> valMoves = currGame.validMoves(loc);
+
             if(!valMoves.isEmpty()){//We know that the piece has a valid location it can move to.
                 value = rand.nextInt(valMoves.size());
                 Location move = valMoves.get(value);
@@ -158,5 +170,7 @@ public class AI_Player {
             else throw new RuntimeException("Something went wrong in the AI selectMove func - at least one piece should always have a valid move")
         }
     }
+
+
 
 }
