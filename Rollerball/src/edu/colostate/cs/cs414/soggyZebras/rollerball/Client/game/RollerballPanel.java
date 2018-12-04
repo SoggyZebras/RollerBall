@@ -177,6 +177,12 @@ public class RollerballPanel extends JPanel {
         repaint();
     }
 
+    public void updateState(Game updated) {
+        game = updated;
+        updateBoard(game.getBoard());
+        repaint();
+    }
+
     public void updateValidMoves(ArrayList<Location> l){
         potentialMoves = l;
         repaint();

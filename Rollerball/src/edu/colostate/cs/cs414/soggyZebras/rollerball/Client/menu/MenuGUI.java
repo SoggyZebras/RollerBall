@@ -149,12 +149,12 @@ public class MenuGUI extends JFrame {
         }
 
         // update game windows
+        // TODO: this is currently not being called by the server when moves are made in the game
         if(updatedUser != null) {
             for (Game userGame : updatedUser.getGames()) {
                 RollerballPanel activeGame = activeGameGUIs.get(userGame.getGameID());
                 if (activeGame != null) {
-                    // TODO: should we just pass the entire game?
-                    activeGame.updateState(userGame.getBoard());
+                    activeGame.updateState(userGame);
                 }
             }
         }

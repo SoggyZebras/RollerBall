@@ -233,7 +233,7 @@ public class Server implements Node,Runnable {
                         user.setGames(new Game[0]);
                         serverCache.getUserCon(socket).setConID(user.getUserID());
                         serverCache.addUser(user);
-                        db.insertUser(user.getUserID(), user.getUsername(), user.getPassword(), user.getEmail(), user.getSentInvites(), user.getGotInvites(), user.getGames());
+                        db.insertUser(user.getUserID(), user);
                 }
                 else{
                     reason = "User already exists!";
