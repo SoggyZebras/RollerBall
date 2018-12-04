@@ -34,6 +34,8 @@ public class GameListDisplay {
         String otherUser = game.getPlayer1().getUsername().equals(myUsername) ?
                 game.getPlayer2().getUsername() : game.getPlayer1().getUsername();
 
-        return "Game against " + otherUser + " - ID: " + game.getGameID();
+        String turnMessage = game.getWhosTurn().getUsername().equals(otherUser) ? "their" : "your";
+
+        return turnMessage + " turn - game against " + otherUser + " - ID: " + game.getGameID();
     }
 }

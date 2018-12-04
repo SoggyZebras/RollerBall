@@ -135,7 +135,7 @@ public class MenuGUI extends JFrame {
     public void refresh(User updatedUser) {
         // refresh all menus for the user passed in updatedUser
         if (updatedUser.getUserID() == loggedInUser.getUserID()) {
-            this.loggedInUser = updatedUser;
+            loggedInUser = updatedUser;
 
             // refresh menu
             // this assumes that each card has its refresh function filled out
