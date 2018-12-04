@@ -107,11 +107,7 @@ public class Database {
             ) {
                 ResultSet rs = query.executeQuery(sql);
                 while(rs.next()) {
-                    int id = rs.getInt("id");
-                    String username = rs.getString("name");
-                    String password = rs.getString("password");
-                    String e = rs.getString("email");
-                    users.add(new User(id, username, password, e));
+                    users.add((User)fromString(rs.getString("user")));
                 }
 
             }
@@ -126,7 +122,7 @@ public class Database {
 
     public void insertUser(int id, User u) throws IOException {
         String sql = "INSERT INTO user (id, user) " +
-                "VALUES ("+ id  + ", \"" + toString(user) + "\")";
+                "VALUES ("+ id  + ", \"" + toString(u) + "\")";
         try{
             Class.forName("com.mysql.jdbc.Driver");
             // connect to the database and query
@@ -203,7 +199,10 @@ public class Database {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
+        Database d = new Database();
+        d.insertUser(1, new User(1, "tester", "", ""));
+        d.getUser(1);
     }
 
 
