@@ -10,7 +10,7 @@ public class Game implements java.io.Serializable {
     //private char whosTurn;
 
     /**
-     * create a new game
+     * create a new game with the initial game board
      */
     public Game() {
         this.board = new HashMap<>();
@@ -45,6 +45,10 @@ public class Game implements java.io.Serializable {
 
     }
 
+    /**
+     * Function to calculate if the white pieces have won by checkmating the black king
+     * @return - returns true if white piece has won
+     */
     public boolean wonGameW(){
 
         Set<Location> allWLocs = new HashSet<Location>();
@@ -63,14 +67,13 @@ public class Game implements java.io.Serializable {
                 kingLoc = I;
             }
         }
-       // System.out.println("Black King Moves:" + KingMoves.size());
-       // System.out.println("Black King Loc:" + kingLoc.toString());
 
         //Now all valid black moves and white king moves are populated.
 
         if(KingMoves.isEmpty()&&allWLocs.contains(kingLoc)){ //case for if King has no valid moves and will be captured
             return true;
         }
+        else if(KingMoves.isEmpty()&&!allWLocs.contains(kingLoc)) return false; //King is in initial position or surrounded by friendly pieces
         else {
             compare.addAll(KingMoves);
             for (Location I : KingMoves) {
@@ -84,7 +87,10 @@ public class Game implements java.io.Serializable {
     }
 
 
-
+    /**
+     * Function to calculate if the black pieces have won by checkmating the white king
+     * @return - returns true if black piece has won
+     */
     public boolean wonGameB(){
         Set<Location> allBLocs = new HashSet<Location>();
         ArrayList<Location> KingMoves = new ArrayList<Location>();
@@ -104,13 +110,11 @@ public class Game implements java.io.Serializable {
             }
         }
         //Now all valid black moves and white king moves are populated.
-      //  System.out.println("White King Moves:" + KingMoves.size());
-       // System.out.println("White King Loc:" + kingLoc.toString());
-
 
         if(KingMoves.isEmpty()&&allBLocs.contains(kingLoc)){ //case for if King has no valid moves and will be captured
             return true;
         }
+        else if(KingMoves.isEmpty()&&!allBLocs.contains(kingLoc)) return false; //King is in initial position or surrounded by friendly pieces
         else {
             compare.addAll(KingMoves);
             for (Location I : KingMoves) {
@@ -123,9 +127,10 @@ public class Game implements java.io.Serializable {
     }
 
 
-
-
-
+    /**
+     * Function to determine a stalemate condition in the game where neither player has any moves
+     * @return - returns true of both sets of moves are empty
+     */
     public boolean stalemate(){
         Set<Location> allWLocs = new HashSet<Location>();
         Set<Location> allBLocs = new HashSet<Location>();
@@ -143,12 +148,17 @@ public class Game implements java.io.Serializable {
             }
         }
 
-        return(allWLocs.isEmpty()&&allBLocs.isEmpty());
+        return(allWLocs.isEmpty()&&allBLocs.isEmpty()); //Case for neither player having a valid move
 
     }
 
 
-
+    /**
+     * Function to move a piece from starting location to new location
+     * @param to - new location to move to
+     * @param from - old location to move from
+     * @return - returns board state
+     */
     public Map<Location, Piece> makeMove(Location to, Location from){
         System.err.println(board);
         //if(board.get(from).validMoves(board).contains(to)){
@@ -160,7 +170,10 @@ public class Game implements java.io.Serializable {
         return board;
     }
 
-
+    /**
+     * Function to get current board state of game
+     * @return - returns game Board
+     */
     public Map<Location, Piece> getBoard() {
         return board;
     }
