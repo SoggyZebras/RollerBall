@@ -18,7 +18,7 @@ public class AI_Player {
     //2)Avoid capture or
     //3)Pick a random piece with a valid move and pick a random valid move in available moves
 
-    //Generate a random number between 0 and length of hashMap keys - then iterate from 0 that many times
+    //Generate a random number between 0 and length of array - then pick that piece/valid move of piece
 
     //AI will always be the black player as it is instantiated by another user
     //setGame MUST BE CALLED INITIALLY BY CLIENT? TO ADD GAME TO ALL GAMES LIST
@@ -30,6 +30,10 @@ public class AI_Player {
     private ArrayList<Location> allWLocs = new ArrayList<>();
     private ArrayList<Location> allBLocs = new ArrayList<>();
 
+    /**
+     * Function to setGame in AI, AI player keeps a list of all current games it is playing in and updates the game state accordingly
+     * @param passed - Current game state object that needs to be updated
+     */
     public void setGame(Game passed){
         boolean found = false;
         
@@ -46,14 +50,20 @@ public class AI_Player {
         }
     }
 
+    /**
+     * constructor to setup the Client needed for the AI to interface with the server
+     * @throws IOException
+     */
     public AI_Player()throws IOException{
 
         currClient = new Client("127.0.0.1",5003);
     }
 
 
-
-
+    /**
+     * Parent function to calculate which of the three AI options will be executed
+     * @param gameID - ID of current game that AI player is calculating move for
+     */
     public void Move(int gameID) {
         System.out.println("AI is making a move");
 
@@ -84,6 +94,7 @@ public class AI_Player {
             }//Now all the current black piece locations are populated
         }
 
+        //Logic to calculate which condition to take
         boolean check = capture();
         if(!check){
             check = avoid();
@@ -93,7 +104,10 @@ public class AI_Player {
         }
     }
 
-
+    /**
+     * Function to calculate if any white pieces can be captured by AI player
+     * @return - returns true if there is a white piece able to be captured
+     */
     private boolean capture(){
 
         boolean canCapture = false;
@@ -119,6 +133,10 @@ public class AI_Player {
         return canCapture;
     }
 
+    /**
+     * Function to calculate if any black pieces are in immediate danger of being captured
+     * @return - returns true if a black piece can be captured
+     */
     private boolean avoid (){
 
         boolean canCapture = false;
@@ -152,6 +170,9 @@ public class AI_Player {
 
     }
 
+    /**
+     * Function to calculate which piece will move to which position
+     */
     private void selectMove(){
 
         Random rand = new Random();
