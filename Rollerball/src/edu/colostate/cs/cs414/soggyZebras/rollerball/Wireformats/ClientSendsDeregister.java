@@ -3,19 +3,20 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats;
 import java.io.*;
 import java.util.Base64;
 
-public class ClientSendsInvite implements Event {
+public class ClientSendsDeregister implements Event {
+
 
     //Information to be serialized or deserialized
     private int message_type;
-    private String userTo;
+    private int userID;
 
     //Sending message constructor
 
 
-    public ClientSendsInvite(String to, int flag){
+    public ClientSendsDeregister(int id){
 
-        this.message_type = eClient_Sends_Invite;
-        this.userTo = to;
+        this.message_type = eClient_Sends_Deregister;
+        this.userID = id;
     }
 
     //Recieving message constructor
@@ -25,16 +26,16 @@ public class ClientSendsInvite implements Event {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public ClientSendsInvite(String input) throws IOException, ClassNotFoundException {
-
+    public ClientSendsDeregister(String input) throws IOException, ClassNotFoundException {
 
         byte[] data = Base64.getDecoder().decode(input);
         ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(data));
         // deserialize the objects into their proper local variables
 
-
         this.message_type = oin.readInt();
-        this.userTo = (String) oin.readObject();
+        this.userID = oin.readInt();
+
+
 
         // Close streams
         oin.close();
@@ -51,7 +52,7 @@ public class ClientSendsInvite implements Event {
 
         // Take the local variables and serialize them into a file
         oout.writeInt(this.message_type);
-        oout.writeObject(this.userTo);
+        oout.writeInt(this.userID);
 
         //flush the objects to the stream and close the streams
         oout.flush();
@@ -66,11 +67,7 @@ public class ClientSendsInvite implements Event {
         return this.message_type;
     }
 
-
-    public String getUserTo(){
-        return userTo;
-    }
-
+    public int getUserID() { return this.userID;}
 
 
 }

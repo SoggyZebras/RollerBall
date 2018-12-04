@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
+package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.testclients;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
@@ -11,9 +11,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 
-public class Client implements Node {
+public class AI_Client implements Node {
 
-    MenuGUI gui;
+    AI_Player AI;
 
     private boolean debug = true;
 
@@ -31,8 +31,9 @@ public class Client implements Node {
      * @param serverPort
      * @throws IOException
      */
-    public Client(String serverAddress, int serverPort) throws IOException {
+    public AI_Client(AI_Player player,String serverAddress, int serverPort) throws IOException {
 
+        this.AI = player;
         // Check if the arguments have been passed correctly
         if (serverAddress == null){
             throw new IOException("Invalid serverAddress");
@@ -65,19 +66,13 @@ public class Client implements Node {
 
         switch(e.getType()){
 
-            case eServer_Responds_Check_Move: handleServerCheckMove(e);break;
-
             case eServer_Sends_Invite: handleServerSendsInvite(e,socket);break;
 
             case eServer_Responds_Invite: handleServerRespondsInvite(e);break;
 
             case eServer_Responds_Registration: handleServerRespondsRegistration(e,socket);break;
 
-            case eServer_Responds_Login: handleServerRespondsLogin(e,socket);break;
-
             case eServer_Responds_Refresh: handleServerRespondsRefresh(e,socket);break;
-
-            case eServer_Responds_Deregister: handleServerRespondsDeregister(e, socket);break;
 
             default:
         }
@@ -91,11 +86,6 @@ public class Client implements Node {
     //============ INTERFACE ==============//
 
 
-    public void sendInvite(String name) throws IOException{
-        ClientSendsInvite message = new ClientSendsInvite(name,0);
-        serverConnection.sendData(message.getFile());
-    }
-
     public void respondInvite(String name, int id) throws IOException{
         ClientRespondsInvite message = new ClientRespondsInvite(name,id);
         serverConnection.sendData(message.getFile());
@@ -106,20 +96,6 @@ public class Client implements Node {
         serverConnection.sendData(message.getFile());
     }
 
-    public void login(String username, String password) throws IOException{
-        ClientSendsLogin message = new ClientSendsLogin(username,password);
-        serverConnection.sendData(message.getFile());
-    }
-
-    public void logout(int uid) throws IOException{
-        ClientSendsLogout message = new ClientSendsLogout(uid);
-        serverConnection.sendData(message.getFile());
-    }
-
-    public void deregister(int id) throws IOException{
-        ClientSendsDeregister message = new ClientSendsDeregister(id);
-        serverConnection.sendData(message.getFile());
-    }
 
     /**
      *
@@ -190,64 +166,31 @@ public class Client implements Node {
     //============ HANDLES ===============//
 
 
-   /*
-    private void handleGameState(Event e) {
-        // When server sends an updated game state, recompile the game and give it to the ui
-        ServerRespondsGameState message = (ServerRespondsGameState) e;
-        this.gui.updateState(message.getMap());
-    }
-    */
-
-    /**
-     *
-     * @param e
-     */
-    private void handleServerCheckMove(Event e){
-        ServerRespondsCheckMove message = (ServerRespondsCheckMove) e;
-        gui.updateValidMoves(message.getGameID(), message.getList());
-    }
-
-    private void handleServerRespondsInvite(Event e){
+    private void handleServerRespondsInvite(Event e) throws IOException {
         ServerRespondsInvite message = (ServerRespondsInvite) e;
-        gui.refresh(message.getUser());
-    }
-
-    private void handleServerRespondsLogin(Event e, Socket socket){
-        ServerRespondsLogin message = (ServerRespondsLogin) e;
-        gui.onLoginResponse(message.getUser(), message.getReject_reason());
-
+        AI.refresh(message.getUser());
     }
 
     private void handleServerRespondsRegistration(Event e, Socket socket) throws IOException{
         System.err.println("handling registration from server");
         ServerRespondsRegistration message = (ServerRespondsRegistration) e;
-        gui.onRegisterResponse(message.getUser(), message.getReason());
+        AI.onRegisterResponse(message.getUser(), message.getReason());
     }
 
-    private void handleServerRespondsRefresh(Event e, Socket socket){
-        System.out.println("handling refresh");
+    private void handleServerRespondsRefresh(Event e, Socket socket) throws IOException {
+        System.out.println("Handling refresh");
         ServerRespondsRefresh message = (ServerRespondsRefresh) e;
-        gui.refresh(message.getUser());
+        AI.refresh(message.getUser());
 
     }
 
-    private void handleServerSendsInvite(Event e, Socket socket){
+    private void handleServerSendsInvite(Event e, Socket socket) throws IOException {
         ServerSendsInvite message = (ServerSendsInvite) e;
-        gui.refresh(message.getUserTo());
+        AI.refresh(message.getUserTo());
 
-    }
-
-    private void handleServerRespondsDeregister(Event e, Socket socket){
-        ServerRespondsDeregister message = (ServerRespondsDeregister) e;
-        gui.refresh(message.getUser());
     }
 
 
     //========= END HANDLES ========//
-
-
-    public void setGui(MenuGUI p){
-        this.gui = p;
-    }
 
 }

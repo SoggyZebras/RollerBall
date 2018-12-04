@@ -1,24 +1,23 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * holds all of the cards that represent the different menus
+ * holds all of the 'cards' that represent the different menus
  */
 public class CardContainer extends JPanel {
 
     /**
      * holds a list of all menu panels that have been added
      */
-    public ArrayList<MenuPanel> menuPanels;
+    public Map<String,MenuPanel> menuPanels;
 
     public CardContainer(MenuGUI menuGUI) {
         super(new CardLayout());
-        menuPanels = new ArrayList<>();
+        menuPanels = new HashMap<>();
 
         // create menus
         // TODO replace with addMenuPanel Calls
@@ -33,13 +32,13 @@ public class CardContainer extends JPanel {
     }
 
     private void addMenuPanel(String name, MenuPanel panel) {
-        menuPanels.add(panel);
+        menuPanels.put(name, panel);
         add(name, panel);
     }
 
-    public void refreshAll(User updatedUser) {
-        for (MenuPanel mp : menuPanels) {
-            mp.refresh(updatedUser);
+    public void refreshAll() {
+        for (MenuPanel mp : menuPanels.values()) {
+            mp.refresh();
         }
     }
 

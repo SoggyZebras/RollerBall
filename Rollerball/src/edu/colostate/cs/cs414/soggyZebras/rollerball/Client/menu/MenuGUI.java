@@ -8,6 +8,8 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +34,7 @@ public class MenuGUI extends JFrame {
      */
     public User loggedInUser;
 
-    private Map<Integer,RollerballPanel> activeGameGUIs;
+    public Map<Integer,RollerballPanel> activeGameGUIs;
 
     public MenuGUI() {
         super("Rollerball Menu");
@@ -41,7 +43,7 @@ public class MenuGUI extends JFrame {
 
         try {
             // TODO: change server address
-            client = new Client("3.16.42.80",35355);
+            client = new Client("127.0.0.1",35355);
             client.initialize();
             client.setGui(this);
         } catch (IOException e) {
@@ -58,6 +60,22 @@ public class MenuGUI extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
+
+        // add listener for when window is closed
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                // log out this user
+                try {
+                    client.logout(loggedInUser.getUserID());
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                catch (NullPointerException e1) {
+                }
+            }
+        });
     }
 
     /**
@@ -65,16 +83,12 @@ public class MenuGUI extends JFrame {
      * @param newMenu the name of the new menu to show, for example "register"
      */
     public void setMenu(String newMenu) {
-        cardContainer.refreshAll(loggedInUser);
+        // TODO: do we need to call refresh all here?
         cardContainer.show(newMenu);
     }
 
     public CardContainer getCardContainer() {
         return cardContainer;
-    }
-
-    public void addActiveGameGUI(int gameID, RollerballPanel gameGUI) {
-        activeGameGUIs.put(gameID, gameGUI);
     }
 
     /**
@@ -95,7 +109,7 @@ public class MenuGUI extends JFrame {
             // open that game
             try {
                 GameGUI gameGUI = new GameGUI(client, loadedGame, this);
-                addActiveGameGUI(gameID, gameGUI.panel);
+                activeGameGUIs.put(gameID, gameGUI.panel);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -119,18 +133,29 @@ public class MenuGUI extends JFrame {
      * @param updatedUser
      */
     public void refresh(User updatedUser) {
-        this.loggedInUser = updatedUser;
+        // refresh all menus for the user passed in updatedUser
+        if (updatedUser.getUserID() == loggedInUser.getUserID()) {
+            loggedInUser = updatedUser;
 
-        // refresh menu
-        // this assumes that each card has its refresh function filled out
-        cardContainer.refreshAll(updatedUser);
+            // refresh menu
+            // this assumes that each card has its refresh function filled out
+            cardContainer.refreshAll();
+        }
+
+        // if this is not the user passed in updated user, just update the pending invite and active game lists
+        else {
+            cardContainer.menuPanels.get("main_menu").refresh();
+            cardContainer.menuPanels.get("pending_invites").refresh();
+        }
 
         // update game windows
-        for (Game userGame : updatedUser.getGames()) {
-            RollerballPanel activeGame = activeGameGUIs.get(userGame.getGameID());
-            if (activeGame != null) {
-                // TODO: should we just pass the entire game?
-                activeGame.updateState(userGame.getBoard());
+        // TODO: this is currently not being called by the server when moves are made in the game
+        if(updatedUser != null) {
+            for (Game userGame : updatedUser.getGames()) {
+                RollerballPanel activeGame = activeGameGUIs.get(userGame.getGameID());
+                if (activeGame != null) {
+                    activeGame.updateState(userGame);
+                }
             }
         }
     }
@@ -142,6 +167,8 @@ public class MenuGUI extends JFrame {
      */
     public void onRegisterResponse(User user, String message) {
         login(user, message);
+        // remove "Registering..." and allow user to attempt it again if there was a problem
+        cardContainer.menuPanels.get("register").refresh();
     }
 
     /**
@@ -150,8 +177,9 @@ public class MenuGUI extends JFrame {
      * @param message an error message
      */
     public void onLoginResponse(User user, String message) {
-        System.err.println("login response");
         login(user, message);
+        // remove "Logging in..." and allow user to attempt it again if there was a problem
+        cardContainer.menuPanels.get("login").refresh();
     }
 
     /**
@@ -166,7 +194,8 @@ public class MenuGUI extends JFrame {
             refresh(user);
         }
         else {
-            // TODO: popup error message
+            // TODO: notify login/register panel that register was unsuccessful
+            JOptionPane.showMessageDialog(this, message);
             System.err.println(message);
         }
     }

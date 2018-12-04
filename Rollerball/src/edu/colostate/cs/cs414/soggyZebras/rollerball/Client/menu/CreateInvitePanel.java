@@ -20,7 +20,12 @@ public class CreateInvitePanel extends MenuPanel {
         public void actionPerformed(ActionEvent e) {
             String username = ((TextField)getComponent(1)).getText().trim();
             try {
-                getMenuGUI().client.sendInvite(username);
+                if (username.equals(getMenuGUI().loggedInUser.getUsername())) {
+                    JOptionPane.showMessageDialog(getMenuGUI(), "You cannot send an invite to yourself.");
+                }
+                else {
+                    getMenuGUI().client.sendInvite(username);
+                }
             } catch (IOException e1) {
                 e1.printStackTrace();
             }

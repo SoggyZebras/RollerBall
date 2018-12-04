@@ -1,21 +1,25 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
+
 import java.io.*;
 import java.util.Base64;
 
-public class ClientSendsInvite implements Event {
+public class ServerRespondsDeregister implements Event {
 
     //Information to be serialized or deserialized
     private int message_type;
-    private String userTo;
+    private User user;
+
 
     //Sending message constructor
 
 
-    public ClientSendsInvite(String to, int flag){
+    public ServerRespondsDeregister(User user){
 
-        this.message_type = eClient_Sends_Invite;
-        this.userTo = to;
+        this.message_type = eServer_Responds_Deregister;
+        this.user = user;
+
     }
 
     //Recieving message constructor
@@ -25,16 +29,17 @@ public class ClientSendsInvite implements Event {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public ClientSendsInvite(String input) throws IOException, ClassNotFoundException {
-
+    public ServerRespondsDeregister(String input) throws IOException, ClassNotFoundException {
 
         byte[] data = Base64.getDecoder().decode(input);
         ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(data));
         // deserialize the objects into their proper local variables
 
-
         this.message_type = oin.readInt();
-        this.userTo = (String) oin.readObject();
+        this.user = (User) oin.readObject();
+
+
+
 
         // Close streams
         oin.close();
@@ -51,7 +56,8 @@ public class ClientSendsInvite implements Event {
 
         // Take the local variables and serialize them into a file
         oout.writeInt(this.message_type);
-        oout.writeObject(this.userTo);
+        oout.writeObject(this.user);
+
 
         //flush the objects to the stream and close the streams
         oout.flush();
@@ -66,11 +72,7 @@ public class ClientSendsInvite implements Event {
         return this.message_type;
     }
 
-
-    public String getUserTo(){
-        return userTo;
-    }
-
+    public User getUser() { return this.user;}
 
 
 }
