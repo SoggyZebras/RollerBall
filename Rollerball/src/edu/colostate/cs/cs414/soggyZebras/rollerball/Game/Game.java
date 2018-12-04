@@ -6,7 +6,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 import java.util.*;
 
 public class Game implements java.io.Serializable {
-
+    private static final long serialVersionUID = 652968509827690L;
     protected Map<Location,Piece> board;
     private User player1;
     private User player2;
@@ -82,11 +82,13 @@ public class Game implements java.io.Serializable {
             board.put((to), board.get(from));
             board.get(to).setLoc(to);
             board.remove(from);
+
             if (whosTurn.equals(player1)) {
                 whosTurn = player2;
             } else {
                 whosTurn = player1;
             }
+
         }
 
         return board;

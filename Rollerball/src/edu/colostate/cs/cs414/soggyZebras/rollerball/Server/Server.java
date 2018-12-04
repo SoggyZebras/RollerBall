@@ -45,13 +45,13 @@ public class Server implements Node,Runnable {
 
     public void run(){
 
-//        //load previous state from database
-//        try {
-//            init();
-//        }
-//        catch(SQLException e){
-//            e.printStackTrace();
-//        }
+        //load previous state from database
+        try {
+            init();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
 
         //Start server thread(send/receive threads
         this.serverThread.run();
@@ -63,35 +63,9 @@ public class Server implements Node,Runnable {
             serverCache.setCache(db.getAllUser());
         }
 
-//        System.out.println("begin invite init...");
-//        for(User u : serverCache.getAllUsers()){
-//            for(User k: serverCache.getAllUsers()){
-//                    Invite tmp = db.getInvite(u.getUsername(),k.getUsername());
-//                    if(tmp != null){
-//                        u.addInviteSent(tmp);
-//                        k.addInviteGot(tmp);
-//                    }
-//
-//            }
-//        }
-
-//        System.out.println("begin game init...");
-//        for(User u : serverCache.getAllUsers()){
-//            for(User k: serverCache.getAllUsers()){
-//                Game tmp = db.getGame(u.getUsername(),k.getUsername());
-//                if(tmp != null) {
-//                    u.addGame(tmp);
-//                    k.addGame(tmp);
-//                }
-//
-//                Game tmp2 = db.getGame(k.getUsername(),u.getUsername());
-//                if(tmp2 != null) {
-//                    u.addGame(tmp2);
-//                    k.addGame(tmp2);
-//                }
-//
-//            }
-//        }
+        if(db.getAllGame() != null){
+            games.setGames(db.getAllGame());
+        }
 
     }
 
@@ -125,7 +99,9 @@ public class Server implements Node,Runnable {
     private void handleMakeMove(Event e ,Socket socket) throws IOException {
         ClientMakeMove message =(ClientMakeMove) e;
         Game tmp = games.getGame(message.getGameID());
-        tmp.makeMove(serverCache.getUser(socket),message.getTo(),message.getFrom());
+        if(tmp.getWhosTurn() == serverCache.getUser(socket)){
+            tmp.makeMove(serverCache.getUser(socket),message.getTo(),message.getFrom());
+        }
         User p1 = serverCache.getUser(tmp.getPlayer1().getUserID());
         User p2 = serverCache.getUser(tmp.getPlayer2().getUserID());
 
@@ -210,6 +186,7 @@ public class Server implements Node,Runnable {
                 if(serverCache.matchPassword(message.getUsername(),message.getPassword())) {
                     user = serverCache.getUser(message.getUsername());
                     serverCache.getUserCon(socket).setConID(user.getUserID());
+                    System.out.println("logged in");
                 }
                 else{
                     reason = "Incorrect Password!";
@@ -247,6 +224,7 @@ public class Server implements Node,Runnable {
                         serverCache.getUserCon(socket).setConID(user.getUserID());
                         serverCache.addUser(user);
                         db.insertUser(user.getUserID(), user);
+                    System.out.println("registered");
                 }
                 else{
                     reason = "User already exists!";
