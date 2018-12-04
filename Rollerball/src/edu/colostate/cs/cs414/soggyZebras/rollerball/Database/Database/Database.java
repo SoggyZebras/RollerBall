@@ -15,6 +15,13 @@ public class Database {
     String user = "cntorres";
     String password = "830429517";
 
+    /**
+     * Converts serialized string to an object
+     * @param gameState
+     * @return Object
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private static Object fromString(String gameState) throws IOException, ClassNotFoundException {
         byte [] data = Base64.getDecoder().decode(gameState);
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(  data ) );
@@ -23,6 +30,12 @@ public class Database {
         return o;
     }
 
+    /**
+     * Converts object to serialized string
+     * @param o
+     * @return
+     * @throws IOException
+     */
     private static String toString(Object o) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -31,6 +44,12 @@ public class Database {
         return Base64.getEncoder().encodeToString(baos.toByteArray());
     }
 
+    /**
+     * Inserts a serialized game into the database
+     * @param id
+     * @param gameState
+     * @throws IOException
+     */
     public void insertGame(int id, Game gameState) throws IOException {
         String sql = "INSERT INTO Game (`id`,`GameState`)" +
                 "VALUES ("+id + ", \"" + toString(gameState) +"\")";
@@ -50,6 +69,11 @@ public class Database {
         }
     }
 
+    /**
+     * Gets a game
+     * @param id
+     * @return Game
+     */
     public Game getGame(int id)   {
         String sql = "Select * FROM Game WHERE `id`=" + id;
         try{
@@ -72,6 +96,12 @@ public class Database {
         return null;
     }
 
+    /**
+     * Gets a user
+     * @param id
+     * @return User
+     * @throws SQLException
+     */
     public User getUser(int id) throws SQLException {
         String sql = "Select * FROM user WHERE `id`=" + id;
 
@@ -94,6 +124,11 @@ public class Database {
         return null;
     }
 
+    /**
+     * Gets all the users
+     * @return User
+     * @throws SQLException
+     */
     public ArrayList<User> getAllUser() throws SQLException {
         String sql = "Select * FROM user";
         ArrayList<User> users = new ArrayList<User>();
@@ -120,6 +155,12 @@ public class Database {
 
     }
 
+    /**
+     * Inserts a user into the database
+     * @param id
+     * @param u
+     * @throws IOException
+     */
     public void insertUser(int id, User u) throws IOException {
         String sql = "INSERT INTO user (id, user) " +
                 "VALUES ("+ id  + ", \"" + toString(u) + "\")";
@@ -139,6 +180,10 @@ public class Database {
         }
     }
 
+    /**
+     * Unregisters a user
+     * @param id
+     */
     public void removeUser(int id){
         String sql = "DELETE FROM `user` WHERE `id` = \"" + id + "\"";
         try{
@@ -157,8 +202,15 @@ public class Database {
         }
     }
 
-    public Invite getInvite(String from, String to) throws SQLException {
-        String sql = "Select * FROM Invites WHERE `from` =\"" + from+ "\" && `to`=\""+to+"\"";
+    /**
+     * Gets the invite for user
+     * @param
+     * @param id
+     * @return Invite
+     * @throws SQLException
+     */
+    public Invite getInvite(int id) throws SQLException {
+        String sql = "Select * FROM Invites WHERE `id` =" + id;
         try{
             Class.forName("com.mysql.jdbc.Driver");
             // connect to the database and query
@@ -169,7 +221,8 @@ public class Database {
             ) {
                 ResultSet rs = query.executeQuery(sql);
                 rs.next();
-                int id = rs.getInt("id");
+                String to = rs.getString("to");
+                String from = rs.getString("from");
                 return new Invite(to, from, id);
 
             }
@@ -180,6 +233,12 @@ public class Database {
         return null;
     }
 
+    /**
+     * Inserts an invite into the database
+     * @param id
+     * @param from
+     * @param to
+     */
     public void insertInvite(int id, String from, String to)  {
         String sql = "INSERT INTO Invites (`id`, `from`, `to`) " +
                 "VALUES (\'"+ id + "\', \'"+ from + "\', \'" + to + "\')";
@@ -200,9 +259,6 @@ public class Database {
     }
 
     public static void main(String[] args) throws IOException, SQLException {
-//        Database d = new Database();
-//        d.insertUser(1, new User(1, "tester", "", ""));
-//        d.getUser(1);
     }
 
 
