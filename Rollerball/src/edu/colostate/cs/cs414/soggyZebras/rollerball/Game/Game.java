@@ -66,6 +66,7 @@ public class Game implements java.io.Serializable {
         }
     }
 
+    // TODO can we maybe remove this/do we need the check for which user has the turn (in other method)
     public ArrayList<Location> validMoves(Location l){
             return board.get(l).validMoves(board);
     }
