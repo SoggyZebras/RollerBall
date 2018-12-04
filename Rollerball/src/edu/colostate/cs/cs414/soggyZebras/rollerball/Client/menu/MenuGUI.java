@@ -72,6 +72,8 @@ public class MenuGUI extends JFrame {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
+                catch (NullPointerException e1) {
+                }
             }
         });
     }
@@ -81,7 +83,7 @@ public class MenuGUI extends JFrame {
      * @param newMenu the name of the new menu to show, for example "register"
      */
     public void setMenu(String newMenu) {
-        cardContainer.refreshAll();
+        // TODO: do we need to call refresh all here?
         cardContainer.show(newMenu);
     }
 
@@ -131,11 +133,20 @@ public class MenuGUI extends JFrame {
      * @param updatedUser
      */
     public void refresh(User updatedUser) {
-        this.loggedInUser = updatedUser;
+        // refresh all menus for the user passed in updatedUser
+        if (updatedUser.getUserID() == loggedInUser.getUserID()) {
+            this.loggedInUser = updatedUser;
 
-        // refresh menu
-        // this assumes that each card has its refresh function filled out
-        cardContainer.refreshAll();
+            // refresh menu
+            // this assumes that each card has its refresh function filled out
+            cardContainer.refreshAll();
+        }
+
+        // if this is not the user passed in updated user, just update the pending invite and active game lists
+        else {
+            cardContainer.menuPanels.get("main_menu").refresh();
+            cardContainer.menuPanels.get("pending_invites").refresh();
+        }
 
         // update game windows
         if(updatedUser != null) {

@@ -20,6 +20,7 @@ public class RollerballPanel extends JPanel {
     private Map<Location,Piece> board;
     private Game game;
     private Client client;
+    private MenuGUI menuGUI;
     private PieceDrawer pieceDrawer;
 
     // the index of the selected square
@@ -45,6 +46,7 @@ public class RollerballPanel extends JPanel {
         this.game = game;
         board = game.getBoard();
         this.client = client;
+        this.menuGUI = menuGUI;
         selectedPiece = null;
         unselectSquares();
 
@@ -131,6 +133,11 @@ public class RollerballPanel extends JPanel {
      * @param y the y pixel coordinate of the click
      */
     public void onClick(int x, int y) {
+        // notify player if it is not their turn to move
+        if (!isMyTurn()) {
+            JOptionPane.showMessageDialog(this, "It is not your turn.");
+            return;
+        }
         Location clickLoc = new Location(y / squareSide, x / squareSide);
 
         // if a piece has already been selected, try to make a move and update the board
@@ -173,5 +180,9 @@ public class RollerballPanel extends JPanel {
     public void updateValidMoves(ArrayList<Location> l){
         potentialMoves = l;
         repaint();
+    }
+
+    private boolean isMyTurn() {
+        return game.getWhosTurn().getUserID() == menuGUI.loggedInUser.getUserID();
     }
 }
