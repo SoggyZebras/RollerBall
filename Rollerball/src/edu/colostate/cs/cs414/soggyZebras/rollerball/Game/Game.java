@@ -82,10 +82,20 @@ public class Game implements java.io.Serializable {
             board.put((to), board.get(from));
             board.get(to).setLoc(to);
             board.remove(from);
-            if (whosTurn.equals(player1)) {
-                whosTurn = player2;
-            } else {
-                whosTurn = player1;
+            if(wonGameB()){
+                this.winner = player2;
+                this.loser = player1;
+            }
+            else if(wonGameW()){
+                this.winner = player1;
+                this.loser = player2;
+            }
+            else{
+                if (whosTurn.equals(player1)) {
+                    whosTurn = player2;
+                } else {
+                    whosTurn = player1;
+                }
             }
         }
 
