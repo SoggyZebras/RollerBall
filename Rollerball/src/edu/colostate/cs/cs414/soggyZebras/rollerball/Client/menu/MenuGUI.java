@@ -135,7 +135,7 @@ public class MenuGUI extends JFrame {
     public void refresh(User updatedUser) {
         // refresh all menus for the user passed in updatedUser
         if (updatedUser.getUserID() == loggedInUser.getUserID()) {
-            this.loggedInUser = updatedUser;
+            loggedInUser = updatedUser;
 
             // refresh menu
             // this assumes that each card has its refresh function filled out
@@ -149,12 +149,12 @@ public class MenuGUI extends JFrame {
         }
 
         // update game windows
+        // TODO: this is currently not being called by the server when moves are made in the game
         if(updatedUser != null) {
             for (Game userGame : updatedUser.getGames()) {
                 RollerballPanel activeGame = activeGameGUIs.get(userGame.getGameID());
                 if (activeGame != null) {
-                    // TODO: should we just pass the entire game?
-                    activeGame.updateState(userGame.getBoard());
+                    activeGame.updateState(userGame);
                 }
             }
         }

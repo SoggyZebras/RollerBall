@@ -186,21 +186,26 @@ public class AI_Player {
     private void selectMove(int gID){
 
         Random rand = new Random();
+        boolean canMove = false;
 
         for(Location I: allBLocs){
             int value = rand.nextInt(allBLocs.size());
             Location loc = allBLocs.get(value);
             ArrayList<Location> valMoves = currGame.validMoves(AI,loc);
+
             if(valMoves != null) {
                 if (!valMoves.isEmpty()) {//We know that the piece has a valid location it can move to.
                     value = rand.nextInt(valMoves.size());
                     Location move = valMoves.get(value);
+                    canMove = true;
                     cl.makeMove(loc, move, gID);
                     break;
-                } else
-                    throw new RuntimeException("Something went wrong in the AI selectMove func - at least one piece should always have a valid move");
+                }
             }
         }
+
+        if(!canMove) throw new RuntimeException("Something went wrong in the AI selectMove func - at least one piece should always have a valid move");
+        
     }
 
 

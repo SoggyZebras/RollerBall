@@ -155,6 +155,7 @@ public class Server implements Node,Runnable {
         sentUser.addGame(newGame);
         fromUser.addGame(newGame);
      //   db.insertGame(newGame);
+        db.insertGame(newGame.getGameID(), newGame);
 
         if(serverCache.getConnection(fromUser.getUserID()) != null){
             ServerRespondsInvite response2 = new ServerRespondsInvite(fromUser);
@@ -215,7 +216,7 @@ public class Server implements Node,Runnable {
                         user.setGames(new Game[0]);
                         serverCache.getUserCon(socket).setConID(user.getUserID());
                         serverCache.addUser(user);
-                        //db.insertUser(user.getUserID(), user.getUsername(), user.getPassword(), user.getEmail(), user.getSentInvites(), user.getGotInvites(), user.getGames());
+                        db.insertUser(user.getUserID(), user);
                 }
                 else{
                     reason = "User already exists!";

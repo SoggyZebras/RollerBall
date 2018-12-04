@@ -27,7 +27,7 @@ public class PieceDrawer {
     public PieceDrawer(String filepath, int squareSize) {
         try {
             this.squareSize = squareSize;
-            BufferedImage piecesImage = ImageIO.read(new File(filepath));
+            BufferedImage piecesImage = ImageIO.read(getClass().getResource(filepath));
             int side = 333;
             bishopB = piecesImage.getSubimage(2 * side, side, side, side);
             bishopW = piecesImage.getSubimage(2 * side, 0, side, side);

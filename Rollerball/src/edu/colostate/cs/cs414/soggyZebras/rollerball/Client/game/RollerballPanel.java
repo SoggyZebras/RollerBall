@@ -53,7 +53,7 @@ public class RollerballPanel extends JPanel {
         potentialMoves = new ArrayList<>();
 
         this.squareSide = getWidth() / 7;
-        pieceDrawer = new PieceDrawer("Rollerball/src/res/pieces.png", squareSide);
+        pieceDrawer = new PieceDrawer("/pieces.png", squareSide);
     }
 
     @Override
@@ -172,9 +172,26 @@ public class RollerballPanel extends JPanel {
         }
     }
 
+    // TODO: maybe remove this, we will use the other version that gets a game
     public void updateState(Map<Location,Piece> map) {
         updateBoard(map);
         repaint();
+    }
+
+    public void updateState(Game updated) {
+        game = updated;
+        updateBoard(game.getBoard());
+        repaint();
+
+        // check for win conditions
+        if (game.wonGameB()) {
+            JOptionPane.showMessageDialog(this, "Black Won!");
+            // TODO: notify server that game has been won/lost
+        }
+        else if (game.wonGameW()) {
+            JOptionPane.showMessageDialog(this, "White Won!");
+            // TODO: notify server that game has been won/lost
+        }
     }
 
     public void updateValidMoves(ArrayList<Location> l){
