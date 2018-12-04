@@ -82,7 +82,7 @@ public class User implements Serializable {
 
         Invite[] tmp = new Invite[sentInvites.length-1];
 
-        for(int i=0,j=0; i < sentInvites.length-1;i++){
+        for(int i=0,j=0; i < sentInvites.length;i++){
             if(sentInvites[i].getInviteID() == id){
 
             }
@@ -97,7 +97,7 @@ public class User implements Serializable {
     public void removeInviteGot(int id){
         Invite[] tmp = new Invite[gotInvites.length-1];
 
-        for(int i=0,j=0; i < gotInvites.length-1;i++){
+        for(int i=0,j=0; i < gotInvites.length;i++){
             if(gotInvites[i].getInviteID() == id){
 
             }
