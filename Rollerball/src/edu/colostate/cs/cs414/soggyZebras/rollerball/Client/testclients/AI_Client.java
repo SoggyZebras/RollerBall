@@ -103,7 +103,7 @@ public class AI_Client implements Node {
      * @param to
      * @return boolean
      */
-    public boolean makeMove(Location from, Location to, int gID) {
+    public boolean makeMove(Location to, Location from, int gID) {
         // Create make move wireformat with given variables and send to server
         try {
             ClientMakeMove moveMessage = new ClientMakeMove(from, to, gID);
