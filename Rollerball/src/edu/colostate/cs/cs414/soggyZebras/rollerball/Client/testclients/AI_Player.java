@@ -59,7 +59,7 @@ public class AI_Player {
      */
     public AI_Player()throws IOException{
 
-        cl = new AI_Client(this,"127.0.0.1",35355);
+        cl = new AI_Client(this,"3.16.167.10",35355);
         AI = new User(0,"AI_Player","YouwillNeverBeatme YouwillNeverBeatme","Ai@gov.email");
         cl.initialize();
         cl.register(AI.getUsername(),AI.getPassword(),AI.getEmail());

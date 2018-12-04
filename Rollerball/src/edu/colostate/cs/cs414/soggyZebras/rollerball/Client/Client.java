@@ -239,7 +239,7 @@ public class Client implements Node {
 
     private void handleServerRespondsDeregister(Event e, Socket socket){
         ServerRespondsDeregister message = (ServerRespondsDeregister) e;
-        gui.refresh(message.getUser());
+        //gui.refresh(message.getUser());
     }
 
 

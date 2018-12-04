@@ -3,7 +3,7 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Server;
 import java.io.Serializable;
 
 public class Invite implements Serializable{
-
+    private static final long serialVersionUID = 6529098456275732690L;
     private String invitee;
     private String inviter;
     private int inviteID;
