@@ -133,33 +133,40 @@ public class RollerballPanel extends JPanel {
      * @param y the y pixel coordinate of the click
      */
     public void onClick(int x, int y) {
-        // notify player if it is not their turn to move
-        if (!isMyTurn()) {
-            JOptionPane.showMessageDialog(this, "It is not your turn.");
-            return;
-        }
-        Location clickLoc = new Location(y / squareSide, x / squareSide);
+        if (!game.wonGameW() && !game.wonGameB()) {
+            // notify player if it is not their turn to move
+            if (!isMyTurn()) {
+                JOptionPane.showMessageDialog(this, "It is not your turn.");
+                return;
+            }
+            Location clickLoc = new Location(y / squareSide, x / squareSide);
 
-        // if a piece has already been selected, try to make a move and update the board
-        if (selectedPiece != null) {
-            if (potentialMoves.isEmpty()) {
-                selectedPiece = null;
-                unselectSquares();
+            // if a piece has already been selected, try to make a move and update the board
+            if (selectedPiece != null) {
+                if (potentialMoves.isEmpty()) {
+                    selectedPiece = null;
+                    unselectSquares();
+                }
+                if (potentialMoves.contains(clickLoc)) {
+                    client.makeMove(selectedPiece.getLoc(), clickLoc, game.getGameID());
+                    selectedPiece = null;
+                    unselectSquares();
+                    potentialMoves.clear();
+                }
             }
-            if (potentialMoves.contains(clickLoc)) {
-                client.makeMove(selectedPiece.getLoc(), clickLoc, game.getGameID());
-                selectedPiece = null;
-                unselectSquares();
-                potentialMoves.clear();
+            // select a piece if its clicked on
+            else if (board.containsKey(clickLoc)) {
+                // make sure we can only click our own users
+                selectedPiece = board.get(clickLoc);
+                // true when player 1 is playing this game
+                boolean isPlayer1 = game.getPlayer1().getUserID() == menuGUI.loggedInUser.getUserID();
+                if ((selectedPiece.getColor() == 'w' && isPlayer1) || (selectedPiece.getColor() == 'b' && !isPlayer1)) {
+                    selectSquare(clickLoc.row, clickLoc.col);
+                    client.checkValidMove(selectedPiece.getLoc(), game.getGameID());
+                }
             }
+            repaint();
         }
-        // select a piece if its clicked on
-        else if (board.containsKey(clickLoc)) {
-            selectSquare(clickLoc.row, clickLoc.col);
-            selectedPiece = board.get(clickLoc);
-            client.checkValidMove(selectedPiece.getLoc(), game.getGameID());
-        }
-        repaint();
     }
 
     private void updateBoard(Map<Location,Piece> map) {

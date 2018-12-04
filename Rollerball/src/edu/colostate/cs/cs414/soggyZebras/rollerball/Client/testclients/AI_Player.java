@@ -71,7 +71,7 @@ public class AI_Player {
      * @param gameID - ID of current game that AI player is calculating move for
      */
     public void Move(int gameID) {
-        System.out.println("AI is making a move");
+        System.out.println("AI calculating move");
         allBLocs.clear();
         allWLocs.clear();
 
@@ -88,8 +88,9 @@ public class AI_Player {
         if (!found) {
             throw new RuntimeException("Incorrect gameID passed to AI Move function");
         }
+
         if(currGame.getWhosTurn() == AI) {
-            System.out.println("my turn");
+            System.out.println("AI's turn");
             //POPULATE CURRENT PIECE LOCATIONS:
             for (Location I : Board.keySet()) {
                 if (Board.get(I).getColor() == 'w') {
@@ -104,10 +105,10 @@ public class AI_Player {
             }
 
             //Logic to calculate which condition to take
-            boolean check = capture(gameID);
-            if (!check) {
-                check = avoid(gameID);
-                if (!check) {
+            boolean checkC = capture(gameID);
+            if (!checkC) {
+                boolean checkA = avoid(gameID); //move if can move to avoid
+                if (!checkA) {
                     selectMove(gameID);
                 }
             }
@@ -122,20 +123,19 @@ public class AI_Player {
 
         boolean canCapture = false;
 
-        for(Location I :Board.keySet()){
-            if(Board.get(I).getColor()=='b'){
-                for (Location X : currGame.validMoves(AI, I)) {
-                    for (Location Y : allWLocs) {
-                        if (X == Y) {
+        for(Location I : allBLocs){
+                for (Location X : currGame.validMoves(AI, I)) { //Valid black moves
+                    for (Location Y : allWLocs) { //Valid white moves
+                        if (X.equals(Y)) {
                             canCapture = true;
-                            cl.makeMove(X, Y, gID);
-                            System.out.println("AI has captured White piece: " + Board.get(Y).getType() + "At location: " + Y.toString());
+                            cl.makeMove(Y, X, gID); //TO, FROM
+                            System.out.println("AI has captured White piece: " + Board.get(Y).getType() + " At location: " + Y.toString());
                             break;
                         }
                     }
                     if (canCapture) break;
                 }
-            }
+
             if(canCapture)break;
         }
 
@@ -151,27 +151,24 @@ public class AI_Player {
 
         boolean canCapture = false;
 
-        for(Location I :Board.keySet()){
-            if(Board.get(I).getColor()=='w'){
+        for(Location I : allWLocs){
                 for(Location X : currGame.validMoves(AI,I)) {
                     for(Location Y: allBLocs){
-                        if (X==Y){
-                            canCapture = true;
+                        if ((X.getCol()==Y.getCol())&&(X.getRow()==Y.getRow())){
                             System.out.println("AI can be captured by White piece: "+Board.get(X).getType() + "At location: "+X.toString());
                             //Need to move from unsafe location to safe location if we have a valid move
                             //If no valid moves are available then we cant move anywhere and we will have to be captured
-                            if(currGame.validMoves(AI,Y).isEmpty()){
-                                canCapture = false;
-                            }
-                            else {//The validMoves list will have at least 1 location:
-                                cl.makeMove(Y, currGame.validMoves(AI,Y).get(0),gID);
+                            if(!currGame.validMoves(AI,Y).isEmpty()){
+                                cl.makeMove(currGame.validMoves(AI,Y).get(0), Y ,gID);
+                                canCapture = true;
                                 break;
-                        }
+                            }
+
                         }
                     }
                     if(canCapture)break;
                 }
-            }
+
             if(canCapture)break;
         }
 
@@ -185,6 +182,7 @@ public class AI_Player {
      */
     private void selectMove(int gID){
 
+        System.out.println("AI is making normal move");
         Random rand = new Random();
         boolean canMove = false;
 
@@ -198,14 +196,14 @@ public class AI_Player {
                     value = rand.nextInt(valMoves.size());
                     Location move = valMoves.get(value);
                     canMove = true;
-                    cl.makeMove(loc, move, gID);
+                    cl.makeMove(move, loc, gID);
                     break;
                 }
             }
         }
 
         if(!canMove) throw new RuntimeException("Something went wrong in the AI selectMove func - at least one piece should always have a valid move");
-        
+
     }
 
 
