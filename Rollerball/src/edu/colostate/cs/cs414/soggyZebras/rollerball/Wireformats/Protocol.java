@@ -24,7 +24,7 @@ public interface Protocol {
      String Server_Responds_Refresh = "serverRespondsRefresh.msg";
 
      String Client_Sends_Invite = "clientSendsInvite.msg";
-     String Client_Responds_Invite = "clientRespondsInvite";
+     String Client_Responds_Invite = "clientRespondsInvite.msg";
 
      String Server_Sends_Invite = "serverSendsInvite.msg";
      String Server_Responds_Invite = "serverRespondsInvite.msg";

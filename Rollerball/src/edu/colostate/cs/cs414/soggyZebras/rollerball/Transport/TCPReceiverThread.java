@@ -39,7 +39,7 @@ public class TCPReceiverThread extends Thread implements Serializable{
             try {
                 //Read data from input stream
                 String data = (String)oin.readObject();
-
+                System.out.println("data: " +data);
                 EventFactory.work(data,this.node,this.socket);
             }
             catch(SocketException se) {

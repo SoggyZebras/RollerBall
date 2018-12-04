@@ -57,9 +57,9 @@ public class EventFactory implements Protocol {
                 default:
 
             }
-        } catch(IOException e){
+        } catch(IOException e) {
             System.out.println("IO Exception in Event Factory");
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 

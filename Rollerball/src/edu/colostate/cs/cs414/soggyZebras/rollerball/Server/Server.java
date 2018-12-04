@@ -139,24 +139,28 @@ public class Server implements Node,Runnable {
         }
     }
 
-    private void handleClientSendsInvite(Event e, Socket socket) throws IOException{
+    private void handleClientSendsInvite(Event e, Socket socket) throws IOException {
         ClientSendsInvite message = (ClientSendsInvite) e;
         User sentFrom = this.serverCache.getUser(socket);
         User sendTo = serverCache.getUser(message.getUserTo());
-        Invite inv = new Invite(sendTo.getUsername(), sentFrom.getUsername(), genInviteID());
+        if(sentFrom == null || sendTo == null){
 
-        sendTo.addInviteGot(inv);
-        sentFrom.addInviteSent(inv);
-        db.insertInvite(inv.getInviteID(),inv.getInviter(),inv.getInvitee());
-
-        if(serverCache.getConnection(sendTo.getUserID())!= null){
-            ServerSendsInvite response = new ServerSendsInvite(sentFrom.getUsername(),sendTo,inv.getInviteID());
-            this.serverCache.getConnection(sendTo.getUserID()).sendData(response.getFile());
         }
+        else {
+          Invite inv = new Invite(sendTo.getUsername(), sentFrom.getUsername(), genInviteID());
 
-        ServerRespondsInvite response2 = new ServerRespondsInvite(sentFrom);
-        this.serverCache.getConnection(sentFrom.getUserID()).sendData(response2.getFile());
+          sendTo.addInviteGot(inv);
+          sentFrom.addInviteSent(inv);
+          db.insertInvite(inv.getInviteID(), inv.getInviter(), inv.getInvitee());
 
+          if (serverCache.getConnection(sendTo.getUserID()) != null) {
+            ServerSendsInvite response = new ServerSendsInvite(sentFrom.getUsername(), sendTo, inv.getInviteID());
+            this.serverCache.getConnection(sendTo.getUserID()).sendData(response.getFile());
+          }
+
+          ServerRespondsInvite response2 = new ServerRespondsInvite(sentFrom);
+          this.serverCache.getConnection(sentFrom.getUserID()).sendData(response2.getFile());
+        }
     }
 
     private void handleClientRespondsInvite(Event e, Socket s) throws IOException {
@@ -167,17 +171,19 @@ public class Server implements Node,Runnable {
         fromUser.removeInviteSent(message.getInviteID());
         sentUser.removeInviteGot(message.getInviteID());
         gID = genGameID();
-        Game newGame = new Game(gID,sentUser,fromUser);
+        Game newGame = new Game(gID,fromUser,sentUser);
         games.addGame(newGame);
         sentUser.addGame(newGame);
         fromUser.addGame(newGame);
         db.insertGame(newGame.getPlayer1().getUsername(),newGame.getPlayer2().getUsername(),newGame,newGame.getWhosTurn().getUsername(),null, null, newGame.isInProgress());
 
         if(serverCache.getConnection(fromUser.getUserID()) != null){
+          System.out.println(fromUser.getUsername());
+
             ServerRespondsInvite response2 = new ServerRespondsInvite(fromUser);
             this.serverCache.getConnection(fromUser.getUserID()).sendData(response2.getFile());
         }
-
+        System.out.println(sentUser.getUsername());
         ServerRespondsInvite response1 = new ServerRespondsInvite(sentUser);
         this.serverCache.getConnection(sentUser.getUserID()).sendData(response1.getFile());
 
