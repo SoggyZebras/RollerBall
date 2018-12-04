@@ -52,6 +52,8 @@ public class EventFactory implements Protocol {
 
                 case eClient_Sends_Logout: node.onEvent(new ClientSendsLogout(data),socket);break;
 
+                case eServer_Responds_Refresh: node.onEvent(new ServerRespondsRefresh(data),socket);break;
+
                 default:
 
             }

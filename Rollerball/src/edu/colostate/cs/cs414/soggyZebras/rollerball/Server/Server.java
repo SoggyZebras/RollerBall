@@ -124,8 +124,18 @@ public class Server implements Node,Runnable {
 
     private void handleMakeMove(Event e ,Socket socket) throws IOException {
         ClientMakeMove message =(ClientMakeMove) e;
-        games.getGame(message.getGameID()).makeMove(serverCache.getUser(socket),message.getTo(),message.getFrom());
-        //handleClientRequestGameState(e,socket);
+        Game tmp = games.getGame(message.getGameID());
+        tmp.makeMove(serverCache.getUser(socket),message.getTo(),message.getFrom());
+        User p1 = serverCache.getUser(tmp.getPlayer1().getUserID());
+        User p2 = serverCache.getUser(tmp.getPlayer2().getUserID());
+
+        p1.updateGame(message.getGameID(),tmp);
+        p2.updateGame(message.getGameID(),tmp);
+        ServerRespondsRefresh response1 = new ServerRespondsRefresh(p1);
+        ServerRespondsRefresh response2 = new ServerRespondsRefresh(p2);
+
+        serverCache.getConnection(p1.getUserID()).sendData(response1.getFile());
+        serverCache.getConnection(p2.getUserID()).sendData(response2.getFile());
         
     }
 
@@ -143,10 +153,7 @@ public class Server implements Node,Runnable {
         ClientSendsInvite message = (ClientSendsInvite) e;
         User sentFrom = this.serverCache.getUser(socket);
         User sendTo = serverCache.getUser(message.getUserTo());
-        System.out.println(sentFrom);
-        System.out.println(message.getUserTo());
         if(sentFrom == null || sendTo == null){
-            System.out.println("one is null");
         }
         else {
           Invite inv = new Invite(sendTo.getUsername(), sentFrom.getUsername(), genInviteID());

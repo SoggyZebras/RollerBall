@@ -55,6 +55,7 @@ public class ServerRespondsRefresh implements Event {
 
     // Take the local variables and serialize them into a file
     oout.writeInt(this.message_type);
+    oout.writeObject(this.user);
 
 
     //flush the objects to the stream and close the streams
