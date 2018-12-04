@@ -113,7 +113,7 @@ public class User implements Serializable {
 
         Game[] tmp = new Game[games.length-1];
 
-        for(int i=0,j=0; i < games.length-1;i++){
+        for(int i=0,j=0; i < games.length;i++){
             if(games[i].getGameID() == g.getGameID()){
 
             }

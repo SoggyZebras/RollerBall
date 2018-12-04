@@ -30,6 +30,7 @@ public class Game implements java.io.Serializable {
         this.player2 = p2;
         this.inProgress = true;
         this.whosTurn = p1;
+        this.winner = this.loser = null;
 
         // add white pieces
         addPiece(new Pawn(new Location(5, 2), 'w', "pawn"));

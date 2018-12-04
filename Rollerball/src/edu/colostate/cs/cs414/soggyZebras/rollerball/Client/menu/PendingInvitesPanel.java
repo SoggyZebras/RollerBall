@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.Arrays;
 
 public class PendingInvitesPanel extends MenuPanel {
 
@@ -32,14 +34,6 @@ public class PendingInvitesPanel extends MenuPanel {
             }
         }
 
-        // TODO: remove this soon
-        Invite i1 = new Invite("bob", "joe", 0);
-        Invite i2 = new Invite("bob", "joebob", 1);
-        Invite i3 = new Invite("bob", "joey", 2);
-        pendingInvitesListModel.add(0, new PendingInviteListDisplay(i1));
-        pendingInvitesListModel.add(1, new PendingInviteListDisplay(i2));
-        pendingInvitesListModel.add(2, new PendingInviteListDisplay(i3));
-
         JList<PendingInviteListDisplay> pendingInvitesList = new JList<>(pendingInvitesListModel);
         pendingInvitesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane listScroller = new JScrollPane(pendingInvitesList);
@@ -51,7 +45,6 @@ public class PendingInvitesPanel extends MenuPanel {
         // to make sure Back is on a new line
         add(new JLabel("                                                            "));
         add(createLinkedButton("Back", "main_menu"));
-        // TODO: update pending invites buttons
     }
 
     class AcceptInviteListener implements ActionListener {
@@ -63,22 +56,20 @@ public class PendingInvitesPanel extends MenuPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            PendingInviteListDisplay invite = pendingInvitesList.getSelectedValue();
-            pendingInvitesListModel.remove(pendingInvitesListModel.indexOf(invite));
-            // TODO: tell server that game was started
+            PendingInviteListDisplay listInvite = pendingInvitesList.getSelectedValue();
+            pendingInvitesListModel.remove(pendingInvitesListModel.indexOf(listInvite));
             getMenuGUI().revalidate();
             getMenuGUI().repaint();
 
-            // load game is 1 if they choose no, 0 if they choose yes
-            int loadGame = JOptionPane.showOptionDialog(getMenuGUI(),
-                    "Game created with user " + invite.invite.getInviter() + ", would you like to load this game?", "Game Started",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-
-            if (loadGame == 0) {
-                // TODO: get game id
-                int gameId = 0;
-                getMenuGUI().openGameGUI(gameId);
+            try {
+                getMenuGUI().client.respondInvite(listInvite.invite.getInviter(), listInvite.invite.getInviteID());
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
+
+            // notify user
+            JOptionPane.showMessageDialog(getMenuGUI(),
+                    "Game created with user " + listInvite.invite.getInviter() + ".\nGo to the main menu to start the game.");
         }
     }
 

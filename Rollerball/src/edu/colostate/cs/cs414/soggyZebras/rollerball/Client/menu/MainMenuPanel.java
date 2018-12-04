@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * represents the main menu screen (current games, history, new game)
@@ -32,12 +33,6 @@ public class MainMenuPanel extends MenuPanel {
                 activeGamesListModel.add(0, new GameListDisplay(game));
             }
         }
-
-        // TODO: remove this soon
-        Game g1 = new Game();
-        Game g2 = new Game();
-        activeGamesListModel.add(0, new GameListDisplay(g1));
-        activeGamesListModel.add(1, new GameListDisplay(g2));
 
         JList<GameListDisplay> activeGamesList = new JList<>(activeGamesListModel);
         activeGamesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

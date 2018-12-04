@@ -164,14 +164,14 @@ public class Server implements Node,Runnable {
         User sentUser = this.serverCache.getUser(s);
         User fromUser = serverCache.getUser(message.getUsername());
         int gID;
-        fromUser.removeInviteGot(message.getInviteID());
-        sentUser.removeInviteSent(message.getInviteID());
+        fromUser.removeInviteSent(message.getInviteID());
+        sentUser.removeInviteGot(message.getInviteID());
         gID = genGameID();
         Game newGame = new Game(gID,sentUser,fromUser);
         games.addGame(newGame);
         sentUser.addGame(newGame);
         fromUser.addGame(newGame);
-        db.insertGame(newGame.getPlayer1().getUsername(),newGame.getPlayer2().getUsername(),newGame,newGame.getWhosTurn().getUsername(),newGame.getWinner().getUsername(),newGame.getLoser().getUsername(),newGame.isInProgress());
+        db.insertGame(newGame.getPlayer1().getUsername(),newGame.getPlayer2().getUsername(),newGame,newGame.getWhosTurn().getUsername(),null, null, newGame.isInProgress());
 
         if(serverCache.getConnection(fromUser.getUserID()) != null){
             ServerRespondsInvite response2 = new ServerRespondsInvite(fromUser);
@@ -280,9 +280,10 @@ public class Server implements Node,Runnable {
 
     //Check each game and make sure the random numbe generated isn't already in use.
     private int genGameID(){
+        Random random = new Random();
        int id = random.nextInt(Integer.MAX_VALUE);
 
-       while(!gameIDs.contains(id)){
+       while(gameIDs.contains(id) || id <=0){
            id = random.nextInt(Integer.MAX_VALUE);
        }
        gameIDs.add(id);
