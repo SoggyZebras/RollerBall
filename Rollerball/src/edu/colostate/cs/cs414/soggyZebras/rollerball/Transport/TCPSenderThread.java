@@ -42,7 +42,7 @@ public class TCPSenderThread extends Thread{
             try {
 
                 //Write data to the output stream
-                dout.write(dataToSend.getBytes());
+                dout.writeObject(dataToSend);
                 dout.flush();
 
 

@@ -15,10 +15,10 @@ public class EventFactory implements Protocol {
      * @param socket
      * @throws ClassNotFoundException
      */
-    public synchronized static void work(String data, Node node, Socket socket) throws ClassNotFoundException {
+    public synchronized static void work(String data,int type, Node node, Socket socket) throws ClassNotFoundException {
         // Depending on what type of message has arrived, perfom an action
         try {
-            switch (0) {
+            switch (type) {
 
                 case eClient_Make_Move: node.onEvent(new ClientMakeMove(data), socket);break
                     ;

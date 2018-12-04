@@ -59,11 +59,6 @@ public class ClientSendsRegistration implements Event {
         ByteArrayOutputStream oout = new ByteArrayOutputStream();
         ObjectOutputStream ostream = new ObjectOutputStream(oout);
 
-        System.out.println("type: " + this.message_type);
-        System.out.println("username: " + this.username);
-        System.out.println(this.password);
-        System.out.println(this.email);
-
         // Take the local variables and serialize them into a file
         ostream.writeInt(this.message_type);
         ostream.writeObject(this.username);

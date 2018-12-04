@@ -5,12 +5,10 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Server;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.EventFactory;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Base64;
 
 public class TCPReceiverThread extends Thread implements Serializable{
     private Socket socket;
@@ -39,7 +37,10 @@ public class TCPReceiverThread extends Thread implements Serializable{
             try {
                 //Read data from input stream
                 String data = (String)din.readObject();
-                EventFactory.work(data,this.node,this.socket);
+                byte[] dat = Base64.getDecoder().decode(data);
+                ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(dat));
+                int i = oin.readInt();
+                EventFactory.work(data,i,this.node,this.socket);
             }
             catch(SocketException se) {
                 System.out.println("Socket Exception in TCP Receiver Thread");
@@ -47,6 +48,7 @@ public class TCPReceiverThread extends Thread implements Serializable{
             }
             catch(IOException ioe) {
                 System.out.println("IO Exception in TCP Receiver Thread");
+                ioe.printStackTrace();
                 break;
             } catch (ClassNotFoundException e) {
                 System.out.println("IO Exception in TCP Receiver Thread");
