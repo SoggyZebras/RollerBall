@@ -75,23 +75,23 @@ public class Server implements Node,Runnable {
             }
         }
 
-//        System.out.println("begin game init...");
-//        for(User u : serverCache.getAllUsers()){
-//            for(User k: serverCache.getAllUsers()){
-//                Game tmp = db.getGame(u.getUsername(),k.getUsername());
-//                if(tmp != null) {
-//                    u.addGame(tmp);
-//                    k.addGame(tmp);
-//                }
-//
-//                Game tmp2 = db.getGame(k.getUsername(),u.getUsername());
-//                if(tmp2 != null) {
-//                    u.addGame(tmp2);
-//                    k.addGame(tmp2);
-//                }
-//
-//            }
-//        }
+        System.out.println("begin game init...");
+        for(User u : serverCache.getAllUsers()){
+            for(User k: serverCache.getAllUsers()){
+                Game tmp = db.getGame(u.getUsername(),k.getUsername());
+                if(tmp != null) {
+                    u.addGame(tmp);
+                    k.addGame(tmp);
+                }
+
+                Game tmp2 = db.getGame(k.getUsername(),u.getUsername());
+                if(tmp2 != null) {
+                    u.addGame(tmp2);
+                    k.addGame(tmp2);
+                }
+
+            }
+        }
 
     }
 
@@ -171,7 +171,7 @@ public class Server implements Node,Runnable {
         games.addGame(newGame);
         sentUser.addGame(newGame);
         fromUser.addGame(newGame);
-     //   db.insertGame(newGame);
+        db.insertGame(newGame.getPlayer1().getUsername(),newGame.getPlayer2().getUsername(),newGame,newGame.getWhosTurn().getUsername(),newGame.getWinner().getUsername(),newGame.getLoser().getUsername(),newGame.isInProgress());
 
         if(serverCache.getConnection(fromUser.getUserID()) != null){
             ServerRespondsInvite response2 = new ServerRespondsInvite(fromUser);
