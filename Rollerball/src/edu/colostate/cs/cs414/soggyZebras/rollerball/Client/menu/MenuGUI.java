@@ -55,7 +55,7 @@ public class MenuGUI extends JFrame {
         cardContainer = new CardContainer(this);
         add(cardContainer);
 
-        setSize(600, 620);
+        setSize(300, 320);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
