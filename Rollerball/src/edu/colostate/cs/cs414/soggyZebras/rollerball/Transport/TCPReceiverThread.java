@@ -17,8 +17,7 @@ public class TCPReceiverThread extends Thread implements Serializable{
     private Socket socket;
     private ObjectInputStream din;
     private Node node;
-    private RSA rsa;
-    private AES aes;
+
     private boolean first = true;
     private boolean second = true;
 
@@ -27,11 +26,9 @@ public class TCPReceiverThread extends Thread implements Serializable{
      * @param node
      * @param socket
      */
-    protected TCPReceiverThread(Node node,Socket socket,RSA rsa,AES aes) throws IOException {
+    protected TCPReceiverThread(Node node,Socket socket) throws IOException {
         this.socket = socket;
         this.node = node;
-        this.rsa = rsa;
-        this.aes = aes;
         this.din = new ObjectInputStream(socket.getInputStream());
 
     }
@@ -39,23 +36,12 @@ public class TCPReceiverThread extends Thread implements Serializable{
     public void run() {
         while(socket != null){
             try {
-                if (first) {
-                    this.rsa.setTheirE((BigInteger) din.readObject());
-                    this.rsa.setTheirN((BigInteger) din.readObject());
-                    first = false;
-                } else if(second) {
-                    if(node instanceof Client || node instanceof AI_Client){
-                       aes.setSecret((rsa.decrypt((BigInteger) din.readObject())));
-                    }
-                    second = false;
-                } else {
-                    //Read data from input stream
-                    String data = aes.decrypt((String) din.readObject(),aes.getSecret());
+
+                    String data = (String) din.readObject();
                     byte[] dat = Base64.getDecoder().decode(data);
                     ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(dat));
                     int i = oin.readInt();
                     EventFactory.work(data, i, this.node, this.socket);
-                }
             } catch (SocketException se) {
                 System.out.println("Socket Exception in TCP Receiver Thread");
                 break;

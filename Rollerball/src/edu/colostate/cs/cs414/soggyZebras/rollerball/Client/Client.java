@@ -9,6 +9,9 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 
 public class Client implements Node {
@@ -101,13 +104,13 @@ public class Client implements Node {
         serverConnection.sendData(message.getFile());
     }
 
-    public void register(String username, String password, String email) throws IOException{
-        ClientSendsRegistration message = new ClientSendsRegistration(username,password,email);
+    public void register(String username, String password, String email) throws IOException, NoSuchAlgorithmException {
+        ClientSendsRegistration message = new ClientSendsRegistration(username,hashPassword(password).toString(),email);
         serverConnection.sendData(message.getFile());
     }
 
-    public void login(String username, String password) throws IOException{
-        ClientSendsLogin message = new ClientSendsLogin(username,password);
+    public void login(String username, String password) throws IOException, NoSuchAlgorithmException {
+        ClientSendsLogin message = new ClientSendsLogin(username,hashPassword(password));
         serverConnection.sendData(message.getFile());
     }
 
@@ -245,6 +248,12 @@ public class Client implements Node {
 
     //========= END HANDLES ========//
 
+
+    private String hashPassword(String s) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-512");
+        byte[] hash = digest.digest(s.getBytes(StandardCharsets.UTF_8));
+        return new String(hash);
+    }
 
     public void setGui(MenuGUI p){
         this.gui = p;

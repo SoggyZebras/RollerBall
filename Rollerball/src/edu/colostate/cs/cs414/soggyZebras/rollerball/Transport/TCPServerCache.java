@@ -61,6 +61,8 @@ public class TCPServerCache {
     public boolean matchPassword(String username, String pass){
         User tmp = getUser(username);
         if(tmp != null){
+            System.out.println(pass);
+            System.out.println(tmp.getPassword());
             if(tmp.getPassword().equals(pass)){
                 return true;
             }
