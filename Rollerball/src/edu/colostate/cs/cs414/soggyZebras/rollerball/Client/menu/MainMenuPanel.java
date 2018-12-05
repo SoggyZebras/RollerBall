@@ -17,6 +17,7 @@ import java.util.Arrays;
  */
 public class MainMenuPanel extends MenuPanel {
     private GameListDisplay selectedGame;
+    private DefaultListModel<GameListDisplay> activeGamesListModel;
 
     public MainMenuPanel(MenuGUI menuGUI) {
         super("main_menu", menuGUI);
@@ -28,7 +29,7 @@ public class MainMenuPanel extends MenuPanel {
         removeAll();
 
         add(new JLabel("<html>Logged in as " + getMenuGUI().loggedInUser.getUsername() + "<br>Active Games</html>"));
-        DefaultListModel<GameListDisplay> activeGamesListModel = new DefaultListModel();
+         activeGamesListModel = new DefaultListModel();
 
         // get this users games
         if (getMenuGUI().loggedInUser != null) {
@@ -53,7 +54,6 @@ public class MainMenuPanel extends MenuPanel {
         // make it so that the selected game doesn't change even if it is refreshed
         if (selectedGame != null) {
             activeGamesList.setSelectedValue(selectedGame, true);
-            System.err.println(selectedGame+ " set");
         }
 
         add(createLinkedActionButton("Start Selected Game", new StartGameListener(activeGamesList)));
@@ -62,6 +62,16 @@ public class MainMenuPanel extends MenuPanel {
         add(createLinkedButton("Game History", "game_history"));
         add(createLinkedActionButton("Logout", new LogoutListener()));
         add(createLinkedActionButton("Unregister", new UnregisterListener()));
+    }
+
+    /**
+     * used for testing
+     * @return the game id of the first game on the list
+     */
+    public int getFirstGameID() {
+        if (activeGamesListModel.size() > 0)
+            return activeGamesListModel.get(0).game.getGameID();
+        else return -1;
     }
 
     class StartGameListener implements ActionListener {
