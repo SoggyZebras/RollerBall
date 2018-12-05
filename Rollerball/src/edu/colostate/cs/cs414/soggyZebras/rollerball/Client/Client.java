@@ -82,6 +82,8 @@ public class Client implements Node {
 
             case eServer_Responds_Deregister: handleServerRespondsDeregister(e, socket);break;
 
+            case eServer_Responds_Has_Won: handleServerRespondsHasWon(e, socket);break;
+
             default:
         }
 
@@ -125,7 +127,8 @@ public class Client implements Node {
     }
 
     public void hasWonGame(int d) throws IOException {
-
+        ClientSendsHasWon message = new ClientSendsHasWon(d);
+        serverConnection.sendData(message.getFile());
     }
 
     /**
@@ -247,6 +250,22 @@ public class Client implements Node {
     private void handleServerRespondsDeregister(Event e, Socket socket){
         ServerRespondsDeregister message = (ServerRespondsDeregister) e;
         //gui.refresh(message.getUser());
+    }
+
+    private void handleServerRespondsHasWon(Event e, Socket socket){
+        ServerRespondsHasWon message = (ServerRespondsHasWon) e;
+        //TODO call gui method to handle the has won response
+        //message.getGid() gets the game id
+        //message.getHasWon() returns whether the game has won or not
+        //message.getWinner() returns the winner of the game if hasWon is true, null if false
+        //message.getLoser() returns the loser of the game if hasWon is true, null if false
+
+    }
+
+    private void handleServerRespondsUserList(Event e, Socket s){
+        ServerRespondsUserList message = (ServerRespondsUserList) e;
+        //TODO call gui method to pass userlist to gui
+        //gui.updateUsers(message.getUserList());
     }
 
 

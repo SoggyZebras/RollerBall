@@ -118,6 +118,11 @@ public class Server implements Node,Runnable {
                 case eClient_Sends_Has_Won:
                     handleClientSendsHasWon(e, socket);
                     break;
+
+                case eClient_Request_User_List:
+                    handleClientRequestUserList(e,socket);
+                    break;
+
                 default:
             }
         }catch(NoSuchAlgorithmException nsa){
@@ -293,6 +298,20 @@ public class Server implements Node,Runnable {
 
         db.removeUser(message.getUserID());
         ServerRespondsDeregister response = new ServerRespondsDeregister((User)null);
+        serverCache.getUserCon(socket).sendData(response.getFile());
+    }
+
+    private void handleClientSendsHasWon(Event e, Socket socket) throws IOException{
+        ClientSendsHasWon message = (ClientSendsHasWon) e;
+        boolean won = games.checkWin(message.getGameID());
+        Game g = games.getGame(message.getGameID());
+
+        ServerRespondsHasWon response = new ServerRespondsHasWon(won,message.getGameID(),g.getWinner(),g.getLoser());
+        serverCache.getUserCon(socket).sendData(response.getFile());
+    }
+
+    private void handleClientRequestUserList(Event e, Socket socket) throws IOException{
+        ServerRespondsUserList response = new ServerRespondsUserList(serverCache.getAllUsers());
         serverCache.getUserCon(socket).sendData(response.getFile());
     }
 

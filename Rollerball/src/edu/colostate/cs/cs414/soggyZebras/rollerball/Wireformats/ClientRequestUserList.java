@@ -3,27 +3,20 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Base64;
 
-public class ServerRespondsHasWon implements Event{
+public class ClientRequestUserList implements Event{
 
   //Information to be serialized or deserialized
   private int message_type;
-  private int gid;
-  private User winner;
-  private User loser;
-  private boolean hasWon;
 
   //Sending message constructor
 
 
-  public ServerRespondsHasWon(boolean won,int gid,User winner, User loser){
+  public ClientRequestUserList(){
 
-    this.message_type = eServer_Responds_Has_Won;
-    this.gid = gid;
-    this.winner = winner;
-    this.loser = loser;
-    this.hasWon = won;
+    this.message_type = eClient_Request_User_List;
   }
 
   //Recieving message constructor
@@ -33,20 +26,15 @@ public class ServerRespondsHasWon implements Event{
    * @throws IOException
    * @throws ClassNotFoundException
    */
-  public ServerRespondsHasWon(String input) throws IOException, ClassNotFoundException {
+  public ClientRequestUserList(String input) throws IOException, ClassNotFoundException {
+
 
     byte[] data = Base64.getDecoder().decode(input);
     ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(data));
     // deserialize the objects into their proper local variables
 
-    // deserialize the objects into their proper local variables
+
     this.message_type = oin.readInt();
-    this.gid = oin.readInt();
-    this.hasWon = oin.readBoolean();
-    this.winner = (User) oin.readObject();
-    this.loser = (User) oin.readObject();
-
-
 
     // Close streams
     oin.close();
@@ -63,10 +51,6 @@ public class ServerRespondsHasWon implements Event{
 
     // Take the local variables and serialize them into a file
     oout.writeInt(this.message_type);
-    oout.writeInt(this.gid);
-    oout.writeBoolean(this.hasWon);
-    oout.writeObject(this.winner);
-    oout.writeObject(this.loser);
 
     //flush the objects to the stream and close the streams
     oout.flush();
@@ -81,14 +65,6 @@ public class ServerRespondsHasWon implements Event{
     return this.message_type;
   }
 
-  public int getGid(){ return this.gid;}
 
-  public User getWinner(){return this.winner;}
-
-  public User getLoser(){return this.loser;}
-
-  public boolean getHasWon(){
-    return hasWon;
-  }
 
 }
