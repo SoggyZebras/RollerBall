@@ -124,6 +124,10 @@ public class Client implements Node {
         serverConnection.sendData(message.getFile());
     }
 
+    public void hasWonGame(int d) throws IOException {
+
+    }
+
     /**
      *
      * @param from

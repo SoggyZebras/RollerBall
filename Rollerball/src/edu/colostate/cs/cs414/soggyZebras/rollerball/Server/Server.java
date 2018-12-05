@@ -114,6 +114,10 @@ public class Server implements Node,Runnable {
                 case eClient_Sends_Logout:
                     handleClientSendsLogout(e, socket);
                     break;
+
+                case eClient_Sends_Has_Won:
+                    handleClientSendsHasWon(e, socket);
+                    break;
                 default:
             }
         }catch(NoSuchAlgorithmException nsa){

@@ -22,5 +22,7 @@ public interface Protocol {
      int eClient_Sends_Deregister = 16;
      int eServer_Responds_Deregister = 17;
      int eClient_Sends_Logout = 18;
+     int eClient_Sends_Has_Won = 19;
+     int eServer_Responds_Has_Won = 20;
 
 }
