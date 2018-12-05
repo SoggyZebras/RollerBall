@@ -58,17 +58,12 @@ public class Game implements java.io.Serializable {
     }
 
     public ArrayList<Location> validMoves(User p, Location l){
-       // if(whosTurn == p){
-            return board.get(l).validMoves(board);
-        //}
-        //else{
-         //   return null;
-        //}
+        return board.get(l).validMoves(board);
     }
 
     // TODO can we maybe remove this/do we need the check for which user has the turn (in other method)
     public ArrayList<Location> validMoves(Location l){
-            return board.get(l).validMoves(board);
+        return board.get(l).validMoves(board);
     }
 
     /**

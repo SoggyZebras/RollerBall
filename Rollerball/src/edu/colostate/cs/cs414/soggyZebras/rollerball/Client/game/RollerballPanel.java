@@ -212,11 +212,21 @@ public class RollerballPanel extends JPanel {
     }
 
     private void displayTurn(Graphics2D g2) {
-        String turn = game.getWhosTurn().getUsername();
+        String turn = game.getWhosTurn().getUsername() + "'s";
+        String col = "black";
+        if(game.getPlayer1().getUserID() == menuGUI.loggedInUser.getUserID()){
+            col = "white";
+        }
+        if(game.getWhosTurn().getUserID() == menuGUI.loggedInUser.getUserID()){
+            turn = "your";
+        }
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("TimesRoman", Font.PLAIN, 15));
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
                 if (i == 3 && j == 4) {
-                    g2.drawString(turn, getWidth()/2, getHeight()/2);
+                    g2.drawString("You are the " + col + " pieces.", getWidth()/3, getHeight()/3);
+                    g2.drawString("It is " + turn + " turn.", getWidth()/3, getHeight()/2);
                 }
             }
         }
