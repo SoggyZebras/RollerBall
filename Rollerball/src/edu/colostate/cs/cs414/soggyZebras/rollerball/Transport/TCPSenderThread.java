@@ -18,47 +18,22 @@ public class TCPSenderThread extends Thread{
     private Socket socket;
     private ObjectOutputStream dout;
     private MessageQueue queue;
-    private AES aes;
-    private BigInteger g;
-    private BigInteger a;
-    private BigInteger p;
-    private boolean first = true;
 
     /**
      *
      * @param socket
      * @throws IOException
      */
-    protected TCPSenderThread(Node node, Socket socket,AES aes, BigInteger g, BigInteger a, BigInteger p) throws IOException {
+    protected TCPSenderThread(Node node, Socket socket) throws IOException {
         this.node = node;
         this.socket = socket;
         this.queue = new MessageQueue();
         this.dout = new ObjectOutputStream(socket.getOutputStream());
-        this.a= a;
-        this.g = g;
-        this.p = p;
-        this.aes = aes;
     }
 
     public void run(){
         while (socket != null) {
-
-            try {
-                if(first){
-                    System.out.println("giving g^a(p)");
-                        System.out.println(g.modPow(a,p));
-                        dout.writeObject(g.modPow(a,p));
-                        dout.flush();
-                        first = false;
-
-                }
-                else{
-
-                    forward(this.queue.take());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            forward(this.queue.take());
         }
     }
 
@@ -70,7 +45,7 @@ public class TCPSenderThread extends Thread{
         try {
             synchronized (socket) {
                 //Write data to the output stream
-                dout.writeObject(aes.encrypt(dataToSend));
+                dout.writeObject(dataToSend);
                 dout.flush();
 
             }

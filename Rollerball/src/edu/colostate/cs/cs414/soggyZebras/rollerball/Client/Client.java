@@ -2,8 +2,6 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.AES;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 
