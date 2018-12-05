@@ -128,7 +128,7 @@ public class AI_Player {
                     for (Location Y : allWLocs) { //Valid white moves
                         if (X.equals(Y)) {
                             canCapture = true;
-                            cl.makeMove(Y, X, gID); //TO, FROM
+                            cl.makeMove(Y, I, gID); //TO, FROM
                             System.out.println("AI has captured White piece: " + Board.get(Y).getType() + " At location: " + Y.toString());
                             break;
                         }
@@ -154,7 +154,7 @@ public class AI_Player {
         for(Location I : allWLocs){
                 for(Location X : currGame.validMoves(AI,I)) {
                     for(Location Y: allBLocs){
-                        if ((X.getCol()==Y.getCol())&&(X.getRow()==Y.getRow())){
+                        if (X.equals(Y)){
                             System.out.println("AI can be captured by White piece: "+Board.get(X).getType() + "At location: "+X.toString());
                             //Need to move from unsafe location to safe location if we have a valid move
                             //If no valid moves are available then we cant move anywhere and we will have to be captured
@@ -196,7 +196,7 @@ public class AI_Player {
                     value = rand.nextInt(valMoves.size());
                     Location move = valMoves.get(value);
                     canMove = true;
-                    cl.makeMove(move, loc, gID);
+                    cl.makeMove(move, loc, gID); //TO, FROM
                     break;
                 }
             }
