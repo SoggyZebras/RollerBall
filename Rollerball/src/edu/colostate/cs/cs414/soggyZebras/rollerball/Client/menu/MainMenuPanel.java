@@ -59,9 +59,8 @@ public class MainMenuPanel extends MenuPanel {
         add(createLinkedActionButton("Start Selected Game", new StartGameListener(activeGamesList)));
         add(createLinkedButton("Invite Players", "create_invite"));
         add(createLinkedButton("Pending Invites", "pending_invites"));
-        add(createLinkedButton("Game History", "game_history"));
-        add(createLinkedActionButton("Logout", new LogoutListener()));
-        add(createLinkedActionButton("Unregister", new UnregisterListener()));
+        add(createLinkedButton("Profile", "profile"));
+
     }
 
     /**
@@ -91,43 +90,6 @@ public class MainMenuPanel extends MenuPanel {
             if (gamesList.getSelectedValue() != null) {
                 int gameID = selected.game.getGameID();
                 getMenuGUI().openGameGUI(gameID);
-            }
-        }
-    }
-
-    class LogoutListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            int logout = JOptionPane.showOptionDialog(getMenuGUI(),
-                    "Are you sure you want to logout?", "Logout Confirmation",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-            if (logout == 0) {
-                try {
-                    getMenuGUI().client.logout(getMenuGUI().loggedInUser.getUserID());
-                }
-                catch(IOException i){
-                    i.printStackTrace();
-                }
-                getMenuGUI().setMenu("register_login");
-            }
-        }
-    }
-
-    class UnregisterListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            int unreg = JOptionPane.showOptionDialog(getMenuGUI(),
-                    "Are you sure you want to unregister? All of this user's data will be lost", "Unregister Confirmation",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-            if (unreg == 0) {
-                // TODO: unregister user from db
-                try {
-                    getMenuGUI().client.deregister(getMenuGUI().loggedInUser.getUserID());
-                }
-                catch(IOException i){
-                    i.printStackTrace();
-                }
-                getMenuGUI().setMenu("register_login");
             }
         }
     }
