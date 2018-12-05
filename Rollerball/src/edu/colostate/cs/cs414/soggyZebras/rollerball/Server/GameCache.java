@@ -38,6 +38,13 @@ public class GameCache {
         return false;
     }
 
+    public boolean checkWin(int id){
+        if(getGame(id).wonGameW() || getGame(id).wonGameB()){
+            return true;
+        }
+        return false;
+    }
+
     public void setGames(ArrayList<Game> g){
         games = g;
     }

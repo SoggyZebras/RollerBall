@@ -16,6 +16,7 @@ public class TCPConnection {
     private int ID;
     private SecureRandom secRand = null;
 
+
     /**
      *
      * @param node
@@ -27,6 +28,7 @@ public class TCPConnection {
         this.serverSocket = server;
         this.node = node;
         this.ID = id;
+
 
         //create receiver socket to communicate
         this.senSocket = new TCPSenderThread(this.node,this.serverSocket);

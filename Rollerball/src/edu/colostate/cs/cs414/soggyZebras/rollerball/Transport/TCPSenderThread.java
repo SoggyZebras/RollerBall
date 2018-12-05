@@ -2,22 +2,24 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Transport;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Server;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
-import sun.awt.image.PixelConverter;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.math.BigInteger;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 
 public class TCPSenderThread extends Thread{
+    private String KEY_SET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private SecureRandom rnd = new SecureRandom();
     private Node node;
     private Socket socket;
     private ObjectOutputStream dout;
     private MessageQueue queue;
+
+    private boolean first = true;
+    private boolean second = true;
 
     /**
      *
@@ -33,7 +35,13 @@ public class TCPSenderThread extends Thread{
 
     public void run(){
         while (socket != null) {
-            forward(this.queue.take());
+
+            try {
+                forward(this.queue.take());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -41,23 +49,27 @@ public class TCPSenderThread extends Thread{
         this.queue.add(dataToSend);
     }
 
-    private void forward(String dataToSend){
-        try {
-            synchronized (socket) {
+    private void forward(String dataToSend) throws IOException{
+        synchronized(this.socket) {
+            try {
+
                 //Write data to the output stream
                 dout.writeObject(dataToSend);
                 dout.flush();
 
-            }
-            } catch(IOException e){
+
+
+            } catch (IOException e) {
                 System.out.println("IO Exception in TCP Sender Thread");
-                try {
-                    this.socket.close();
-                } catch (IOException i) {
-                    i.printStackTrace();
-                }
+                this.socket.close();
             }
         }
+    }
 
-
+    String randomString( int len ){
+        StringBuilder sb = new StringBuilder( len );
+        for( int i = 0; i < len; i++ )
+            sb.append( KEY_SET.charAt( rnd.nextInt(KEY_SET.length())));
+        return sb.toString();
+    }
 }

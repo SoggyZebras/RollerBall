@@ -62,6 +62,16 @@ public class PendingInvitesPanel extends MenuPanel {
         add(createLinkedButton("Back", "main_menu"));
     }
 
+    /**
+     * used for testing
+     * @return get the invite id of the first invite in the list
+     */
+    public int getFirstInviteID() {
+        if (pendingInvitesListModel.size() > 0)
+            return pendingInvitesListModel.get(0).invite.getInviteID();
+        else return -1;
+    }
+
     class AcceptInviteListener implements ActionListener {
         private JList<PendingInviteListDisplay> pendingInvitesList;
 

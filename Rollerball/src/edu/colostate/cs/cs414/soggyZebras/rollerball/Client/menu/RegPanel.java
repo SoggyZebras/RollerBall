@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * represents the registration screen
@@ -27,7 +28,7 @@ public class RegPanel extends MenuPanel {
         add(new JLabel("email: "));
         add(new TextField(30));
         add(new JLabel("password: "));
-        add(new TextField(30));
+        add(new JPasswordField(21));
         add(createLinkedActionButton("Register", new RegisterListener()));
         add(createLinkedButton("Back", "register_login"));
         registering = false;
@@ -40,7 +41,7 @@ public class RegPanel extends MenuPanel {
         public void actionPerformed(ActionEvent e) {
             String username = ((TextField)getComponent(1)).getText().trim();
             String email = ((TextField)getComponent(3)).getText().trim();
-            String password = ((TextField)getComponent(5)).getText().trim();
+            String password = String.valueOf(((JPasswordField)getComponent(5)).getPassword()).trim();
             try {
                 if (!registering) {
                     registering = true;
@@ -50,6 +51,8 @@ public class RegPanel extends MenuPanel {
                     getMenuGUI().client.register(username, password, email);
                 }
             } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (NoSuchAlgorithmException e1) {
                 e1.printStackTrace();
             }
         }

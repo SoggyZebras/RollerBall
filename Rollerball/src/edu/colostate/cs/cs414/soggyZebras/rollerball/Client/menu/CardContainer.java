@@ -27,6 +27,7 @@ public class CardContainer extends JPanel {
         addMenuPanel("main_menu", new MainMenuPanel(menuGUI));
         addMenuPanel("create_invite", new CreateInvitePanel(menuGUI));
         addMenuPanel("pending_invites", new PendingInvitesPanel(menuGUI));
+        addMenuPanel("profile", new ProfilePanel(menuGUI));
 
         // TODO: add more cards here
     }

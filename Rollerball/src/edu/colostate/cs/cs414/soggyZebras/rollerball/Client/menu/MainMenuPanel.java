@@ -17,6 +17,7 @@ import java.util.Arrays;
  */
 public class MainMenuPanel extends MenuPanel {
     private GameListDisplay selectedGame;
+    private DefaultListModel<GameListDisplay> activeGamesListModel;
 
     public MainMenuPanel(MenuGUI menuGUI) {
         super("main_menu", menuGUI);
@@ -28,7 +29,7 @@ public class MainMenuPanel extends MenuPanel {
         removeAll();
 
         add(new JLabel("<html>Logged in as " + getMenuGUI().loggedInUser.getUsername() + "<br>Active Games</html>"));
-        DefaultListModel<GameListDisplay> activeGamesListModel = new DefaultListModel();
+         activeGamesListModel = new DefaultListModel();
 
         // get this users games
         if (getMenuGUI().loggedInUser != null) {
@@ -53,15 +54,23 @@ public class MainMenuPanel extends MenuPanel {
         // make it so that the selected game doesn't change even if it is refreshed
         if (selectedGame != null) {
             activeGamesList.setSelectedValue(selectedGame, true);
-            System.err.println(selectedGame+ " set");
         }
 
         add(createLinkedActionButton("Start Selected Game", new StartGameListener(activeGamesList)));
         add(createLinkedButton("Invite Players", "create_invite"));
         add(createLinkedButton("Pending Invites", "pending_invites"));
-        add(createLinkedButton("Game History", "game_history"));
-        add(createLinkedActionButton("Logout", new LogoutListener()));
-        add(createLinkedActionButton("Unregister", new UnregisterListener()));
+        add(createLinkedButton("Profile", "profile"));
+
+    }
+
+    /**
+     * used for testing
+     * @return the game id of the first game on the list
+     */
+    public int getFirstGameID() {
+        if (activeGamesListModel.size() > 0)
+            return activeGamesListModel.get(0).game.getGameID();
+        else return -1;
     }
 
     class StartGameListener implements ActionListener {
@@ -81,43 +90,6 @@ public class MainMenuPanel extends MenuPanel {
             if (gamesList.getSelectedValue() != null) {
                 int gameID = selected.game.getGameID();
                 getMenuGUI().openGameGUI(gameID);
-            }
-        }
-    }
-
-    class LogoutListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            int logout = JOptionPane.showOptionDialog(getMenuGUI(),
-                    "Are you sure you want to logout?", "Logout Confirmation",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-            if (logout == 0) {
-                try {
-                    getMenuGUI().client.logout(getMenuGUI().loggedInUser.getUserID());
-                }
-                catch(IOException i){
-                    i.printStackTrace();
-                }
-                getMenuGUI().setMenu("register_login");
-            }
-        }
-    }
-
-    class UnregisterListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            int unreg = JOptionPane.showOptionDialog(getMenuGUI(),
-                    "Are you sure you want to unregister? All of this user's data will be lost", "Unregister Confirmation",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-            if (unreg == 0) {
-                // TODO: unregister user from db
-                try {
-                    getMenuGUI().client.deregister(getMenuGUI().loggedInUser.getUserID());
-                }
-                catch(IOException i){
-                    i.printStackTrace();
-                }
-                getMenuGUI().setMenu("register_login");
             }
         }
     }

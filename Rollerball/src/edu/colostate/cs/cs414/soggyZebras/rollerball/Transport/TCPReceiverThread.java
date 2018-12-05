@@ -18,6 +18,9 @@ public class TCPReceiverThread extends Thread implements Serializable{
     private ObjectInputStream din;
     private Node node;
 
+    private boolean first = true;
+    private boolean second = true;
+
     /**
      *
      * @param node
@@ -33,15 +36,14 @@ public class TCPReceiverThread extends Thread implements Serializable{
     public void run() {
         while(socket != null){
             try {
+
                     String data = (String) din.readObject();
                     byte[] dat = Base64.getDecoder().decode(data);
                     ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(dat));
                     int i = oin.readInt();
                     EventFactory.work(data, i, this.node, this.socket);
-
             } catch (SocketException se) {
                 System.out.println("Socket Exception in TCP Receiver Thread");
-                se.printStackTrace();
                 break;
             } catch (IOException ioe) {
                 System.out.println("IO Exception in TCP Receiver Thread");
@@ -50,7 +52,6 @@ public class TCPReceiverThread extends Thread implements Serializable{
             } catch (ClassNotFoundException e) {
                 System.out.println("IO Exception in TCP Receiver Thread");
                 e.printStackTrace();
-                break;
             }
         }
     }
@@ -62,6 +63,4 @@ public class TCPReceiverThread extends Thread implements Serializable{
     public Socket getSocket() {
         return this.socket;
     }
-
-
 }

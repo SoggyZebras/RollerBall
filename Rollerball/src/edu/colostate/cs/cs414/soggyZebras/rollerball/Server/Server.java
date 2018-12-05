@@ -9,6 +9,9 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -73,27 +76,58 @@ public class Server implements Node,Runnable {
     @Override
     public void onEvent(Event e, Socket socket) throws IOException, ClassNotFoundException {
         //React to messages sent to the server
-        switch(e.getType()){
+        try {
+            switch (e.getType()) {
 
-            case eClient_Make_Move: handleMakeMove(e,socket);break;
+                case eClient_Make_Move:
+                    handleMakeMove(e, socket);
+                    break;
 
-            case eClient_Request_Check_Move: handleCheckMove(e,socket);break;
+                case eClient_Request_Check_Move:
+                    handleCheckMove(e, socket);
+                    break;
 
-            case eClient_Sends_Invite: handleClientSendsInvite(e,socket);break;
+                case eClient_Sends_Invite:
+                    handleClientSendsInvite(e, socket);
+                    break;
 
-            case eClient_Responds_Invite: handleClientRespondsInvite(e,socket);break;
+                case eClient_Responds_Invite:
+                    handleClientRespondsInvite(e, socket);
+                    break;
 
-            case eClient_Sends_Login: handleClientSendsLogin(e, socket);break;
+                case eClient_Sends_Login:
+                    handleClientSendsLogin(e, socket);
+                    break;
 
-            case eClient_Sends_Registration: handleClientSendsRegistration(e, socket);break;
+                case eClient_Sends_Registration:
+                    handleClientSendsRegistration(e, socket);
+                    break;
 
-            case eClient_Sends_Refresh: handleClientSendsRefresh(e, socket);break;
+                case eClient_Sends_Refresh:
+                    handleClientSendsRefresh(e, socket);
+                    break;
 
-            case eClient_Sends_Deregister: handleClientSendsDeregister(e, socket);break;
+                case eClient_Sends_Deregister:
+                    handleClientSendsDeregister(e, socket);
+                    break;
 
-            case eClient_Sends_Logout: handleClientSendsLogout(e, socket);break;
-            default:
-        }
+                case eClient_Sends_Logout:
+                    handleClientSendsLogout(e, socket);
+                    break;
+
+                case eClient_Sends_Has_Won:
+                    handleClientSendsHasWon(e, socket);
+                    break;
+
+                case eClient_Request_User_List:
+                    handleClientRequestUserList(e,socket);
+                    break;
+
+                default:
+            }
+        }catch(NoSuchAlgorithmException nsa){
+                nsa.printStackTrace();
+            }
     }
 
     private void handleMakeMove(Event e ,Socket socket) throws IOException {
@@ -175,7 +209,7 @@ public class Server implements Node,Runnable {
 
     }
 
-    private void handleClientSendsLogin(Event e, Socket socket) throws IOException, ClassNotFoundException{
+    private void handleClientSendsLogin(Event e, Socket socket) throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
         //TODO check the username is valid, check the database to see if that user exists
         // if the user does not exists, send rejection
         // else fetch it, set the user fields and pass it to gui
@@ -209,11 +243,10 @@ public class Server implements Node,Runnable {
 
     }
 
-    private void handleClientSendsRegistration(Event e, Socket socket) throws IOException{
+    private void handleClientSendsRegistration(Event e, Socket socket) throws IOException, NoSuchAlgorithmException {
         ClientSendsRegistration message = (ClientSendsRegistration) e;
         User user = null;
         String reason = "";
-        if(checkPassword(message.getPassword())){
                 if(!checkUsername(message.getUsername())){
 
                         user = new User(genUserID(), "", "", "");
@@ -231,10 +264,6 @@ public class Server implements Node,Runnable {
                 else{
                     reason = "User already exists!";
                 }
-        }
-        else{
-            reason = "Bad Password: password must be at least 8 characters long and cannot contain [ ; ( ) , / } { ] \\ or '";
-        }
 
         ServerRespondsRegistration response = new ServerRespondsRegistration(user,reason);
         serverCache.getUserCon(socket).sendData(response.getFile());
@@ -268,6 +297,20 @@ public class Server implements Node,Runnable {
 
         db.removeUser(message.getUserID());
         ServerRespondsDeregister response = new ServerRespondsDeregister((User)null);
+        serverCache.getUserCon(socket).sendData(response.getFile());
+    }
+
+    private void handleClientSendsHasWon(Event e, Socket socket) throws IOException{
+        ClientSendsHasWon message = (ClientSendsHasWon) e;
+        boolean won = games.checkWin(message.getGameID());
+        Game g = games.getGame(message.getGameID());
+
+        ServerRespondsHasWon response = new ServerRespondsHasWon(won,message.getGameID(),g.getWinner(),g.getLoser());
+        serverCache.getUserCon(socket).sendData(response.getFile());
+    }
+
+    private void handleClientRequestUserList(Event e, Socket socket) throws IOException{
+        ServerRespondsUserList response = new ServerRespondsUserList(serverCache.getAllUsers());
         serverCache.getUserCon(socket).sendData(response.getFile());
     }
 
@@ -312,16 +355,6 @@ public class Server implements Node,Runnable {
         int uID = rand.nextInt();
         while(serverCache.containsUserID(uID) || uID <0){uID = rand.nextInt();}
         return uID;
-    }
-
-    private boolean checkPassword(String pass){
-        if(pass.equals("")){
-            return false;
-        }
-        if(pass.matches(".*[;(),/}{\"\'].*") || pass.length() < 8){
-            return false;
-        }
-        return true;
     }
 
     public static void main(String []args){
