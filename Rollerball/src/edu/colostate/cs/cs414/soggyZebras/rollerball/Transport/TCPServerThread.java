@@ -49,6 +49,7 @@ public class TCPServerThread implements Runnable{
             try {
                 //Accept incoming connection
                 this.socket = serverSocket.accept();
+                System.out.println("new connection: " + socket.toString());
 
                 //get random user ID number
                 int uID = rand.nextInt();
@@ -67,7 +68,6 @@ public class TCPServerThread implements Runnable{
             catch(IOException ioe) {
                 try {
                     this.socket.close();
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

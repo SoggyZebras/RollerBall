@@ -3,6 +3,7 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Client;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.MenuGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.AES;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 
@@ -102,6 +103,7 @@ public class Client implements Node {
     }
 
     public void register(String username, String password, String email) throws IOException{
+        System.out.println("registering");
         ClientSendsRegistration message = new ClientSendsRegistration(username,password,email);
         serverConnection.sendData(message.getFile());
     }

@@ -3,6 +3,7 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Server;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Database.Database.Database;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.AES;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerCache;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPServerThread;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
@@ -263,7 +264,6 @@ public class Server implements Node,Runnable {
     }
 
     private void handleClientSendsDeregister(Event e, Socket socket) throws IOException{
-        System.err.println("processing deregistration");
         ClientSendsDeregister message = (ClientSendsDeregister) e;
         serverCache.removeUser(message.getUserID());
 

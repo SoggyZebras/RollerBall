@@ -1,19 +1,16 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Transport;
 
-import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
-import sun.nio.cs.US_ASCII;
-
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
+
 
 public class RSA {
 
-    private BigInteger N;
-    private BigInteger phiN;
-    private BigInteger theirE;
-    private BigInteger theirN;
-    private BigInteger myE;
-    private BigInteger myD;
+    private BigInteger N = null;
+    private BigInteger phiN = null;
+    private BigInteger theirE = null;
+    private BigInteger theirN = null;
+    private BigInteger myE = null;
+    private BigInteger myD = null;
 
 
     public void generateN(BigInteger p, BigInteger q){

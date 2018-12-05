@@ -17,22 +17,23 @@ public class TCPReceiverThread extends Thread implements Serializable{
     private Socket socket;
     private ObjectInputStream din;
     private Node node;
-    private RSA rsa;
     private AES aes;
+    private BigInteger a;
+    private BigInteger p;
     private boolean first = true;
-    private boolean second = true;
 
     /**
      *
      * @param node
      * @param socket
      */
-    protected TCPReceiverThread(Node node,Socket socket,RSA rsa,AES aes) throws IOException {
+    protected TCPReceiverThread(Node node,Socket socket,AES aes,BigInteger a, BigInteger p) throws IOException {
         this.socket = socket;
         this.node = node;
-        this.rsa = rsa;
-        this.aes = aes;
         this.din = new ObjectInputStream(socket.getInputStream());
+        this.aes = aes;
+        this.a = a;
+        this.p = p;
 
     }
 
@@ -40,17 +41,12 @@ public class TCPReceiverThread extends Thread implements Serializable{
         while(socket != null){
             try {
                 if (first) {
-                    this.rsa.setTheirE((BigInteger) din.readObject());
-                    this.rsa.setTheirN((BigInteger) din.readObject());
-                    first = false;
-                } else if(second) {
-                    if(node instanceof Client || node instanceof AI_Client){
-                       aes.setSecret((rsa.decrypt((BigInteger) din.readObject())));
-                    }
-                    second = false;
+                    System.out.println("getting g^a(p)");
+                        aes.setSecret(((BigInteger) din.readObject()).modPow(a,p));
+                        first = false;
                 } else {
                     //Read data from input stream
-                    String data = aes.decrypt((String) din.readObject(),aes.getSecret());
+                    String data = aes.decrypt((String) din.readObject());
                     byte[] dat = Base64.getDecoder().decode(data);
                     ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(dat));
                     int i = oin.readInt();
@@ -58,6 +54,7 @@ public class TCPReceiverThread extends Thread implements Serializable{
                 }
             } catch (SocketException se) {
                 System.out.println("Socket Exception in TCP Receiver Thread");
+                se.printStackTrace();
                 break;
             } catch (IOException ioe) {
                 System.out.println("IO Exception in TCP Receiver Thread");
@@ -66,6 +63,7 @@ public class TCPReceiverThread extends Thread implements Serializable{
             } catch (ClassNotFoundException e) {
                 System.out.println("IO Exception in TCP Receiver Thread");
                 e.printStackTrace();
+                break;
             }
         }
     }
@@ -77,4 +75,6 @@ public class TCPReceiverThread extends Thread implements Serializable{
     public Socket getSocket() {
         return this.socket;
     }
+
+
 }
