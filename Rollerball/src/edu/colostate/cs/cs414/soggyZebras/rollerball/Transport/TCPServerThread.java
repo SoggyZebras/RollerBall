@@ -3,12 +3,9 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Transport;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
 
-import javax.net.ssl.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.KeyStore;
-import java.security.Security;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -32,13 +29,7 @@ public class TCPServerThread implements Runnable{
     public TCPServerThread(Node node, TCPServerCache c, int port) {
         try {
             this.node = node;
-            Security.addProvider(
-                    new com.sun.net.ssl.internal.ssl.Provider());
-
-            SSLServerSocketFactory factory =
-                    (SSLServerSocketFactory)SSLServerSocketFactory.getDefault();
-
-            serverSocket =  factory.createServerSocket(port);
+            serverSocket = new ServerSocket(port);
             this.serverCache = c;
             userNumbers = new ArrayList<>();
         } catch (IOException e) {

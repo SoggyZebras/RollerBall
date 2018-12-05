@@ -6,12 +6,9 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.security.Security;
 
 
 public class Client implements Node {
@@ -58,12 +55,7 @@ public class Client implements Node {
             System.out.println("Starting Client thread");
         }
         //Setup a connection to the server
-        Security.addProvider(
-                new com.sun.net.ssl.internal.ssl.Provider());
-
-        SSLSocketFactory factory =
-                (SSLSocketFactory)SSLSocketFactory.getDefault();
-        serverSocket = factory.createSocket(new Socket(InetAddress.getByName(this.serverHost),this.serverPort),this.serverHost,this.serverPort,false);
+        serverSocket = new Socket(InetAddress.getByName(this.serverHost),this.serverPort);
         serverConnection = new TCPConnection(this, serverSocket,0);
         serverConnection.initiate();
     }
