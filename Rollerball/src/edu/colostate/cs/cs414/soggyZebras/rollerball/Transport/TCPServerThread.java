@@ -3,9 +3,12 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Transport;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
 
+import javax.net.ssl.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.KeyStore;
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,21 +22,6 @@ public class TCPServerThread implements Runnable{
     private Random rand = new Random();
     private ArrayList<Integer> userNumbers;
 
-    /**
-     *
-     * @param node
-     * @param c
-     */
-    public TCPServerThread(Node node, TCPServerCache c) {
-        try {
-            this.node = node;
-            serverSocket = new ServerSocket(5000);
-            System.out.println("Listening on port " + serverSocket.getLocalPort());
-            this.serverCache = c;
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-        }
-    }
 
     /**
      *
@@ -44,7 +32,13 @@ public class TCPServerThread implements Runnable{
     public TCPServerThread(Node node, TCPServerCache c, int port) {
         try {
             this.node = node;
-            serverSocket = new ServerSocket(port);
+            Security.addProvider(
+                    new com.sun.net.ssl.internal.ssl.Provider());
+
+            SSLServerSocketFactory factory =
+                    (SSLServerSocketFactory)SSLServerSocketFactory.getDefault();
+
+            serverSocket =  factory.createServerSocket(port);
             this.serverCache = c;
             userNumbers = new ArrayList<>();
         } catch (IOException e) {
@@ -64,6 +58,7 @@ public class TCPServerThread implements Runnable{
             try {
                 //Accept incoming connection
                 this.socket = serverSocket.accept();
+
                 //get random user ID number
                 int uID = rand.nextInt();
                 while(userNumbers.contains(uID) || uID <0){uID = rand.nextInt();}
