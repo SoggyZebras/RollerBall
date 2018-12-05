@@ -6,7 +6,7 @@ public class King extends Piece {
 
     public ArrayList<Location> moves;
     public Map<Location, Piece> gameState;
-    public ArrayList<Location> badMoves = new ArrayList<>();
+    public ArrayList<Location> badMoves;
     public char myColor;
     public boolean otherKing = false;
 
@@ -26,8 +26,10 @@ public class King extends Piece {
         int col = loc.getCol();
         this.gameState = gameState;
         moves = new ArrayList<>();
-        if(!otherKing)
+        if(!otherKing){
+            badMoves = new ArrayList<>();
             unsafeMoves();
+        }
 
         moveRight(row, col);
         moveLeft(row, col);
@@ -213,6 +215,7 @@ public class King extends Piece {
      */
     private void unsafeMoves() {
         ArrayList<Location> temp = new ArrayList<>();
+        System.out.println(gameState.keySet());
         for(Location k: gameState.keySet()) {
             if(gameState.get(k).color != myColor && !(gameState.get(k).type.equals("king"))) {
                 temp = gameState.get(k).validMoves(gameState);

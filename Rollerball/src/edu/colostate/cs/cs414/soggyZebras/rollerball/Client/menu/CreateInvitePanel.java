@@ -25,6 +25,7 @@ public class CreateInvitePanel extends MenuPanel {
                 }
                 else {
                     getMenuGUI().client.sendInvite(username);
+                    JOptionPane.showMessageDialog(getMenuGUI(), "Your invite was successfully sent to " + username + ".");
                 }
             } catch (IOException e1) {
                 e1.printStackTrace();
