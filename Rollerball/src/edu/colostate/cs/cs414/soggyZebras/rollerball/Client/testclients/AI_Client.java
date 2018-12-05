@@ -194,9 +194,6 @@ public class AI_Client implements Node {
     private void handleServerSendsInvite(Event e, Socket socket) throws IOException {
         ServerSendsInvite message = (ServerSendsInvite) e;
         AI.refresh(message.getUserTo());
-        ClientRespondsInvite response = new ClientRespondsInvite(message.getUserFrom(),message.getInviteID());
-        serverConnection.sendData(response.getFile());
-
     }
 
 

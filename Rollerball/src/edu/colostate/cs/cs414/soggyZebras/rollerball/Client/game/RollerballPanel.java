@@ -64,6 +64,7 @@ public class RollerballPanel extends JPanel {
         drawPieces(g2);
         drawSelectedSquare(g2);
         drawHighlightedSquares(g2);
+        displayTurn(g2);
     }
 
     private void drawPieces(Graphics2D g2) {
@@ -208,5 +209,17 @@ public class RollerballPanel extends JPanel {
 
     private boolean isMyTurn() {
         return game.getWhosTurn().getUserID() == menuGUI.loggedInUser.getUserID();
+    }
+
+    private void displayTurn(Graphics2D g2) {
+        String turn = game.getWhosTurn().getUsername();
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
+                if (i == 3 && j == 4) {
+                    g2.drawString(turn, getWidth()/2, getHeight()/2);
+                }
+            }
+        }
+        repaint();
     }
 }

@@ -152,6 +152,8 @@ public class Server implements Node,Runnable {
         ClientRespondsInvite message = (ClientRespondsInvite) e;
         User sentUser = this.serverCache.getUser(s);
         User fromUser = serverCache.getUser(message.getUsername());
+        System.out.println(sentUser.getUsername() + " " + sentUser.getUserID() + " " +sentUser.getGames());
+        System.out.println(fromUser.getUsername() + " " + fromUser.getUserID() + " " +fromUser.getGames());
         int gID;
         fromUser.removeInviteSent(message.getInviteID());
         sentUser.removeInviteGot(message.getInviteID());
