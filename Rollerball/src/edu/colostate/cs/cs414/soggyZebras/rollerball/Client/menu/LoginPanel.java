@@ -23,7 +23,7 @@ public class LoginPanel extends MenuPanel {
         add(new JLabel("username: "));
         add(new TextField(30));
         add(new JLabel("password: "));
-        add(new TextField(30));
+        add(new JPasswordField(21));
         add(createLinkedActionButton("Login", new LoginListener()));
         add(createLinkedButton("Back", "register_login"));
         loggingIn = false;
@@ -35,7 +35,7 @@ public class LoginPanel extends MenuPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             String username = ((TextField)getComponent(1)).getText().trim();
-            String password = ((TextField)getComponent(3)).getText().trim();
+            String password = String.valueOf(((JPasswordField)getComponent(3)).getPassword()).trim();
             try {
                 if (!loggingIn) {
                     loggingIn = true;
