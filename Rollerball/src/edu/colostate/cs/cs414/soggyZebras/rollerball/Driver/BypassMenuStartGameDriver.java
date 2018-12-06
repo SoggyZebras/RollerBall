@@ -6,6 +6,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.PendingInvitesP
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.RegPanel;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 public class BypassMenuStartGameDriver {
     MenuGUI player1GUI;
@@ -41,7 +42,7 @@ public class BypassMenuStartGameDriver {
             loopUntilCanOpenGame(player1GUI);
             loopUntilCanOpenGame(player2GUI);
 
-        } catch (IOException e) {
+        } catch (IOException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
     }

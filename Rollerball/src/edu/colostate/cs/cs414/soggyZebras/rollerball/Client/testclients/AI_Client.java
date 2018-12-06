@@ -62,8 +62,6 @@ public class AI_Client implements Node {
         serverConnection.initiate();
         }
         catch (IOException e){
-            ClientSendsLogout response = new ClientSendsLogout(AI.AI.getUserID());
-            serverConnection.sendData(response.getFile());
 
         }
     }

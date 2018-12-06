@@ -19,21 +19,6 @@ public class TCPServerThread implements Runnable{
     private Random rand = new Random();
     private ArrayList<Integer> userNumbers;
 
-    /**
-     *
-     * @param node
-     * @param c
-     */
-    public TCPServerThread(Node node, TCPServerCache c) {
-        try {
-            this.node = node;
-            serverSocket = new ServerSocket(5000);
-            System.out.println("Listening on port " + serverSocket.getLocalPort());
-            this.serverCache = c;
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-        }
-    }
 
     /**
      *
@@ -64,6 +49,7 @@ public class TCPServerThread implements Runnable{
             try {
                 //Accept incoming connection
                 this.socket = serverSocket.accept();
+
                 //get random user ID number
                 int uID = rand.nextInt();
                 while(userNumbers.contains(uID) || uID <0){uID = rand.nextInt();}

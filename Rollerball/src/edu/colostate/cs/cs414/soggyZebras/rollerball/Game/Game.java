@@ -3,6 +3,7 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 
+import javax.swing.*;
 import java.util.*;
 
 public class Game implements java.io.Serializable {
@@ -58,7 +59,11 @@ public class Game implements java.io.Serializable {
     }
 
     public ArrayList<Location> validMoves(User p, Location l){
-        return board.get(l).validMoves(board);
+            return board.get(l).validMoves(board);
+    }
+
+    public ArrayList<Location> validMoves(Location loc, Map <Location,Piece> board){
+        return board.get(loc).validMoves(board);
     }
 
     // TODO can we maybe remove this/do we need the check for which user has the turn (in other method)
@@ -83,7 +88,6 @@ public class Game implements java.io.Serializable {
             } else {
                 whosTurn = player1;
             }
-
         }
 
         return board;
@@ -167,7 +171,11 @@ public class Game implements java.io.Serializable {
         if(KingMoves.isEmpty()&&allBLocs.contains(kingLoc)){ //case for if King has no valid moves and will be captured
             return true;
         }
-        else if(KingMoves.isEmpty()&&!allBLocs.contains(kingLoc)) return false; //King is in initial position or surrounded by friendly pieces
+        else if(KingMoves.isEmpty()&&!allBLocs.contains(kingLoc)){
+            //TODO: call JoptionPane with message that King is in Check
+            //JOptionPane.showMessageDialog(this, "White King in Check!");
+            return false; //King is in initial position or surrounded by friendly pieces
+        }
         else {
             compare.addAll(KingMoves);
             for (Location I : KingMoves) {

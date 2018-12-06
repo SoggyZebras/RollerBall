@@ -1,5 +1,6 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Transport;
 
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Transport.TCPConnection;
 
@@ -61,12 +62,15 @@ public class TCPServerCache {
     public boolean matchPassword(String username, String pass){
         User tmp = getUser(username);
         if(tmp != null){
+            System.out.println(pass);
+            System.out.println(tmp.getPassword());
             if(tmp.getPassword().equals(pass)){
                 return true;
             }
         }
         return false;
     }
+
 
     /**
      *
