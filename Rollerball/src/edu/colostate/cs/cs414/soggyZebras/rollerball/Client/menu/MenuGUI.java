@@ -34,7 +34,13 @@ public class MenuGUI extends JFrame {
      */
     public User loggedInUser;
 
+    /**
+     * a list of all users in the database
+     */
+    public User[] allUsers;
+
     public Map<Integer,RollerballPanel> activeGameGUIs;
+
 
     public MenuGUI() {
         super("Rollerball Menu");
@@ -51,6 +57,7 @@ public class MenuGUI extends JFrame {
         }
 
         loggedInUser = null;
+        allUsers = new User[0];
 
         cardContainer = new CardContainer(this);
         add(cardContainer);
@@ -142,14 +149,13 @@ public class MenuGUI extends JFrame {
             cardContainer.refreshAll();
         }
 
-        // if this is not the user passed in updated user, just update the pending invite and active game lists
+        // if this is not the user passed in updated user, just update the pending user and active game lists
         else {
             cardContainer.menuPanels.get("main_menu").refresh();
             cardContainer.menuPanels.get("pending_invites").refresh();
         }
 
         // update game windows
-        // TODO: this is currently not being called by the server when moves are made in the game
         if(updatedUser != null) {
             for (Game userGame : updatedUser.getGames()) {
                 RollerballPanel activeGame = activeGameGUIs.get(userGame.getGameID());
@@ -180,6 +186,15 @@ public class MenuGUI extends JFrame {
         login(user, message);
         // remove "Logging in..." and allow user to attempt it again if there was a problem
         cardContainer.menuPanels.get("login").refresh();
+    }
+
+    /**
+     * called by server, get a list of all possible users to invite
+     * @param allUsers
+     */
+    public void updateUsers(User[] allUsers) {
+        this.allUsers = allUsers;
+        refresh(loggedInUser);
     }
 
     /**
