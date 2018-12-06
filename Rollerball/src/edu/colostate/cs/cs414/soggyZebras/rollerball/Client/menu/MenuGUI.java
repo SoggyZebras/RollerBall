@@ -43,14 +43,14 @@ public class MenuGUI extends JFrame {
     public Map<Integer,RollerballPanel> activeGameGUIs;
 
 
-    public MenuGUI() {
+    public MenuGUI(String ip) {
         super("Rollerball Menu");
 
         activeGameGUIs = new HashMap<>();
 
         try {
             // TODO: change server address
-            client = new Client("127.0.0.1",35355);
+            client = new Client(ip,35355);
             client.initialize();
             client.setGui(this);
         } catch (IOException e) {
