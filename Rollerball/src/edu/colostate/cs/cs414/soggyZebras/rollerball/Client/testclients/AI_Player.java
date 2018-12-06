@@ -1,15 +1,14 @@
 package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.testclients;
 
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.Client;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
-import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.*;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.Invite;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Jonathan on 12/1/2018.
@@ -30,7 +29,7 @@ public class AI_Player {
     User AI;
     AI_Client cl;
     private ArrayList<Game> allGames = new ArrayList<>();
-    private Map<Location, Piece> Board;
+    private Map<Location, Piece> currBoard;
     private ArrayList<Location> allWLocs = new ArrayList<>();
     private ArrayList<Location> allBLocs = new ArrayList<>();
 
@@ -75,12 +74,13 @@ public class AI_Player {
         allBLocs.clear();
         allWLocs.clear();
 
+
         boolean found = false;
         //LOCATE CORRECT CURRENT GAME:
         for (Game g : AI.getGames()) {
             if (g.getGameID() == gameID) {
                 currGame = g;
-                Board = currGame.getBoard();
+                currBoard = currGame.getBoard();
                 found = true;
                 break;
             }
@@ -92,20 +92,20 @@ public class AI_Player {
         if(currGame.getWhosTurn() == AI) {
             System.out.println("AI's turn");
             //POPULATE CURRENT PIECE LOCATIONS:
-            for (Location I : Board.keySet()) {
-                if (Board.get(I).getColor() == 'w') {
+            for (Location I : currBoard.keySet()) {
+                if (currBoard.get(I).getColor() == 'w') {
                     allWLocs.add(I);
                 }//Now all the current white piece locations are populated
             }
 
-            for (Location I : Board.keySet()) {
-                if (Board.get(I).getColor() == 'b') {
+            for (Location I : currBoard.keySet()) {
+                if (currBoard.get(I).getColor() == 'b') {
                     allBLocs.add(I);
                 }//Now all the current black piece locations are populated
             }
             System.out.println("AI calculating move");
             //Logic to calculate which condition to take
-            boolean check = kingCapture(gameID, Board);
+            boolean check = kingCapture(gameID, currBoard);
             if (!check) {
                 check = capture(gameID); //move if can move to avoid
                 if (!check) {
@@ -118,23 +118,34 @@ public class AI_Player {
                        for(Location locFrom: allBLocs){
                            ArrayList<Location> validBMoves = currGame.validMoves(AI,locFrom);
 
-
-                        //are we adding anything to validBmoves or allBlocks while iterating over it?? conCurrent mod happens here:
                            for(Location locTo: validBMoves){
-                               Piece newPiece = new Piece (locFrom, Board.get(locFrom).getColor(),Board.get(locFrom).getType());
-                               HashMap <Location,Piece> newBoard = new HashMap<>();
-                               newBoard.putAll(Board);
-                               newBoard.put(locTo,newPiece);    //Now the fake board is populated with fake move of current piece
+                               Map <Location,Piece> newBoard = new HashMap<>(currBoard);
+                               newBoard.remove(locFrom);
+                               switch(currBoard.get(locFrom).getType()){
+                                   case "pawn":
+                                       Pawn newPawn = new Pawn(locTo, currBoard.get(locFrom).getColor(),currBoard.get(locFrom).getType());
+                                       newBoard.put(locTo,newPawn);
+                                   case "rook":
+                                       Rook newRook = new Rook(locTo, currBoard.get(locFrom).getColor(),currBoard.get(locFrom).getType());
+                                       newBoard.put(locTo,newRook);
+                                   case "bishop":
+                                       Bishop newBishop = new Bishop(locTo, currBoard.get(locFrom).getColor(),currBoard.get(locFrom).getType());
+                                       newBoard.put(locTo,newBishop);
+                                   case "king":
+                                       King newKing = new King(locTo, currBoard.get(locFrom).getColor(),currBoard.get(locFrom).getType());
+                                       newBoard.put(locTo,newKing);
+
+                               }
 
                                findFutureKCapture = fKingCapture(locTo,newBoard);
                                if(findFutureKCapture){
-                                   System.out.println("AI has found a future move to capture the white King and is moving black piece");
+                                   System.out.println("AI has found a FUTURE MOVE TO CAPTURE THE KING");
                                    cl.makeMove(locTo,locFrom,gameID);
                                    break;
                                }
                                findFutureCapture = fCapture(locTo,newBoard);
                                if(findFutureCapture){
-                                   System.out.println("AI has found a future move to capture a white piece");
+                                   System.out.println("AI has found a FUTURE MOVE TO CAPTURE A PIECE");
                                    cl.makeMove(locTo,locFrom,gameID);
                                    break;
                                }
@@ -156,11 +167,11 @@ public class AI_Player {
      * Function to calculate if the future move of a piece on a hypothetical board/game state will capture a piece
      * @return - returns true if the future move in consideration will capture a white piece
      */
-    private boolean fCapture(Location loc, Map<Location, Piece> board){
+    private boolean fCapture(Location loc, Map<Location, Piece> boardPassed){
         //check for future capture condition one move into the hypothetical future game
         boolean canCapture = false;
 
-            for (Location X : currGame.validMoves(loc, board)) { //Valid black moves
+            for (Location X : currGame.validMoves(loc, boardPassed)) { //Valid black moves
                 for (Location Y : allWLocs) { //Valid white moves
                     if (X.equals(Y)) {
                         canCapture = true;
@@ -177,14 +188,15 @@ public class AI_Player {
      * Function to calculate if the white king can be capture by the future hypothetical move of a black piece
      * @return - returns true if the white king can be captured in this hypothetical state
      */
-    private boolean fKingCapture(Location loc, Map<Location, Piece>board){
+    private boolean fKingCapture(Location loc, Map<Location, Piece>boardPassed){
 
         boolean canCapture = false;
-
-        for (Location X : currGame.validMoves(loc, board)) { //Valid black moves from overridden game function
+        for (Location X : currGame.validMoves(loc, boardPassed)) { //Valid black moves from overridden game function
             for (Location Y : allWLocs) { //Valid white moves
-                if (X.equals(Y)&&board.get(Y).getType()=="king") {
+                if (X.equals(Y)&&boardPassed.get(Y).getType()=="king") {
                     canCapture = true;
+                    //System.out.println("Looking for future King to take");
+
                     break;
                 }
             }
@@ -235,7 +247,7 @@ public class AI_Player {
                         if (X.equals(Y)) {
                             canCapture = true;
                             cl.makeMove(Y, I, gID); //TO, FROM
-                            System.out.println("AI has captured White piece: " + Board.get(Y).getType() + " At location: " + Y.toString());
+                            System.out.println("AI has captured White piece: " + currBoard.get(Y).getType() + " At location: " + Y.toString());
                             break;
                         }
                     }
@@ -261,7 +273,7 @@ public class AI_Player {
                 for(Location X : currGame.validMoves(AI,I)) {
                     for(Location Y: allBLocs){
                         if (X.equals(Y)){
-                            System.out.println("AI can be captured by White piece: "+Board.get(X).getType() + "At location: "+X.toString());
+                            System.out.println("AI can be captured by White piece: "+currBoard.get(X).getType() + "At location: "+X.toString());
                             //Need to move from unsafe location to safe location if we have a valid move
                             //If no valid moves are available then we cant move anywhere and we will have to be captured
                             if(!currGame.validMoves(AI,Y).isEmpty()){
@@ -314,38 +326,6 @@ public class AI_Player {
         if(!canMove) throw new RuntimeException("Something went wrong in the AI selectRandom func - at least one piece should always have a valid current move");
 
     }
-
-
-
-//    /**
-//     * Function to be called from Move to determine if there is a good future hypothetical move
-//     * @param gID gameID of current game
-//     * @param locTo hypothetical future location of black piece from initial move
-//     * @param locFrom real current position of black piece
-//     * @param futureBoard hypothetical future board state of the black piece (with black piece already inserted as having moved initially)
-//     * @return returns true if there is a good future capture move
-//     */
-//    private boolean findFuture(int gID, Location locTo, Location locFrom, Map<Location, Piece> futureBoard){
-//
-//        if(fKingCapture(locTo, futureBoard)){
-//            System.out.println("AI has found a future move to capture the King and is moving black piece");
-//            cl.makeMove(locTo, locFrom, gID);
-//            return true;
-//        }
-//        else if(fcapture(locTo, futureBoard)){
-//            System.out.println("AI has found a future move to capture a white piece");
-//            cl.makeMove(locTo, locFrom, gID);
-//            return true;
-//        }
-//
-//        else return false;
-//
-//    }
-
-
-
-
-
 
 
     //-----------UPDATE STATE METHODS---------//
