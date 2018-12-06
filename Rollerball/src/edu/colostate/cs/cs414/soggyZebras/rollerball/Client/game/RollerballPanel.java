@@ -193,11 +193,11 @@ public class RollerballPanel extends JPanel {
 
         // check for win conditions
         if (game.wonGameB()) {
-            JOptionPane.showMessageDialog(this, "Black Won!");
+            JOptionPane.showMessageDialog(this, "White King in CheckMate!");
             // TODO: notify server that game has been won/lost
         }
         else if (game.wonGameW()) {
-            JOptionPane.showMessageDialog(this, "White Won!");
+            JOptionPane.showMessageDialog(this, "Black King in CheckMate!");
             // TODO: notify server that game has been won/lost
         }
     }

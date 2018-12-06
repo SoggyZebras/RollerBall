@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * represents the login screen
@@ -45,6 +46,8 @@ public class LoginPanel extends MenuPanel {
                     getMenuGUI().client.login(username, password);
                 }
             } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (NoSuchAlgorithmException e1) {
                 e1.printStackTrace();
             }
         }

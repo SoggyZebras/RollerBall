@@ -3,14 +3,19 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Transport;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.Node;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.Socket;
+import java.security.SecureRandom;
 
 public class TCPConnection {
-    private TCPSenderThread senSocket;
-    private TCPReceiverThread recSocket;
-    private Socket serverSocket;
-    private Node node;
+    int BIT_LENGTH = 1024;
+    private TCPSenderThread senSocket = null;
+    private TCPReceiverThread recSocket = null;
+    private Socket serverSocket = null;
+    private Node node = null;
     private int ID;
+    private SecureRandom secRand = null;
+
 
     /**
      *
@@ -24,17 +29,18 @@ public class TCPConnection {
         this.node = node;
         this.ID = id;
 
+
         //create receiver socket to communicate
+        this.senSocket = new TCPSenderThread(this.node,this.serverSocket);
         this.recSocket = new TCPReceiverThread(this.node,server);
-        this.senSocket = new TCPSenderThread(this.serverSocket);
 
     }
 
 
     public void initiate() {
 
-        this.recSocket.start();
         this.senSocket.start();
+        this.recSocket.start();
 
     }
 
@@ -59,6 +65,7 @@ public class TCPConnection {
     public Node getNode() {
         return this.node;
     }
+
 
     public int getConID() { return this.ID;}
 

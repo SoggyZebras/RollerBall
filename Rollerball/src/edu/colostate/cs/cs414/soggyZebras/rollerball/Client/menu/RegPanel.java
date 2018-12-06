@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * represents the registration screen
@@ -50,6 +51,8 @@ public class RegPanel extends MenuPanel {
                     getMenuGUI().client.register(username, password, email);
                 }
             } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (NoSuchAlgorithmException e1) {
                 e1.printStackTrace();
             }
         }

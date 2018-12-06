@@ -54,6 +54,14 @@ public class EventFactory implements Protocol {
 
                 case eServer_Responds_Refresh: node.onEvent(new ServerRespondsRefresh(data),socket);break;
 
+                case eClient_Sends_Has_Won: node.onEvent(new ClientSendsHasWon(data),socket);break;
+
+                case eServer_Responds_Has_Won: node.onEvent(new ServerRespondsHasWon(data),socket);break;
+
+                case eClient_Request_User_List: node.onEvent(new ClientRequestUserList(data),socket);break;
+
+                case eServer_Responds_User_List: node.onEvent(new ServerRespondsUserList(data),socket);break;
+
                 default:
 
             }

@@ -9,6 +9,9 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 
 public class Client implements Node {
@@ -79,6 +82,8 @@ public class Client implements Node {
 
             case eServer_Responds_Deregister: handleServerRespondsDeregister(e, socket);break;
 
+            case eServer_Responds_Has_Won: handleServerRespondsHasWon(e, socket);break;
+
             default:
         }
 
@@ -101,13 +106,13 @@ public class Client implements Node {
         serverConnection.sendData(message.getFile());
     }
 
-    public void register(String username, String password, String email) throws IOException{
-        ClientSendsRegistration message = new ClientSendsRegistration(username,password,email);
+    public void register(String username, String password, String email) throws IOException, NoSuchAlgorithmException {
+        ClientSendsRegistration message = new ClientSendsRegistration(username,hashPassword(password).toString(),email);
         serverConnection.sendData(message.getFile());
     }
 
-    public void login(String username, String password) throws IOException{
-        ClientSendsLogin message = new ClientSendsLogin(username,password);
+    public void login(String username, String password) throws IOException, NoSuchAlgorithmException {
+        ClientSendsLogin message = new ClientSendsLogin(username,hashPassword(password));
         serverConnection.sendData(message.getFile());
     }
 
@@ -118,6 +123,11 @@ public class Client implements Node {
 
     public void deregister(int id) throws IOException{
         ClientSendsDeregister message = new ClientSendsDeregister(id);
+        serverConnection.sendData(message.getFile());
+    }
+
+    public void hasWonGame(int d) throws IOException {
+        ClientSendsHasWon message = new ClientSendsHasWon(d);
         serverConnection.sendData(message.getFile());
     }
 
@@ -242,9 +252,31 @@ public class Client implements Node {
         //gui.refresh(message.getUser());
     }
 
+    private void handleServerRespondsHasWon(Event e, Socket socket){
+        ServerRespondsHasWon message = (ServerRespondsHasWon) e;
+        //TODO call gui method to handle the has won response
+        //message.getGid() gets the game id
+        //message.getHasWon() returns whether the game has won or not
+        //message.getWinner() returns the winner of the game if hasWon is true, null if false
+        //message.getLoser() returns the loser of the game if hasWon is true, null if false
+
+    }
+
+    private void handleServerRespondsUserList(Event e, Socket s){
+        ServerRespondsUserList message = (ServerRespondsUserList) e;
+        //TODO call gui method to pass userlist to gui
+        //gui.updateUsers(message.getUserList());
+    }
+
 
     //========= END HANDLES ========//
 
+
+    private String hashPassword(String s) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-512");
+        byte[] hash = digest.digest(s.getBytes(StandardCharsets.UTF_8));
+        return new String(hash);
+    }
 
     public void setGui(MenuGUI p){
         this.gui = p;
