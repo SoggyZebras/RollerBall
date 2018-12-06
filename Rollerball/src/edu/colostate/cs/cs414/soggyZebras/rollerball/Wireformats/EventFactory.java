@@ -62,6 +62,7 @@ public class EventFactory implements Protocol {
 
                 case eServer_Responds_User_List: node.onEvent(new ServerRespondsUserList(data),socket);break;
 
+
                 default:
 
             }
