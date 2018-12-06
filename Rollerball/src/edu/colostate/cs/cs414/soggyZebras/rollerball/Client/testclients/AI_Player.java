@@ -118,12 +118,12 @@ public class AI_Player {
 
                        for(Location locFrom: allBLocs){
                            ArrayList<Location> validBMoves = currGame.validMoves(AI,locFrom);
-                           Piece newPiece = Board.get(locFrom);
-                           HashMap <Location,Piece> newBoard = new HashMap<>();
-                           newBoard.putAll(Board);
 
                         //are we adding anything to validBmoves or allBlocks while iterating over it?? conCurrent mod happens here:
                            for(Location locTo: validBMoves){
+                               Piece newPiece = new Piece (locFrom, Board.get(locFrom).getColor(),Board.get(locFrom).getType());
+                               HashMap <Location,Piece> newBoard = new HashMap<>();
+                               newBoard.putAll(Board);
                                newBoard.put(locTo,newPiece);    //Now the fake board is populated with fake move of current piece
 
                                findFutureKCapture = fKingCapture(locTo,newBoard);
