@@ -121,6 +121,10 @@ public class Client implements Node {
         serverConnection.sendData(message.getFile());
     }
 
+    public void winGame(int gameID, int winnerUserID) {
+        // TODO: help me jordan
+    }
+
     /**
      *
      * @param from

@@ -8,6 +8,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,6 +23,7 @@ public class RollerballPanel extends JPanel {
     private Client client;
     private MenuGUI menuGUI;
     private PieceDrawer pieceDrawer;
+    private GameGUI gameGUI;
 
     // the index of the selected square
     // can be set to -1,-1 to unselect a square
@@ -37,7 +39,7 @@ public class RollerballPanel extends JPanel {
     // when a piece is clicked, this will be populated with the potential moves for that piece
     private ArrayList<Location> potentialMoves;
 
-    public RollerballPanel(Game game, Client client, MenuGUI menuGUI, int gameSide) throws IOException {
+    public RollerballPanel(Game game, Client client, MenuGUI menuGUI, int gameSide, GameGUI gameGUI) throws IOException {
         super();
 
         setSize(gameSide, gameSide);
@@ -49,6 +51,7 @@ public class RollerballPanel extends JPanel {
         this.menuGUI = menuGUI;
         selectedPiece = null;
         unselectSquares();
+        this.gameGUI = gameGUI;
 
         potentialMoves = new ArrayList<>();
 
@@ -193,12 +196,14 @@ public class RollerballPanel extends JPanel {
 
         // check for win conditions
         if (game.wonGameB()) {
+            client.winGame(game.getGameID(), game.getPlayer2().getUserID());
             JOptionPane.showMessageDialog(this, "Black Won!");
-            // TODO: notify server that game has been won/lost
+            gameGUI.dispatchEvent(new WindowEvent(gameGUI, WindowEvent.WINDOW_CLOSING));
         }
         else if (game.wonGameW()) {
+            client.winGame(game.getGameID(), game.getPlayer1().getUserID());
             JOptionPane.showMessageDialog(this, "White Won!");
-            // TODO: notify server that game has been won/lost
+            gameGUI.dispatchEvent(new WindowEvent(gameGUI, WindowEvent.WINDOW_CLOSING));
         }
     }
 
@@ -222,14 +227,9 @@ public class RollerballPanel extends JPanel {
         }
         g2.setColor(Color.WHITE);
         g2.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
-                if (i == 3 && j == 4) {
-                    g2.drawString("You are the " + col + " pieces.", getWidth()/3, getHeight()/3);
-                    g2.drawString("It is " + turn + " turn.", getWidth()/3, getHeight()/2);
-                }
-            }
-        }
+
+        g2.drawString("You are the " + col + " pieces.", getWidth()/3, getHeight()/3);
+        g2.drawString("It is " + turn + " turn.", getWidth()/3, getHeight()/2);
         repaint();
     }
 }

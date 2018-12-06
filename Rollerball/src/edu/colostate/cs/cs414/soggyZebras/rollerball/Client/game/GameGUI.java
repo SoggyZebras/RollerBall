@@ -31,7 +31,7 @@ public class GameGUI extends JFrame {
         repaint();
 
         // setup panel (what gets drawn on)
-        panel = new RollerballPanel(game, client, menuGUI, WIDTH);
+        panel = new RollerballPanel(game, client, menuGUI, WIDTH, this);
         add(panel);
         setVisible(true);
 
