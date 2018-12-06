@@ -9,6 +9,9 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Wireformats.*;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -45,13 +48,13 @@ public class Server implements Node,Runnable {
 
     public void run(){
 
-//        //load previous state from database
-//        try {
-//            init();
-//        }
-//        catch(SQLException e){
-//            e.printStackTrace();
-//        }
+        //load previous state from database
+        try {
+            init();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
 
         //Start server thread(send/receive threads
         this.serverThread.run();
@@ -63,35 +66,9 @@ public class Server implements Node,Runnable {
             serverCache.setCache(db.getAllUser());
         }
 
-//        System.out.println("begin invite init...");
-//        for(User u : serverCache.getAllUsers()){
-//            for(User k: serverCache.getAllUsers()){
-//                    Invite tmp = db.getInvite(u.getUsername(),k.getUsername());
-//                    if(tmp != null){
-//                        u.addInviteSent(tmp);
-//                        k.addInviteGot(tmp);
-//                    }
-//
-//            }
-//        }
-
-//        System.out.println("begin game init...");
-//        for(User u : serverCache.getAllUsers()){
-//            for(User k: serverCache.getAllUsers()){
-//                Game tmp = db.getGame(u.getUsername(),k.getUsername());
-//                if(tmp != null) {
-//                    u.addGame(tmp);
-//                    k.addGame(tmp);
-//                }
-//
-//                Game tmp2 = db.getGame(k.getUsername(),u.getUsername());
-//                if(tmp2 != null) {
-//                    u.addGame(tmp2);
-//                    k.addGame(tmp2);
-//                }
-//
-//            }
-//        }
+        if(db.getAllGame() != null){
+            games.setGames(db.getAllGame());
+        }
 
     }
 
@@ -99,33 +76,66 @@ public class Server implements Node,Runnable {
     @Override
     public void onEvent(Event e, Socket socket) throws IOException, ClassNotFoundException {
         //React to messages sent to the server
-        switch(e.getType()){
+        try {
+            switch (e.getType()) {
 
-            case eClient_Make_Move: handleMakeMove(e,socket);break;
+                case eClient_Make_Move:
+                    handleMakeMove(e, socket);
+                    break;
 
-            case eClient_Request_Check_Move: handleCheckMove(e,socket);break;
+                case eClient_Request_Check_Move:
+                    handleCheckMove(e, socket);
+                    break;
 
-            case eClient_Sends_Invite: handleClientSendsInvite(e,socket);break;
+                case eClient_Sends_Invite:
+                    handleClientSendsInvite(e, socket);
+                    break;
 
-            case eClient_Responds_Invite: handleClientRespondsInvite(e,socket);break;
+                case eClient_Responds_Invite:
+                    handleClientRespondsInvite(e, socket);
+                    break;
 
-            case eClient_Sends_Login: handleClientSendsLogin(e, socket);break;
+                case eClient_Sends_Login:
+                    handleClientSendsLogin(e, socket);
+                    break;
 
-            case eClient_Sends_Registration: handleClientSendsRegistration(e, socket);break;
+                case eClient_Sends_Registration:
+                    handleClientSendsRegistration(e, socket);
+                    break;
 
-            case eClient_Sends_Refresh: handleClientSendsRefresh(e, socket);break;
+                case eClient_Sends_Refresh:
+                    handleClientSendsRefresh(e, socket);
+                    break;
 
-            case eClient_Sends_Deregister: handleClientSendsDeregister(e, socket);break;
+                case eClient_Sends_Deregister:
+                    handleClientSendsDeregister(e, socket);
+                    break;
 
-            case eClient_Sends_Logout: handleClientSendsLogout(e, socket);break;
-            default:
-        }
+                case eClient_Sends_Logout:
+                    handleClientSendsLogout(e, socket);
+                    break;
+
+                case eClient_Sends_Has_Won:
+                    handleClientSendsHasWon(e, socket);
+                    break;
+
+                case eClient_Request_User_List:
+                    handleClientRequestUserList(e,socket);
+                    break;
+
+                default:
+            }
+        }catch(NoSuchAlgorithmException nsa){
+                nsa.printStackTrace();
+            }
     }
 
     private void handleMakeMove(Event e ,Socket socket) throws IOException {
         ClientMakeMove message =(ClientMakeMove) e;
         Game tmp = games.getGame(message.getGameID());
-        tmp.makeMove(serverCache.getUser(socket),message.getTo(),message.getFrom());
+        if(tmp.getWhosTurn() == serverCache.getUser(socket)){
+            tmp.makeMove(serverCache.getUser(socket),message.getTo(),message.getFrom());
+        }
         User p1 = serverCache.getUser(tmp.getPlayer1().getUserID());
         User p2 = serverCache.getUser(tmp.getPlayer2().getUserID());
 
@@ -176,6 +186,8 @@ public class Server implements Node,Runnable {
         ClientRespondsInvite message = (ClientRespondsInvite) e;
         User sentUser = this.serverCache.getUser(s);
         User fromUser = serverCache.getUser(message.getUsername());
+        System.out.println(sentUser.getUsername() + " " + sentUser.getUserID() + " " +sentUser.getGames());
+        System.out.println(fromUser.getUsername() + " " + fromUser.getUserID() + " " +fromUser.getGames());
         int gID;
         fromUser.removeInviteSent(message.getInviteID());
         sentUser.removeInviteGot(message.getInviteID());
@@ -197,7 +209,7 @@ public class Server implements Node,Runnable {
 
     }
 
-    private void handleClientSendsLogin(Event e, Socket socket) throws IOException, ClassNotFoundException{
+    private void handleClientSendsLogin(Event e, Socket socket) throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
         //TODO check the username is valid, check the database to see if that user exists
         // if the user does not exists, send rejection
         // else fetch it, set the user fields and pass it to gui
@@ -210,6 +222,7 @@ public class Server implements Node,Runnable {
                 if(serverCache.matchPassword(message.getUsername(),message.getPassword())) {
                     user = serverCache.getUser(message.getUsername());
                     serverCache.getUserCon(socket).setConID(user.getUserID());
+                    System.out.println("logged in");
                 }
                 else{
                     reason = "Incorrect Password!";
@@ -230,11 +243,10 @@ public class Server implements Node,Runnable {
 
     }
 
-    private void handleClientSendsRegistration(Event e, Socket socket) throws IOException{
+    private void handleClientSendsRegistration(Event e, Socket socket) throws IOException, NoSuchAlgorithmException {
         ClientSendsRegistration message = (ClientSendsRegistration) e;
         User user = null;
         String reason = "";
-        if(checkPassword(message.getPassword())){
                 if(!checkUsername(message.getUsername())){
 
                         user = new User(genUserID(), "", "", "");
@@ -247,14 +259,11 @@ public class Server implements Node,Runnable {
                         serverCache.getUserCon(socket).setConID(user.getUserID());
                         serverCache.addUser(user);
                         db.insertUser(user.getUserID(), user);
+                    System.out.println("registered");
                 }
                 else{
                     reason = "User already exists!";
                 }
-        }
-        else{
-            reason = "Bad Password: password must be at least 8 characters long and cannot contain [ ; ( ) , / } { ] \\ or '";
-        }
 
         ServerRespondsRegistration response = new ServerRespondsRegistration(user,reason);
         serverCache.getUserCon(socket).sendData(response.getFile());
@@ -283,12 +292,25 @@ public class Server implements Node,Runnable {
     }
 
     private void handleClientSendsDeregister(Event e, Socket socket) throws IOException{
-        System.err.println("processing deregistration");
         ClientSendsDeregister message = (ClientSendsDeregister) e;
         serverCache.removeUser(message.getUserID());
 
         db.removeUser(message.getUserID());
         ServerRespondsDeregister response = new ServerRespondsDeregister((User)null);
+        serverCache.getUserCon(socket).sendData(response.getFile());
+    }
+
+    private void handleClientSendsHasWon(Event e, Socket socket) throws IOException{
+        ClientSendsHasWon message = (ClientSendsHasWon) e;
+        boolean won = games.checkWin(message.getGameID());
+        Game g = games.getGame(message.getGameID());
+
+        ServerRespondsHasWon response = new ServerRespondsHasWon(won,message.getGameID(),g.getWinner(),g.getLoser());
+        serverCache.getUserCon(socket).sendData(response.getFile());
+    }
+
+    private void handleClientRequestUserList(Event e, Socket socket) throws IOException{
+        ServerRespondsUserList response = new ServerRespondsUserList(serverCache.getAllUsers());
         serverCache.getUserCon(socket).sendData(response.getFile());
     }
 
@@ -333,16 +355,6 @@ public class Server implements Node,Runnable {
         int uID = rand.nextInt();
         while(serverCache.containsUserID(uID) || uID <0){uID = rand.nextInt();}
         return uID;
-    }
-
-    private boolean checkPassword(String pass){
-        if(pass.equals("")){
-            return false;
-        }
-        if(pass.matches(".*[;(),/}{\"\'].*") || pass.length() < 8){
-            return false;
-        }
-        return true;
     }
 
     public static void main(String []args){

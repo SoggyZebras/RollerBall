@@ -49,16 +49,21 @@ public class AI_Client implements Node {
      *
      * @throws IOException
      */
-    public void initialize() throws IOException {
+    public void initialize() throws IOException{
 
         // print debuggin info
         if(debug){
             System.out.println("Starting Client thread");
         }
+        try{
         //Setup a connection to the server
         serverSocket = new Socket(InetAddress.getByName(this.serverHost),this.serverPort);
         serverConnection = new TCPConnection(this, serverSocket,0);
         serverConnection.initiate();
+        }
+        catch (IOException e){
+
+        }
     }
 
     @Override
@@ -187,7 +192,6 @@ public class AI_Client implements Node {
     private void handleServerSendsInvite(Event e, Socket socket) throws IOException {
         ServerSendsInvite message = (ServerSendsInvite) e;
         AI.refresh(message.getUserTo());
-
     }
 
 

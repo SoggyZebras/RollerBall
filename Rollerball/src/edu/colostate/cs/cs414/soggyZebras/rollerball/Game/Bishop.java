@@ -135,20 +135,30 @@ public class Bishop extends Piece {
         col = loc.col;
 
 
-        if(checkBounds(row+1, col-1)&& (state.get(new Location(row+1, col-1)) == null) || (state.get(new Location(row+1, col-1)).getColor() != color)){
+        if(checkBounds(row+1, col-1)
+                && ((state.get(new Location(row+1, col-1)) == null)
+                || (state.get(new Location(row+1, col-1)).getColor() != color))){
             moves.add(new Location(row+1, col-1) );
         }
-        if(checkBounds(row+1, col+1)&& (state.get(new Location(row+1, col+1)) == null || (state.get(new Location(row+1, col+1)).getColor() != color))){
+
+        if(checkBounds(row+1, col+1)
+                && ((state.get(new Location(row+1, col+1)) == null
+                || (state.get(new Location(row+1, col+1)).getColor() != color)))){
             moves.add(new Location(row+1, col+1) );
         }
-        if(checkBounds(row-1, col-1)&& (state.get(new Location(row-1, col-1)) == null || (state.get(new Location(row-1, col-1)).getColor() != color))){
+        if(checkBounds(row-1, col-1)
+                && ((state.get(new Location(row-1, col-1)) == null ||
+                (state.get(new Location(row-1, col-1)).getColor() != color)))){
             moves.add(new Location(row-1, col-1) );
-            if(row == 2 && col == 1 && (state.get(new Location(0, 1)) == null || (state.get(new Location(0, 1)).getColor() != color))){
+            if(row == 2 && col == 1
+                    && ((state.get(new Location(0, 1)) == null || (
+                            state.get(new Location(0, 1)).getColor() != color)))){
                 moves.add(new Location(0, 1) );
             }
         }
+
         if(moves.contains(new Location(0, 1))
-                && (state.get(new Location(1, 2)) == null || (state.get(new Location(1, 2)).getColor() != color))
+                && ((state.get(new Location(1, 2)) == null || (state.get(new Location(1, 2)).getColor() != color)))
                 && !moves.contains(new Location(1, 2))){
             moves.add(new Location(1, 2) );
         }
@@ -167,13 +177,13 @@ public class Bishop extends Piece {
     public ArrayList<Location> quadThree(Map<Location, Piece> state, int row, int col){
         ArrayList<Location> moves = new ArrayList<>();
         while(checkBounds(row+1, col+1)
-                && (state.get(new Location(row+1, col+1)) == null || (state.get(new Location(row+1, col+1)).getColor() != color))){
+                && ((state.get(new Location(row+1, col+1)) == null || (state.get(new Location(row+1, col+1)).getColor() != color)))){
             moves.add(new Location(row+1, col+1));
             row++;
             col++;
         }
         while(checkBounds(row+1, col-1)
-                && (state.get(new Location(row+1, col-1)) == null || (state.get(new Location(row+1, col-1)).getColor() != color))
+                && ((state.get(new Location(row+1, col-1)) == null || (state.get(new Location(row+1, col-1)).getColor() != color)))
                 && moves.contains(new Location(3, 6))){
             moves.add(new Location(row+1, col-1) );
             row++;
@@ -184,22 +194,22 @@ public class Bishop extends Piece {
 
 
         if(checkBounds(row-1, col-1)
-                && (state.get(new Location(row-1, col-1)) == null || (state.get(new Location(row-1, col-1)).getColor() != color)) ){
+                && ((state.get(new Location(row-1, col-1)) == null || (state.get(new Location(row-1, col-1)).getColor() != color))) ){
             moves.add(new Location(row-1, col-1) );
         }
         if(checkBounds(row+1, col-1)
-                && (state.get(new Location(row+1, col-1)) == null || (state.get(new Location(row+1, col-1)).getColor() != color))){
+                && ((state.get(new Location(row+1, col-1)) == null || (state.get(new Location(row+1, col-1)).getColor() != color)))){
             moves.add(new Location(row+1, col-1) );
         }
         if(checkBounds(row-1, col+1)
-                && (state.get(new Location(row-1, col+1)) == null || (state.get(new Location(row-1, col+1)).getColor() != color))){
+                && ((state.get(new Location(row-1, col+1)) == null || (state.get(new Location(row-1, col+1)).getColor() != color)))){
             moves.add(new Location(row-1, col+1) );
-            if(row == 1 && col == 4 && (state.get(new Location(1, 6)) == null || (state.get(new Location(1, 6)).getColor() != color))){
+            if(row == 1 && col == 4 && ((state.get(new Location(1, 6)) == null || (state.get(new Location(1, 6)).getColor() != color)))){
                 moves.add(new Location(1, 6) );
             }
         }
         if(moves.contains(new Location(1, 6))
-                && (state.get(new Location(2, 5)) == null || (state.get(new Location(2, 5)).getColor() != color))
+                && ((state.get(new Location(2, 5)) == null || (state.get(new Location(2, 5)).getColor() != color)))
                 && !moves.contains(new Location(2, 5))){
             moves.add(new Location(2, 5) );
         }
@@ -218,13 +228,13 @@ public class Bishop extends Piece {
     public ArrayList<Location> quadFour(Map<Location, Piece> state, int row, int col){
         ArrayList<Location> moves = new ArrayList<>();
         while(checkBounds(row+1, col-1)
-                && (state.get(new Location(row+1, col-1)) == null || (state.get(new Location(row+1, col-1)).getColor() != color))){
+                && ((state.get(new Location(row+1, col-1)) == null || (state.get(new Location(row+1, col-1)).getColor() != color)))){
             moves.add(new Location(row+1, col-1));
             row++;
             col--;
         }
         while(checkBounds(row-1, col-1)
-                && (state.get(new Location(row-1, col-1)) == null || (state.get(new Location(row-1, col-1)).getColor() != color))
+                && ((state.get(new Location(row-1, col-1)) == null || (state.get(new Location(row-1, col-1)).getColor() != color)))
                 && moves.contains(new Location(6, 3))){
             moves.add(new Location(row-1, col-1) );
             row--;
@@ -235,15 +245,15 @@ public class Bishop extends Piece {
 
 
         if(checkBounds(row-1, col-1)
-                && (state.get(new Location(row-1, col-1)) == null || (state.get(new Location(row-1, col-1)).getColor() != color))){
+                && ((state.get(new Location(row-1, col-1)) == null || (state.get(new Location(row-1, col-1)).getColor() != color)))){
             moves.add(new Location(row-1, col-1) );
         }
         if(checkBounds(row-1, col+1)
-                && (state.get(new Location(row-1, col+1)) == null || (state.get(new Location(row-1, col+1)).getColor() != color))){
+                && ((state.get(new Location(row-1, col+1)) == null || (state.get(new Location(row-1, col+1)).getColor() != color)))){
             moves.add(new Location(row-1, col+1) );
         }
         if(checkBounds(row+1, col+1)
-                && (state.get(new Location(row+1, col+1)) == null || (state.get(new Location(row+1, col+1)).getColor() != color))){
+                && ((state.get(new Location(row+1, col+1)) == null || (state.get(new Location(row+1, col+1)).getColor() != color)))){
             moves.add(new Location(row+1, col+1) );
             if(row == 4 && col == 5 && (state.get(new Location(6, 5)) == null || (state.get(new Location(6, 5)).getColor() != color))){
                 moves.add(new Location(6, 5) );

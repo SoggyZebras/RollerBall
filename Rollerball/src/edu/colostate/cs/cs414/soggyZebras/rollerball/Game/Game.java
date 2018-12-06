@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.util.*;
 
 public class Game implements java.io.Serializable {
-
+    private static final long serialVersionUID = 652968509827690L;
     protected Map<Location,Piece> board;
     private User player1;
     private User player2;
@@ -68,7 +68,7 @@ public class Game implements java.io.Serializable {
 
     // TODO can we maybe remove this/do we need the check for which user has the turn (in other method)
     public ArrayList<Location> validMoves(Location l){
-            return board.get(l).validMoves(board);
+        return board.get(l).validMoves(board);
     }
 
     /**
@@ -82,6 +82,7 @@ public class Game implements java.io.Serializable {
             board.put((to), board.get(from));
             board.get(to).setLoc(to);
             board.remove(from);
+
             if (whosTurn.equals(player1)) {
                 whosTurn = player2;
             } else {
@@ -97,6 +98,8 @@ public class Game implements java.io.Serializable {
      * @return - returns true if white piece has won
      */
     public boolean wonGameW(){
+        System.err.println(!teamHasKing('b'));
+        if (!teamHasKing('b')) return true;
 
         //TODO: need a check for if the piece can capture and it is not your turn so you cannot get away in time but the king might have a move - check on clicked? user has chosen the wrong piece and cannot get away
 
@@ -142,6 +145,7 @@ public class Game implements java.io.Serializable {
      * @return - returns true if black piece has won
      */
     public boolean wonGameB(){
+        if (!teamHasKing('w')) return true;
 
         //TODO: need a check for if the piece can capture and it is not your turn so you cannot get away in time but the king might have a move - check on clicked? user has chosen the wrong piece and cannot get away
 
@@ -181,6 +185,21 @@ public class Game implements java.io.Serializable {
             }
         }
         return compare.isEmpty();
+    }
+
+    /**
+     * check to see if a team has their king
+     * @param whichTeam 'w' for white, 'b' for black
+     * @return true if the team has their king
+     */
+    private boolean teamHasKing(char whichTeam) {
+        ArrayList<Location> allLocs = new ArrayList<>();
+        for(Location l : board.keySet()) {
+            if (board.get(l).getColor() == whichTeam && board.get(l) instanceof King) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

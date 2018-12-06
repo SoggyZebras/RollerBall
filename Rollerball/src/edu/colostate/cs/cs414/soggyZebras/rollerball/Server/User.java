@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class User implements Serializable {
+    private static final long serialVersionUID = 6585098267757690L;
 
     //Local variables
     private int userID;
@@ -87,50 +88,61 @@ public class User implements Serializable {
 
 
     public void removeInviteSent(int id){
+        if(sentInvites.length == 1){
+            sentInvites = new Invite[0];
+        }
+    if(sentInvites.length > 1) {
+        Invite[] tmp = new Invite[sentInvites.length - 1];
 
-        Invite[] tmp = new Invite[sentInvites.length-1];
+        for (int i = 0, j = 0; i < sentInvites.length; i++) {
+            if (sentInvites[i].getInviteID() == id) {
 
-        for(int i=0,j=0; i < sentInvites.length;i++){
-            if(sentInvites[i].getInviteID() == id){
-
-            }
-            else{
+            } else {
                 tmp[j] = sentInvites[i];
                 j++;
             }
         }
         sentInvites = tmp;
     }
+    }
 
     public void removeInviteGot(int id){
-        Invite[] tmp = new Invite[gotInvites.length-1];
-
-        for(int i=0,j=0; i < gotInvites.length;i++){
-            if(gotInvites[i].getInviteID() == id){
-
-            }
-            else{
-                tmp[j] = gotInvites[i];
-                j++;
-            }
+        if(gotInvites.length == 1){
+            gotInvites = new Invite[0];
         }
-        gotInvites = tmp;
+        if(gotInvites.length > 1) {
+            Invite[] tmp = new Invite[gotInvites.length - 1];
+
+            for (int i = 0, j = 0; i < gotInvites.length; i++) {
+                if (gotInvites[i].getInviteID() == id) {
+
+                } else {
+                    tmp[j] = gotInvites[i];
+                    j++;
+                }
+            }
+            gotInvites = tmp;
+        }
     }
 
     public void removeGame(Game g){
 
-        Game[] tmp = new Game[games.length-1];
-
-        for(int i=0,j=0; i < games.length;i++){
-            if(games[i].getGameID() == g.getGameID()){
-
-            }
-            else{
-                tmp[j] = games[i];
-                j++;
-            }
+        if(games.length == 1){
+            games = new Game[0];
         }
-        games = tmp;
+        if(games.length > 1) {
+            Game[] tmp = new Game[games.length - 1];
+
+            for (int i = 0, j = 0; i < games.length; i++) {
+                if (games[i].getGameID() == g.getGameID()) {
+
+                } else {
+                    tmp[j] = games[i];
+                    j++;
+                }
+            }
+            games = tmp;
+        }
     }
 
     public String getUsername(){

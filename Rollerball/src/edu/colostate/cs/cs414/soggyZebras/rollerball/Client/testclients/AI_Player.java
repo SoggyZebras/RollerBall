@@ -44,7 +44,7 @@ public class AI_Player {
         //TODO: check for concurrent modification exception in this:
         for(Game g: allGames){
             if(g.getGameID()==passed.getGameID()){
-                g = passed; //updating the outdated game state to the new state passed
+                g = passed;//updating the outdated game state to the new state passed
                 found = true;
                 break;
             }
@@ -72,7 +72,6 @@ public class AI_Player {
      * @param gameID - ID of current game that AI player is calculating move for
      */
     public void Move(int gameID) {
-        System.out.println("AI calculating move");
         allBLocs.clear();
         allWLocs.clear();
 
@@ -104,7 +103,7 @@ public class AI_Player {
                     allBLocs.add(I);
                 }//Now all the current black piece locations are populated
             }
-
+            System.out.println("AI calculating move");
             //Logic to calculate which condition to take
             boolean check = kingCapture(gameID, Board);
             if (!check) {
@@ -118,6 +117,7 @@ public class AI_Player {
 
                        for(Location locFrom: allBLocs){
                            ArrayList<Location> validBMoves = currGame.validMoves(AI,locFrom);
+
 
                         //are we adding anything to validBmoves or allBlocks while iterating over it?? conCurrent mod happens here:
                            for(Location locTo: validBMoves){

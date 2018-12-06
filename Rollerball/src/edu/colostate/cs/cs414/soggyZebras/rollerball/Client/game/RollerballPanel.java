@@ -8,6 +8,7 @@ import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Piece;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,6 +23,7 @@ public class RollerballPanel extends JPanel {
     private Client client;
     private MenuGUI menuGUI;
     private PieceDrawer pieceDrawer;
+    private GameGUI gameGUI;
 
     // the index of the selected square
     // can be set to -1,-1 to unselect a square
@@ -37,7 +39,7 @@ public class RollerballPanel extends JPanel {
     // when a piece is clicked, this will be populated with the potential moves for that piece
     private ArrayList<Location> potentialMoves;
 
-    public RollerballPanel(Game game, Client client, MenuGUI menuGUI, int gameSide) throws IOException {
+    public RollerballPanel(Game game, Client client, MenuGUI menuGUI, int gameSide, GameGUI gameGUI) throws IOException {
         super();
 
         setSize(gameSide, gameSide);
@@ -49,6 +51,7 @@ public class RollerballPanel extends JPanel {
         this.menuGUI = menuGUI;
         selectedPiece = null;
         unselectSquares();
+        this.gameGUI = gameGUI;
 
         potentialMoves = new ArrayList<>();
 
@@ -64,6 +67,7 @@ public class RollerballPanel extends JPanel {
         drawPieces(g2);
         drawSelectedSquare(g2);
         drawHighlightedSquares(g2);
+        displayTurn(g2);
     }
 
     private void drawPieces(Graphics2D g2) {
@@ -133,33 +137,40 @@ public class RollerballPanel extends JPanel {
      * @param y the y pixel coordinate of the click
      */
     public void onClick(int x, int y) {
-        // notify player if it is not their turn to move
-        if (!isMyTurn()) {
-            JOptionPane.showMessageDialog(this, "It is not your turn.");
-            return;
-        }
-        Location clickLoc = new Location(y / squareSide, x / squareSide);
+        if (!game.wonGameW() && !game.wonGameB()) {
+            // notify player if it is not their turn to move
+            if (!isMyTurn()) {
+                JOptionPane.showMessageDialog(this, "It is not your turn.");
+                return;
+            }
+            Location clickLoc = new Location(y / squareSide, x / squareSide);
 
-        // if a piece has already been selected, try to make a move and update the board
-        if (selectedPiece != null) {
-            if (potentialMoves.isEmpty()) {
-                selectedPiece = null;
-                unselectSquares();
+            // if a piece has already been selected, try to make a move and update the board
+            if (selectedPiece != null) {
+                if (potentialMoves.isEmpty()) {
+                    selectedPiece = null;
+                    unselectSquares();
+                }
+                if (potentialMoves.contains(clickLoc)) {
+                    client.makeMove(selectedPiece.getLoc(), clickLoc, game.getGameID());
+                    selectedPiece = null;
+                    unselectSquares();
+                    potentialMoves.clear();
+                }
             }
-            if (potentialMoves.contains(clickLoc)) {
-                client.makeMove(selectedPiece.getLoc(), clickLoc, game.getGameID());
-                selectedPiece = null;
-                unselectSquares();
-                potentialMoves.clear();
+            // select a piece if its clicked on
+            else if (board.containsKey(clickLoc)) {
+                // make sure we can only click our own users
+                selectedPiece = board.get(clickLoc);
+                // true when player 1 is playing this game
+                boolean isPlayer1 = game.getPlayer1().getUserID() == menuGUI.loggedInUser.getUserID();
+                if ((selectedPiece.getColor() == 'w' && isPlayer1) || (selectedPiece.getColor() == 'b' && !isPlayer1)) {
+                    selectSquare(clickLoc.row, clickLoc.col);
+                    client.checkValidMove(selectedPiece.getLoc(), game.getGameID());
+                }
             }
+            repaint();
         }
-        // select a piece if its clicked on
-        else if (board.containsKey(clickLoc)) {
-            selectSquare(clickLoc.row, clickLoc.col);
-            selectedPiece = board.get(clickLoc);
-            client.checkValidMove(selectedPiece.getLoc(), game.getGameID());
-        }
-        repaint();
     }
 
     private void updateBoard(Map<Location,Piece> map) {
@@ -185,12 +196,22 @@ public class RollerballPanel extends JPanel {
 
         // check for win conditions
         if (game.wonGameB()) {
-            JOptionPane.showMessageDialog(this, "White King in CheckMate!");
-            // TODO: notify server that game has been won/lost
+            try {
+                client.hasWonGame(game.getGameID());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(this, "Black Won!");
+            gameGUI.dispatchEvent(new WindowEvent(gameGUI, WindowEvent.WINDOW_CLOSING));
         }
         else if (game.wonGameW()) {
-            JOptionPane.showMessageDialog(this, "Black King in CheckMate!");
-            // TODO: notify server that game has been won/lost
+            try {
+                client.hasWonGame(game.getGameID());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(this, "White Won!");
+            gameGUI.dispatchEvent(new WindowEvent(gameGUI, WindowEvent.WINDOW_CLOSING));
         }
     }
 
@@ -201,5 +222,22 @@ public class RollerballPanel extends JPanel {
 
     private boolean isMyTurn() {
         return game.getWhosTurn().getUserID() == menuGUI.loggedInUser.getUserID();
+    }
+
+    private void displayTurn(Graphics2D g2) {
+        String turn = game.getWhosTurn().getUsername() + "'s";
+        String col = "black";
+        if(game.getPlayer1().getUserID() == menuGUI.loggedInUser.getUserID()){
+            col = "white";
+        }
+        if(game.getWhosTurn().getUserID() == menuGUI.loggedInUser.getUserID()){
+            turn = "your";
+        }
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+
+        g2.drawString("You are the " + col + " pieces.", getWidth()/3, getHeight()/3);
+        g2.drawString("It is " + turn + " turn.", getWidth()/3, getHeight()/2);
+        repaint();
     }
 }
