@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class King extends Piece {
-
+    private static final long serialVersionUID = 6555555267757690L;
     public ArrayList<Location> moves;
     public Map<Location, Piece> gameState;
     public ArrayList<Location> badMoves;

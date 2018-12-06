@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class Bishop extends Piece {
+    private static final long serialVersionUID = 6582222227757690L;
 
     public Bishop(Location l, char color, String type) {
         super(l, color, type);

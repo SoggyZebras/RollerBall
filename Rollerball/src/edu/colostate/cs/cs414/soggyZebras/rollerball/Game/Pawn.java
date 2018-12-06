@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Pawn extends Piece{
-
+    private static final long serialVersionUID = 65850555557690L;
     public Pawn(Location loc, char color, String type) {
         super(loc, color, type);
         quadrant = setQuadrant();
