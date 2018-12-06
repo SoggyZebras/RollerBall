@@ -3,6 +3,7 @@ package edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.Client;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.GameGUI;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.game.RollerballPanel;
+import edu.colostate.cs.cs414.soggyZebras.rollerball.Client.menu.listdisplay.UserListDisplay;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Game;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Game.Location;
 import edu.colostate.cs.cs414.soggyZebras.rollerball.Server.User;
@@ -140,6 +141,11 @@ public class MenuGUI extends JFrame {
      * @param updatedUser
      */
     public void refresh(User updatedUser) {
+        try {
+            client.getUserList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // refresh all menus for the user passed in updatedUser
         if (updatedUser != null && updatedUser.getUserID() == loggedInUser.getUserID()) {
             loggedInUser = updatedUser;
@@ -150,7 +156,7 @@ public class MenuGUI extends JFrame {
         }
 
         // if this is not the user passed in updated user, just update the pending user and active game lists
-        else {
+        if (updatedUser != null) {
             cardContainer.menuPanels.get("main_menu").refresh();
             cardContainer.menuPanels.get("pending_invites").refresh();
         }
@@ -194,7 +200,7 @@ public class MenuGUI extends JFrame {
      */
     public void updateUsers(User[] allUsers) {
         this.allUsers = allUsers;
-        refresh(loggedInUser);
+        ((CreateInvitePanel)getCardContainer().menuPanels.get("create_invite")).updateUserList();
     }
 
     /**

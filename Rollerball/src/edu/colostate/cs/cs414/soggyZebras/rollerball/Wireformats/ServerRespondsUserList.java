@@ -18,7 +18,8 @@ public class ServerRespondsUserList implements Event {
   public ServerRespondsUserList(ArrayList<User> users){
 
     this.message_type = eServer_Responds_User_List;
-    this.userList = (User[]) users.toArray();
+    User[] u = new User[users.size()];
+    this.userList = users.toArray(u);
   }
 
   //Recieving message constructor

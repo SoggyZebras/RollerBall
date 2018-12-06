@@ -52,17 +52,6 @@ public abstract class MenuPanel extends JPanel {
     }
 
     /**
-     * clear all of the text fields in this menu panel
-     */
-    public void clearTextFields() {
-        for (Component comp : getComponents()) {
-            if (comp instanceof TextField) {
-                ((TextField) comp).setText("");
-            }
-        }
-    }
-
-    /**
      * this should be overriden by classes that inherit this
      */
     public void refresh() {
