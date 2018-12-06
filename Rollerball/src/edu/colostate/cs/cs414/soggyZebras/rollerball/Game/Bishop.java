@@ -78,8 +78,7 @@ public class Bishop extends Piece {
     public ArrayList<Location> quadOne(Map<Location, Piece> state, int row, int col){
         ArrayList<Location> moves = new ArrayList<>();
         while(checkLoc( state,row-1, col-1)){
-            moves.add(new Location(row-1, col-1));
-
+            moves.add(new Location(row, col));
             row--;
             col--;
         }
@@ -87,7 +86,7 @@ public class Bishop extends Piece {
                 && (checkLoc( state,row-1, col+1))
                 && moves.contains(new Location(3, 0))){
             System.out.println();
-            moves.add(new Location(row-1, col+1));
+            moves.add(new Location(row, col));
             row--;
             col++;
         }
