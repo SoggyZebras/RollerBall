@@ -302,11 +302,31 @@ public class Server implements Node,Runnable {
 
     private void handleClientSendsHasWon(Event e, Socket socket) throws IOException{
         ClientSendsHasWon message = (ClientSendsHasWon) e;
-        boolean won = games.checkWin(message.getGameID());
-        Game g = games.getGame(message.getGameID());
+        Game tmp = games.getGame(message.getGameID());
+        if(tmp.wonGameW()){
+            tmp.setWinner(tmp.getPlayer1());
+            tmp.setLoser(tmp.getPlayer2());
+        }
+        else{
+            tmp.setWinner(tmp.getPlayer2());
+            tmp.setLoser(tmp.getPlayer1());
+        }
+        tmp.setInProgress(false);
 
-        ServerRespondsHasWon response = new ServerRespondsHasWon(won,message.getGameID(),g.getWinner(),g.getLoser());
-        serverCache.getUserCon(socket).sendData(response.getFile());
+        User p1 = tmp.getPlayer1();
+        User p2 = tmp.getPlayer2();
+
+        p1.updateGame(message.getGameID(),tmp);
+        p2.updateGame(message.getGameID(),tmp);
+
+        if(serverCache.getConnection(p2.getUserID()) != null){
+            ServerRespondsRefresh response1 = new ServerRespondsRefresh(p2);
+            serverCache.getConnection(p2.getUserID()).sendData(response1.getFile());
+        }
+
+        ServerRespondsRefresh response2 = new ServerRespondsRefresh(p1);
+        serverCache.getUserCon(socket).sendData(response2.getFile());
+
     }
 
     private void handleClientRequestUserList(Event e, Socket socket) throws IOException{

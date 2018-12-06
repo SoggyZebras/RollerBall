@@ -38,11 +38,12 @@ public class GameCache {
         return false;
     }
 
-    public boolean checkWin(int id){
-        if(getGame(id).wonGameW() || getGame(id).wonGameB()){
-            return true;
+    public void updateGame(int id, Game game){
+        for(Game g: games){
+            if(g.getGameID() == id){
+                g = game;
+            }
         }
-        return false;
     }
 
     public void setGames(ArrayList<Game> g){

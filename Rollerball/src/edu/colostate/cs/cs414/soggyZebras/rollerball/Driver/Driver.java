@@ -11,7 +11,7 @@ public class Driver {
 
   public static void main(String []args) throws IOException, InterruptedException {
     Thread t1 = new Thread(new Server(5003));
-    Thread t2 = new Thread(new MenuDemoRunner());
+    Thread t2 = new Thread(new MenuDemoRunner(args[0]));
     t1.start();
     t2.start();
     try {

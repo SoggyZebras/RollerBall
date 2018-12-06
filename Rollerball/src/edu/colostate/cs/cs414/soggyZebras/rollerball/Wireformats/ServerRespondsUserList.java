@@ -10,7 +10,7 @@ public class ServerRespondsUserList implements Event {
 
   //Information to be serialized or deserialized
   private int message_type;
-  ArrayList<User> userList;
+  User[] userList;
 
   //Sending message constructor
 
@@ -18,7 +18,8 @@ public class ServerRespondsUserList implements Event {
   public ServerRespondsUserList(ArrayList<User> users){
 
     this.message_type = eServer_Responds_User_List;
-    this.userList = users;
+    User[] u = new User[users.size()];
+    this.userList = users.toArray(u);
   }
 
   //Recieving message constructor
@@ -37,7 +38,7 @@ public class ServerRespondsUserList implements Event {
 
 
     this.message_type = oin.readInt();
-    this.userList = (ArrayList<User>) oin.readObject();
+    this.userList = (User[]) oin.readObject();
 
     // Close streams
     oin.close();
@@ -69,7 +70,7 @@ public class ServerRespondsUserList implements Event {
     return this.message_type;
   }
 
-  public ArrayList<User> getUserList(){ return this.userList;}
+  public User[] getUserList(){ return this.userList;}
 
 
 }

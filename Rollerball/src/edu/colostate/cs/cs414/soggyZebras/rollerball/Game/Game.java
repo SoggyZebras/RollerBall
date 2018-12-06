@@ -272,4 +272,10 @@ public class Game implements java.io.Serializable {
     public User getLoser() {
         return loser;
     }
+
+    public void setWinner(User w){this.winner = w;}
+
+    public void setLoser(User l){this.loser = l;}
+
+    public void setInProgress(boolean b){inProgress = b;}
 }

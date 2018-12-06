@@ -84,6 +84,8 @@ public class Client implements Node {
 
             case eServer_Responds_Has_Won: handleServerRespondsHasWon(e, socket);break;
 
+            case eServer_Responds_User_List: handleServerRespondsUserList(e, socket);break;
+
             default:
         }
 
@@ -128,6 +130,11 @@ public class Client implements Node {
 
     public void hasWonGame(int d) throws IOException {
         ClientSendsHasWon message = new ClientSendsHasWon(d);
+        serverConnection.sendData(message.getFile());
+    }
+
+    public void getUserList()throws IOException{
+        ClientRequestUserList message = new ClientRequestUserList();
         serverConnection.sendData(message.getFile());
     }
 
@@ -265,7 +272,7 @@ public class Client implements Node {
     private void handleServerRespondsUserList(Event e, Socket s){
         ServerRespondsUserList message = (ServerRespondsUserList) e;
         //TODO call gui method to pass userlist to gui
-        //gui.updateUsers(message.getUserList());
+        gui.updateUsers(message.getUserList());
     }
 
 

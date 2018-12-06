@@ -21,10 +21,19 @@ public class ProfilePanel extends MenuPanel {
         add(new JLabel("<html>Profile<br>Username: " + getMenuGUI().loggedInUser.getUsername()
                 + "<br>Email: " + getMenuGUI().loggedInUser.getEmail() + "<br>Game History: </html>"));
 
+        int wins = 0;
+        int losses = 0;
+
         DefaultListModel<PastGameListDisplay> pastGameModel = new DefaultListModel();
         // load won games into list
         for (Game game : getMenuGUI().loggedInUser.getGames()) {
             if (game.getWinner() != null) {
+                if (game.getWinner().getUserID() == getMenuGUI().loggedInUser.getUserID()) {
+                    wins++;
+                }
+                else {
+                    losses++;
+                }
                 pastGameModel.addElement(new PastGameListDisplay(game, getMenuGUI().loggedInUser.getUsername()));
             }
         }
@@ -32,6 +41,8 @@ public class ProfilePanel extends MenuPanel {
         JScrollPane listScroller = new JScrollPane(pastGameList);
         listScroller.setPreferredSize(new Dimension(250, 100));
         add(listScroller);
+
+        add(new JLabel("<html>Wins: " + wins + "<br>Losses: " + losses + "<br></html>"));
 
         add(createLinkedActionButton("Logout", new LogoutListener()));
         add(createLinkedActionButton("Unregister", new UnregisterListener()));

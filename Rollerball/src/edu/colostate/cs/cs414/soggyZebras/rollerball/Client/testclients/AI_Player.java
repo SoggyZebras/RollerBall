@@ -57,9 +57,9 @@ public class AI_Player {
      * constructor to setup the Client needed for the AI to interface with the server
      * @throws IOException
      */
-    public AI_Player()throws IOException{
+    public AI_Player(String ip)throws IOException{
 
-        cl = new AI_Client(this,"127.0.0.1",35355);
+        cl = new AI_Client(this,ip,35355);
         AI = new User(0,"AI_Player","YouwillNeverBeatme YouwillNeverBeatme","Ai@gov.email");
         cl.initialize();
         cl.register(AI.getUsername(),AI.getPassword(),AI.getEmail());
@@ -347,6 +347,6 @@ public class AI_Player {
 
 
     public static void main(String[] args) throws IOException {
-        AI_Player p = new AI_Player();
+        AI_Player p = new AI_Player(args[0]);
     }
 }
