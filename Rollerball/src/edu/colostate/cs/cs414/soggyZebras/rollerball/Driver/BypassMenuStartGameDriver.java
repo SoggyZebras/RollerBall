@@ -15,8 +15,8 @@ public class BypassMenuStartGameDriver {
     private String player2Username = "bypass_player_2";
 
     public BypassMenuStartGameDriver() {
-        player1GUI = new MenuGUI();
-        player2GUI = new MenuGUI();
+        player1GUI = new MenuGUI("127.0.0.1");
+        player2GUI = new MenuGUI("127.0.0.1");
     }
 
     public void run() {

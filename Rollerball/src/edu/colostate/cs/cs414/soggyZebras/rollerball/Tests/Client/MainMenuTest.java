@@ -16,7 +16,7 @@ class MainMenuTest {
 
     @BeforeEach
     void setUp() {
-        menuGUI = new MenuGUI();
+        menuGUI = new MenuGUI("127.0.0.1");
         mainMenu = menuGUI.getCardContainer();
     }
 
