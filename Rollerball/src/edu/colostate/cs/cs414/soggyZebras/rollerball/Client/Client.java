@@ -131,6 +131,11 @@ public class Client implements Node {
         serverConnection.sendData(message.getFile());
     }
 
+    public void getUserList()throws IOException{
+        ClientRequestUserList message = new ClientRequestUserList();
+        serverConnection.sendData(message.getFile());
+    }
+
     /**
      *
      * @param from
