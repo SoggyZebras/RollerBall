@@ -196,12 +196,20 @@ public class RollerballPanel extends JPanel {
 
         // check for win conditions
         if (game.wonGameB()) {
-            client.winGame(game.getGameID(), game.getPlayer2().getUserID());
+            try {
+                client.hasWonGame(game.getGameID());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             JOptionPane.showMessageDialog(this, "Black Won!");
             gameGUI.dispatchEvent(new WindowEvent(gameGUI, WindowEvent.WINDOW_CLOSING));
         }
         else if (game.wonGameW()) {
-            client.winGame(game.getGameID(), game.getPlayer1().getUserID());
+            try {
+                client.hasWonGame(game.getGameID());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             JOptionPane.showMessageDialog(this, "White Won!");
             gameGUI.dispatchEvent(new WindowEvent(gameGUI, WindowEvent.WINDOW_CLOSING));
         }
