@@ -46,7 +46,7 @@ public class PendingInvitesPanel extends MenuPanel {
             }
         });
 
-        // make it so that the selected invite doesn't change even if it is refreshed
+        // make it so that the selected user doesn't change even if it is refreshed
         if (selectedInvite != null) {
             pendingInvitesList.setSelectedValue(selectedInvite, true);
         }
@@ -64,7 +64,7 @@ public class PendingInvitesPanel extends MenuPanel {
 
     /**
      * used for testing
-     * @return get the invite id of the first invite in the list
+     * @return get the user id of the first user in the list
      */
     public int getFirstInviteID() {
         if (pendingInvitesListModel.size() > 0)

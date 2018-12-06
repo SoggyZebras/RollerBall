@@ -234,7 +234,7 @@ public class Database {
     }
 
     /**
-     * Gets the invite for user
+     * Gets the for user
      * @param
      * @param id
      * @return Invite
@@ -265,7 +265,7 @@ public class Database {
     }
 
     /**
-     * Inserts an invite into the database
+     * Inserts an user into the database
      * @param id
      * @param from
      * @param to

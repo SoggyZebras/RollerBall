@@ -32,7 +32,7 @@ public class BypassMenuStartGameDriver {
             player1GUI.client.sendInvite(player2Username);
             PendingInvitesPanel invitesPanel = (PendingInvitesPanel) player2GUI.getCardContainer().menuPanels.get("pending_invites");
             int inviteID = -1;
-            // loop until invite appears
+            // loop until appears
             while (inviteID == -1) {
                 inviteID = invitesPanel.getFirstInviteID();
             }
