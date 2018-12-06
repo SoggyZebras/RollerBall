@@ -35,6 +35,7 @@ public class ProfilePanel extends MenuPanel {
 
         add(createLinkedActionButton("Logout", new LogoutListener()));
         add(createLinkedActionButton("Unregister", new UnregisterListener()));
+        add(createLinkedButton("Back", "main_menu"));
     }
 
     class LogoutListener implements ActionListener {

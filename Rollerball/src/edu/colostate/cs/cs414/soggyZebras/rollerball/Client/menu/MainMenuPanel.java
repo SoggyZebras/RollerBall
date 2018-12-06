@@ -34,7 +34,9 @@ public class MainMenuPanel extends MenuPanel {
         // get this users games
         if (getMenuGUI().loggedInUser != null) {
             for (Game game : getMenuGUI().loggedInUser.getGames()) {
-                activeGamesListModel.add(0, new GameListDisplay(game, getMenuGUI().loggedInUser.getUsername()));
+                if (game.getWinner() == null) {
+                    activeGamesListModel.add(0, new GameListDisplay(game, getMenuGUI().loggedInUser.getUsername()));
+                }
             }
         }
 
