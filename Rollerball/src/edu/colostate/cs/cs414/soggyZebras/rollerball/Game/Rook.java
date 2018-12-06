@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Rook extends Piece {
+    private static final long serialVersionUID = 6333398267757690L;
+
     private final Location up = new Location(-1, 0);
     private final Location down = new Location(1, 0);
     private final Location left = new Location(0, -1);
